@@ -57,7 +57,7 @@ export default function FavoriteHead({
     }
 
     return (
-        <div className='w-full px-6 md:px-10 lg:px-14 md:pt-10 pt-3'>
+        <div className='w-full px-6 md:px-10 lg:px-14 md:pt-10 pt-5'>
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10 md:gap-4 flex-wrap w-full'>
                 <div className='flex items-center md:gap-4 gap-1'>
                     <Link
