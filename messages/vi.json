@@ -302,19 +302,20 @@
         "title": "Nhật ký xem phim",
         "noHistory": "Không có nhật ký xem phim",
         "loadHistory": "Đang tải nhật ký xem phim",
-        "pauseHistory": "Tạm dừng nhật ký xem phim",
-        "continueHistory": "Tiếp tục nhật ký xem phim",
-        "deleteallHistory": "Xóa tất cả nhật ký xem phim",
+        "pauseHistory": "Tạm dừng lưu nhật ký xem phim",
+        "isPause": "Đang tạm dừng lưu nhật ký xem phim",
+        "continueHistory": "Tiếp tục lưu nhật ký xem phim",
+        "manageHistory": "Quản lý nhật ký xem phim của bạn",
+        "settingHistory": "Cài đặt nhật ký xem phim",
+        "removeHistory": "Xóa khỏi nhật ký xem phim",
         "searchHistory": "Tìm kiếm trong nhật ký xem phim",
         "messages": {
             "deleteSuccess": "Đã xóa toàn bộ lịch sử xem!",
-            "pauseSuccess": "Đã tạm dừng nhật ký xem!",
-            "continueSuccess": "Đã tiếp tục nhật ký xem!",
+            "pauseSuccess": "Đã tạm dừng lưu nhật ký xem!",
+            "continueSuccess": "Đã tiếp tục lưu nhật ký xem!",
             "confirmDelete": "Bạn có chắc muốn xóa toàn bộ lịch sử xem không?",
-            "confirmPause": "Bạn có chắc muốn tạm dừng nhật ký xem không?",
-            "confirmResume": "Bạn có chắc muốn tiếp tục nhật ký xem không?",
-            "confirm": "Xác nhận",
-            "cancel": "Hủy"
+            "confirmPause": "Bạn có chắc muốn tạm dừng lưu nhật ký xem không?",
+            "confirmResume": "Bạn có chắc muốn tiếp tục lưu nhật ký xem không?"
         },
         "tooltip": {
             "play": "Phát",
@@ -323,20 +324,25 @@
 
     },
     "FavoritePage": {
-        "title": "Danh sách phim yêu thích của tôi",
+        "title": "Danh sách phim yêu thích",
         "noFavorites": "Không có phim yêu thích",
         "editFavorites": "Chỉnh sửa danh sách yêu thích",
         "searchFavorites": "Tìm kiếm trong danh sách yêu thích",
         "messages": {
-            "deleteSuccess": "Đã xóa phim danh sách yêu thích!",
-            "noSelected": "Không có phim nào được chọn!",
-            "confirmDelete": "Bạn có chắc muốn xóa toàn bộ danh sách yêu thích không?",
-            "confirm": "Xác nhận",
-            "cancel": "Hủy"
+            "deleteSuccess": "Đã xóa phim danh sách yêu thích!",            
+            "confirmDelete": "Bạn có chắc muốn xóa toàn bộ danh sách yêu thích không?"
         },
         "tooltip": {
             "play": "Phát",
             "removeFromList": "Xóa khỏi danh sách yêu thích"
         }
+    },
+    "RemoveToggle":
+    {
+        "noSelected": "Không có phim nào được chọn!",
+        "remove": "Xóa",
+        "setting": "Cài đặt",
+        "confirm": "Xác nhận",
+        "cancel": "Hủy"
     }
 }

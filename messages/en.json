@@ -298,9 +298,12 @@
         "title": "History",
         "noHistory": "No history",
         "loadHistory": "Loading history",
-        "pauseHistory": "Pause history",
-        "continueHistory": "Continue history",
-        "deleteallHistory": "Delete all history",
+        "pauseHistory": "Pause save history",
+        "isPause": "History is paused",
+        "continueHistory": "Continue save history",
+        "manageHistory": "Manage your watch history",
+        "settingHistory": "Watch history settings",
+        "removeHistory": "Remove from watch history",
         "searchHistory": "Search in history",
         "messages": {
             "deleteSuccess": "All watch history deleted!",
@@ -308,9 +311,7 @@
             "continueSuccess": "Watch history continued!",
             "confirmDelete": "Are you sure you want to delete all watch history?",
             "confirmPause": "Are you sure you want to pause watch history?",
-            "confirmResume": "Are you sure you want to continue watch history?",
-            "confirm": "OK",
-            "cancel": "Cancel"
+            "confirmResume": "Are you sure you want to continue watch history?"
         },
         "tooltip": {
             "play": "Play",
@@ -324,15 +325,19 @@
         "editFavorites": "Edit favorite list",
         "searchFavorites": "Search in favorites",
         "messages": {
-            "deleteSuccess": "All favorite movies deleted!",
-            "noSelected": "No movies selected!",
-            "confirmDelete": "Are you sure you want to delete all favorite movies?",
-            "confirm": "OK",
-            "cancel": "Cancel"
+            "deleteSuccess": "All favorite movies deleted!",           
+            "confirmDelete": "Are you sure you want to delete all favorite movies?"
         },
         "tooltip": {
             "play": "Play",             
             "removeFromList": "Remove from favorite"
         }
+    },
+    "RemoveToggle": {
+        "noSelected": "No movies selected!",
+        "remove": "Remove",
+        "setting": "Setting",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
     }
 }

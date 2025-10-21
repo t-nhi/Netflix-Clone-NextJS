@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { FilmDetailType } from '@/types/film.type'
-import FavoriteCard from './movie-card/movie-favorite-card' // đường dẫn tới card
+import FavoriteCard from './movie-card/movie-favorite-card'
 import { getMockFilms } from '@/_mock'
 import { MovieFavoriteCardHoverInfoProvider } from './movie-card/movie-favorite-hover-card'
 
@@ -36,11 +36,16 @@ export default function FavoriteList({ isEditing, selectedMovies, onSelect }: Fa
 
     return (
         <div className='mx-auto w-full min-h-screen'>
-            <div className='grid gap-6 px-6 md:px-8 lg:px-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+            <div
+                className='grid gap-3 px-6 md:px-8 lg:px-14
+                        grid-cols-[repeat(auto-fit,minmax(160px,1fr))]
+                        sm:grid-cols-[repeat(auto-fit,minmax(180px,1fr))]
+                        lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]
+                        xl:grid-cols-[repeat(6,1fr)]'
+            >
                 {mockMovies.map((movie) => (
                     <MovieFavoriteCardHoverInfoProvider key={movie.id} movie={movie} disableHover={isEditing}>
                         <FavoriteCard
-                            key={movie.id}
                             movie={movie}
                             isEditing={isEditing}
                             isSelected={selectedMovies.includes(movie.id)}

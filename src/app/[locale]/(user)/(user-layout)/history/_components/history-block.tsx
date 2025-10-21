@@ -10,14 +10,21 @@ import { CarouselItem } from '@/components/ui/carousel'
 import WatchHistoryCard from './movie-watched-card'
 import { getMockFilms } from '@/_mock'
 
-export default function HistoryBlock() {
-    const movies = useMemo(() => getMockFilms(50), [])
+interface HistoryBlockProps {
+    movies?: FilmDetailType[]
+    isEditing: boolean
+    selectedMovies: string[]
+    onSelect: (id: string) => void
+}
+
+export default function HistoryBlock({ isEditing, selectedMovies, onSelect }: HistoryBlockProps) {
+    const mockMovies = useMemo(() => getMockFilms(50), [])
     const t = useTranslations('HistoryPage')
     const locale = useLocale()
     const containerRef = useRef<HTMLDivElement>(null)
     const [groupedByDate, setGroupedByDate] = useState<Record<string, FilmDetailType[]>>({})
 
-    const stableMovies = useMemo(() => movies ?? [], [movies])
+    const stableMovies = useMemo(() => mockMovies ?? [], [mockMovies])
 
     useEffect(() => {
         if (stableMovies.length === 0) {
@@ -67,7 +74,13 @@ export default function HistoryBlock() {
                         <FilmCarousel>
                             {groupedByDate[dateKey].map((movie) => (
                                 <CarouselItem key={movie.id} className='max-w-fit! p-0!'>
-                                    <WatchHistoryCard movie={movie} />
+                                    <WatchHistoryCard
+                                        key={movie.id}
+                                        movie={movie}
+                                        isEditing={isEditing}
+                                        isSelected={selectedMovies.includes(movie.id)}
+                                        onSelect={() => onSelect(movie.id)}
+                                    />
                                 </CarouselItem>
                             ))}
                         </FilmCarousel>

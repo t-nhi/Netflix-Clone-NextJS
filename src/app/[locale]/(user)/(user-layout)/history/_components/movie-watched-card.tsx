@@ -13,9 +13,20 @@ import { useTranslations } from 'next-intl'
 interface WatchHistoryCardProps {
     movie: FilmDetailType
     className?: string
+    isEditing: boolean
+    isSelected: boolean
+    disableHover?: boolean
+    onSelect: () => void
 }
 
-export default function WatchHistoryCard({ movie, className }: WatchHistoryCardProps) {
+export default function WatchHistoryCard({
+    movie,
+    className,
+    isEditing,
+    isSelected,
+    disableHover,
+    onSelect
+}: WatchHistoryCardProps) {
     const t = useTranslations('HistoryPage')
     const progress = Math.min((movie.watch_duration_minutes / movie.duration_minutes) * 100, 100).toFixed(0)
 
@@ -29,19 +40,39 @@ export default function WatchHistoryCard({ movie, className }: WatchHistoryCardP
 
     return (
         <article
+            key={isEditing ? 'edit' : 'view'}
+            onClick={(e) => {
+                if (!isEditing) return
+                if (!(e.target as HTMLElement).closest('input[type="checkbox"]')) {
+                    onSelect()
+                }
+            }}
             className={cn(
-                'group relative flex flex-col rounded-[4px] overflow-hidden border transition-all duration-300 ease-out w-[160px] sm:w-[200px] md:w-[220px] flex-shrink-0',
-                'bg-white border-gray-200 hover:shadow-lg',
-                'dark:bg-[#1f1f1f] dark:border-transparent dark:hover:shadow-xl',
+                'group relative flex flex-col rounded-[4px] overflow-hidden border transition-all duration-300 ease-out w-[160px] sm:w-[200px] md:w-[220px] flex-shrink-0 select-none',
+                'bg-white border-gray-200 dark:bg-[#1f1f1f] dark:border-transparent',
+                'cursor-pointer',
+                isEditing && 'opacity-90',
+                isEditing && disableHover && 'pointer-events-none',
                 className
             )}
         >
             <div className='relative w-full aspect-[16/9] overflow-hidden'>
+                {isEditing && (
+                    <input
+                        type='checkbox'
+                        checked={isSelected}
+                        onChange={onSelect}
+                        className='absolute top-2 right-2 z-50 accent-brand cursor-pointer dark:bg-black bg-white checked:bg-gray-400 dark:checked:bg-gray-600 w-4 h-4'
+                    />
+                )}
                 <Image
                     src={movie.horizontal_poster}
                     alt={movie.title}
                     fill
-                    className='object-cover w-full h-full transition-transform duration-500 group-hover:scale-105'
+                    className={cn(
+                        'object-cover w-full h-full transition-transform duration-500',
+                        !isEditing && 'group-hover:scale-105'
+                    )}
                 />
 
                 <div

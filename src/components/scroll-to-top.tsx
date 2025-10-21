@@ -1,20 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ArrowUp, ArrowUpFromLine, ScrollIcon } from 'lucide-react'
+import { ArrowUpFromLine } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useScrollPosition } from '@/hooks/ui/useScrollPosition'
 
 export default function ScrollToTopButton() {
-    const [visible, setVisible] = useState(false)
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setVisible(window.scrollY > 400)
-        }
-
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+    const scrollY = useScrollPosition()
+    const visible = scrollY > 400
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
