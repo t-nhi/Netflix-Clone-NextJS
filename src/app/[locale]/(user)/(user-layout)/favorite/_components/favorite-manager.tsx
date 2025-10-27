@@ -4,12 +4,11 @@ import { useState, useCallback } from 'react'
 import FavoriteHead from './favorite-head'
 import FavoriteList from './list-favorite-films'
 import { getMockFilms } from '@/_mock'
-import { FilmDetailType } from '@/types/film.type'
 
 export default function FavoriteManager() {
     const [isEditing, setIsEditing] = useState(false)
     const [selectedMovies, setSelectedMovies] = useState<string[]>([])
-    const [movies, setMovies] = useState<FilmDetailType[]>(() => getMockFilms(50))
+    const [movies, setMovies] = useState(() => getMockFilms(50))
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     const handleSelect = useCallback((id: string) => {

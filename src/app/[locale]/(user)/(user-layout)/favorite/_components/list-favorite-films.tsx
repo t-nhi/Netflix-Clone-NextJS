@@ -3,13 +3,13 @@
 import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { FilmDetailType } from '@/types/film.type'
 import FavoriteCard from './movie-card/movie-favorite-card'
 import { getMockFilms } from '@/_mock'
 import { MovieFavoriteCardHoverInfoProvider } from './movie-card/movie-favorite-hover-card'
+import { Movie } from '@/types/models/movie.model'
 
 interface FavoriteListProps {
-    movies?: FilmDetailType[]
+    movies?: Movie[]
     isEditing: boolean
     selectedMovies: string[]
     onSelect: (id: string) => void

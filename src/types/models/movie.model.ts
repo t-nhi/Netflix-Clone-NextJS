@@ -1,4 +1,4 @@
-export type FilmDetailType = {
+export interface Movie {
     id: string
     title: string
     title_other: string
@@ -24,20 +24,9 @@ export type FilmDetailType = {
     watched_at: string
     rank: number
     tags?: string[]
-
     created_at: string
     updated_at: string
-
-    comments?: Comment[]
     like_count: number
     share_count: number
-
-    isVip?: boolean
-}
-
-export type Comment = {
-    user: string
-    content: string
-    rated_at: string
-    rating: number
+    isVip: boolean
 }

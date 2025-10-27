@@ -1,6 +1,6 @@
-import { FilmDetailType } from '@/types/film.type'
+import { Movie } from '@/types/models/movie.model'
 
-export const filmDetail: FilmDetailType = {
+export const filmDetail: Movie = {
     id: '1',
     title: 'Tiêu Minh Minh',
     title_other: 'Crime Scene Zero - 2018',
@@ -36,28 +36,6 @@ export const filmDetail: FilmDetailType = {
     rank: 1,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
-    comments: [
-        {
-            user: 'Van Anh',
-            content:
-                'Bộ phim Crime Scene Zero cực kỳ nhẹ nhàng, với hầu hết manh mối đều rõ ràng và nằm rải rác khắp nơi. Các thí sinh không cần phải đào sâu tìm kiếm bất kỳ manh mối nào, vì vậy nó làm giảm đi tính bí ẩn của tình huống. Mặt khác, mặc dù có những khoảnh khắc riêng, nhưng những tình huống đôi khi quá thoải mái của thí sinh nhìn chung có thể giảm hấp dẫn với người xem khó tính.',
-            rated_at: '2024-01-02T10:00:00Z',
-            rating: 5
-        },
-        {
-            user: 'Pham Huy',
-            content: 'Cốt truyện lôi cuốn, nhưng phần kết hơi vội.',
-            rated_at: '2024-01-03T12:00:00Z',
-            rating: 4
-        },
-        {
-            user: 'Ha Le Tran',
-            content:
-                'Đây không phải là một bộ phim kinh dị mà là một series hài khá độc đáo. Nó kết hợp nhiều thể loại và mang đến những cuộc trò chuyện ngớ ngẩn khiến bạn đôi lúc phải bật cười. Bối cảnh được thiết kế hoàn hảo, mặc dù đôi khi hơi trẻ con, nhưng chúng lại cực kỳ thú vị.',
-            rated_at: '2024-01-03T12:00:00Z',
-            rating: 5
-        }
-    ],
     like_count: 100000,
     share_count: 480000,
     isVip: true
@@ -67,7 +45,7 @@ const now = new Date()
 const twoMonthAgo = new Date()
 twoMonthAgo.setMonth(now.getMonth() - 2)
 
-export const getMockFilms = (number: number): FilmDetailType[] => {
+export const getMockFilms = (number: number) => {
     const toStartOfDay = (date: Date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate())
     }
@@ -95,7 +73,7 @@ export const getMockFilms = (number: number): FilmDetailType[] => {
         }))
 }
 
-export const getMockFilmsWithRank = (number: number): FilmDetailType[] => {
+export const getMockFilmsWithRank = (number: number) => {
     return Array(number)
         .fill(filmDetail)
         .map((item, index) => ({

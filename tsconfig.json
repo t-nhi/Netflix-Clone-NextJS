@@ -13,12 +13,17 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "baseUrl": ".",
         "plugins": [
             {
                 "name": "next"
             }
         ],
         "paths": {
+            "@types/*": ["types/*"],
+            "@models/*": ["types/models/*"],
+            "@api/*": ["types/api/*"],
+            "@dto/*": ["types/dto/*"],
             "@/*": ["./src/*"]
         }
     },

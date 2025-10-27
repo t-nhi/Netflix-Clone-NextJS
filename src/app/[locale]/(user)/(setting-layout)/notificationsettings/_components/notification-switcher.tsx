@@ -5,7 +5,8 @@ import { Switch } from '@/components/ui/switch'
 import { CircleCheck, XCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { NotificationsConfig, NotificationType } from '@/types/notification.type'
+import { NotificationType } from '@/types/common/notification-config.type'
+import { NotificationsConfig } from '@/constants/notification-config.enum'
 
 interface NotificationSwitcherProps {
     title: string
@@ -33,11 +34,11 @@ export default function NotificationSwitcher({ title, email, initialState, type 
 
     const getDescriptionText = () => {
         switch (type) {
-            case NotificationsConfig.email:
+            case NotificationsConfig.EMAIL:
                 return t('emailDescription')
-            case NotificationsConfig.push:
+            case NotificationsConfig.PUSH:
                 return t('pushDescription')
-            case NotificationsConfig.text:
+            case NotificationsConfig.TEXT:
                 return t('textDescription')
             default:
                 return ''

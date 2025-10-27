@@ -1,6 +1,5 @@
 'use client'
 
-import { FilmDetailType } from '@/types/film.type'
 import { Info } from 'lucide-react'
 import { IoPlaySharp } from 'react-icons/io5'
 import { Button } from '@/components/ui/button'
@@ -13,9 +12,10 @@ import ButtonMuted from '@/app/[locale]/(user)/films/_components/video-carousel/
 import { useEffect, useRef, useState } from 'react'
 import { HERO_VIEW_MODE, useFilmsPageContext } from '@/app/[locale]/(user)/films/context'
 import { useTranslations } from 'next-intl'
+import { Movie } from '@/types/models/movie.model'
 
 interface CarouselItemContentProps {
-    movie: FilmDetailType
+    movie: Movie
 }
 
 export default function CarouselItemContent({ movie }: CarouselItemContentProps) {

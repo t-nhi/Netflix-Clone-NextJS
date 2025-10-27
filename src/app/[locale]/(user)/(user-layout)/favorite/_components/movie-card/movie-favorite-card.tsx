@@ -1,12 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { FilmDetailType } from '@/types/film.type'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
+import { Movie } from '@/types/models/movie.model'
 
 interface MovieCardProps {
-    movie: FilmDetailType
+    movie: Movie
     className?: string
     isEditing: boolean
     isSelected: boolean
