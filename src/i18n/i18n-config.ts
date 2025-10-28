@@ -18,3 +18,5 @@ export const LANGUAGES: Language[] = [
     { value: 'en', labelKey: 'en' },
     { value: 'vi', labelKey: 'vi' }
 ] as const
+
+export const HEADER_I18N = 'x-nextjs-i18n'

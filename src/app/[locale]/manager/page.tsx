@@ -1,3 +1,7 @@
 export default function ManagerPage() {
-    return <div>Manager Page</div>
+    return (
+        <div>
+            <h1>Manager Page</h1>
+        </div>
+    )
 }

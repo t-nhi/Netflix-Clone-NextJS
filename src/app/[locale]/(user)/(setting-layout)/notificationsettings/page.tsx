@@ -2,7 +2,7 @@ import Image from 'next/image'
 import BellIcon from '@/components/icons/bell-icon'
 import { getTranslations } from 'next-intl/server'
 import NotificationSwitcher from './_components/notification-switcher'
-import { NotificationsConfig } from '@/types/notification.type'
+import { NotificationsConfig } from '@/constants/notification-config.enum'
 
 export default async function NotificationSettingsPage() {
     const t = await getTranslations('NotificationSettings')
@@ -13,19 +13,19 @@ export default async function NotificationSettingsPage() {
             email: t('emailAddress'),
             imagePath: '/images/notification-setting/email_main.png',
             isActive: true,
-            type: NotificationsConfig.email
+            type: NotificationsConfig.EMAIL
         },
         {
             title: t('pushNotifications'),
             imagePath: '/images/notification-setting/push_main.png',
             isActive: true,
-            type: NotificationsConfig.push
+            type: NotificationsConfig.PUSH
         },
         {
             title: t('textMessages'),
             imagePath: '/images/notification-setting/text_main.png',
             isActive: false,
-            type: NotificationsConfig.text
+            type: NotificationsConfig.TEXT
         }
     ]
 

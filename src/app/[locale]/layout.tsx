@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { setRequestLocale } from 'next-intl/server'
-import { NetflixIcons, NetflixSans } from '@/config/font'
+import { NetflixIcons, NetflixSans } from '@/config/fonts.config'
 import { NextIntlClientProvider } from 'next-intl'
 import { AppProvider } from '@/provider/app-provider'
 

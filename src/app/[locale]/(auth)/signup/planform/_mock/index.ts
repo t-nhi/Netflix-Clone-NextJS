@@ -1,4 +1,4 @@
-import { SubscriptionPlanType } from '@/types/models/subscription.type'
+import { SubscriptionPlanType } from '@/types/models/subscription.model'
 
 export const mockSubscriptionPlans: SubscriptionPlanType[] = [
     {
