@@ -339,5 +339,98 @@
         "setting": "Setting",
         "confirm": "Confirm",
         "cancel": "Cancel"
+    },
+    "AdminPage": {
+        "genresPage": {
+            "messages":{
+                "emptyGenre": "The genre list is empty! Please add at least one genre."
+            },
+            "title": "Genres",
+            "searchGenres": "Search genres",
+            "addGenre": "Add new genre",
+            "id": "ID",
+            "name": "Name genre",
+            "description": "Description",
+            "createdAt": "Creat At",
+            "updatedAt": "Update At",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "delSuccess": "Genre deleted successfully!",
+            "addGenreForm": {
+                "title": "Add New Genre",
+                "subtitle": "Please fill in the information below to add a new genre.",
+                "nameLabel": "Enter genre name",
+                "descLabel": "Enter genre description (optional)",
+                "addButton": "Add genre",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Genre added successfully!"
+            },
+            "editGenreForm": {
+                "title": "Edit Genre",
+                "subtitle": "Please fill in the information below to edit the genre.",
+                "nameLabel": "Genre name",
+                "descLabel": "Genre description (optional)",
+                "saveButton": "Save change",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Genre edited successfully!",
+                "notFound": "Genre not found"
+            }
+        },
+        "actorsPage": {
+            "messages":{
+                "emptyActor ": "The actor list is empty! Please add at least one actor."
+            },
+            "title": "Actors",
+            "searchActors": "Search actors",
+            "addActor": "Add new actor",
+            "id": "ID",
+            "name": "Name actor",
+            "image": "Avatar",
+            "bio": "Biography",
+            "dateOfBirth": "Date of Birth",
+            "creatAt": "Creat At",
+            "updateAt": "Update At",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "delSuccess": "Actor deleted successfully!",
+            "editActorForm": {
+                "title": "Edit Actor",
+                "subtitle": "Please fill in the information below to edit the actor.",
+                "nameLabel": "Full name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "editImage": "Edit avatar",
+                "bioPlaceholder": "Enter actor biography...",
+                "cancelButton": "Cancel",
+                "saveButton": "Save change",
+                "toastSuccess": "Actor edited successfully!"
+            },
+            "addActorForm": {
+                "title": "Add New Actor",
+                "subtitle": "Please fill in the information below to add a new actor.",
+                "nameLabel": "Enter actor name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "addImage": "Add avatar",
+                "bioPlaceholder": "Enter actor biography...",
+                "addButton": "Add actor",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Actor added successfully!"
+            }
+        },
+        "validation": {
+            "fullNameRequired": "Pleas enter full name",
+            "fullNameTooShort": "Fullname too short (min 2 characters)",
+            "fullNameTooLong": "Fullname too long (max 100 characters)",
+            "biographyTooLong": "Biography too long (max 500 characters)",
+            "invalidDateFormat": "Invalid date format (YYYY-MM-DD)",
+            "invalidImageUrl": "Invalid image url",
+            "genreNameRequired": "Please enter genre name",
+            "genreNameTooShort": "Genre name too short (min 2 characters)",
+            "genreNameTooLong": "Genre name too long (max 50 characters)",
+            "genreDescriptionTooLong": "Genre description too long (max 300 characters)"
+        }
     }
 }

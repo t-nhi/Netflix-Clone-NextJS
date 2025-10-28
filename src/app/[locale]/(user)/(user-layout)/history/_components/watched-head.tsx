@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, Pause, Play, Search, X } from 'lucide-react'
+import { ArrowLeft, Pause, Play } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ import { EditToggleButton } from '@/components/edit-toggle-button'
 import { SelectAllCheckbox } from '@/components/select-all-checkbox'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import InputSearch from '@/components/input-search'
 
 interface WatchHistoryHeadProps {
     isEditing: boolean
@@ -130,39 +131,7 @@ export default function WatchHistoryHead({
                 </div>
 
                 <div className='flex items-center justify-end gap-2 w-full sm:w-auto flex-shrink-0'>
-                    <div className='relative group flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[300px] lg:min-w-[400px] max-w-[550px]'>
-                        <Search
-                            className='absolute left-2 top-1/2 -translate-y-1/2
-                            w-4 h-4 md:w-5 md:h-5 text-gray-500 dark:text-gray-400 transition-all duration-300
-                            group-hover:text-black dark:group-hover:text-white
-                            group-focus-within:text-black dark:group-focus-within:text-white'
-                        />
-                        <input
-                            type='text'
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            placeholder={t('searchHistory')}
-                            className='w-full bg-transparent text-gray-900 dark:text-white text-sm
-                            border-b border-gray-400/30 dark:border-gray-500/30
-                            outline-none  py-2 px-10 focus:border-transparent peer'
-                        />
-                        {searchValue && (
-                            <button
-                                onClick={() => setSearchValue('')}
-                                className='absolute right-2 top-1/2 -translate-y-1/2
-                                text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white
-                                transition-all duration-200 opacity-90 hover:opacity-100'
-                                aria-label='Clear search'
-                            >
-                                <X className='w-4 h-4 md:w-5 md:h-5' />
-                            </button>
-                        )}
-                        <span
-                            className='absolute left-1/2 bottom-0 h-[1.5px]
-                            bg-black dark:bg-white w-0 group-focus-within:w-full
-                            transition-all duration-300 ease-out origin-center transform -translate-x-1/2'
-                        />
-                    </div>
+                    <InputSearch placeholder={t('searchHistory')} value={searchValue} onChange={setSearchValue} />
 
                     <Tooltip>
                         <TooltipTrigger asChild>
