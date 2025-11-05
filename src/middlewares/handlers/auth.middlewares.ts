@@ -1,7 +1,7 @@
 import { AdminPaths, AuthPaths, CommonPaths, UnauthPaths, UserPaths, isPathIncluded } from '@/config/routes.config'
 import { QueryKeys } from '@/constants/query-keys.constant'
 import { MiddlewareContext, MiddlewareFn, MiddlewareNext } from '@/middlewares/types.middleware'
-import { getTokens } from '@/utils/cookies.util'
+import { getTokensFromCookies } from '@/utils/cookies.util'
 import { buildURLObjWithLocale, stripLocaleFromPath } from '@/utils/locale.util'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -13,7 +13,7 @@ const AuthenticationMiddleware: MiddlewareFn = (
 ) => {
     const { pathname } = req.nextUrl
     const cleanPath = stripLocaleFromPath(pathname)
-    const { refresh_token, access_token } = getTokens(req)
+    const { refresh_token, access_token } = getTokensFromCookies(req)
 
     ctx.refreshToken = refresh_token ?? null
     ctx.accessToken = access_token ?? null

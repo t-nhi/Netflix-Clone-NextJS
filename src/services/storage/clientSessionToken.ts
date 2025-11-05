@@ -1,6 +1,6 @@
 'use client'
 
-import { UserType } from '@/types/schemas/User.schema'
+import { UserType } from '@/types/models/user.model'
 
 const isClient = typeof window !== 'undefined'
 

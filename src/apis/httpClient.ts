@@ -11,7 +11,7 @@ const isClient = typeof window !== 'undefined'
 export type CustomOptionsType = RequestInit & { baseUrl?: string }
 
 type RequestPropsType = {
-    method: HttpMethod.GET | HttpMethod.POST | HttpMethod.PUT | HttpMethod.DELETE
+    method: HttpMethod.GET | HttpMethod.POST | HttpMethod.PUT | HttpMethod.DELETE | HttpMethod.PATCH
     url: string
     options?: CustomOptionsType
 }
@@ -105,6 +105,17 @@ class HttpClient {
             method: HttpMethod.DELETE,
             url,
             options
+        })
+    }
+
+    patch<response>(url: string, body: any, options?: Omit<CustomOptionsType, 'body'>): Promise<response> {
+        return clientRequest<response>({
+            method: HttpMethod.PATCH,
+            url,
+            options: {
+                ...options,
+                body
+            }
         })
     }
 }
