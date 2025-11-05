@@ -1,6 +1,6 @@
-import { Movie } from '@/types/models/movie.model'
+import { MovieType } from '@/types/models/movie.model'
 
-export const filmDetail: Movie = {
+export const filmDetail: MovieType = {
     id: '1',
     title: 'Tiêu Minh Minh',
     title_other: 'Crime Scene Zero - 2018',

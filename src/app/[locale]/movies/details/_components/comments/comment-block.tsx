@@ -1,14 +1,14 @@
 import Image from 'next/image'
-import { FilmDetailType } from '@/types/film.type'
 import { useTranslations } from 'next-intl'
 import { timeAgo } from '@/utils/formatting/formatTime'
 import RatingForm from '@/app/[locale]/movies/details/_components/comments/rating-form'
 import StarRating from '@/components/star-rating'
 import { useLocale } from 'next-intl'
 import SeeMore from '@/components/see-more'
+import { MovieType } from '@/types/models/movie.model'
 
 type Props = {
-    informationFilm: FilmDetailType
+    informationFilm: MovieType
 }
 
 export default function CommentBlock({ informationFilm }: Props) {
@@ -22,7 +22,7 @@ export default function CommentBlock({ informationFilm }: Props) {
                 {t('rate')} ({movie.comments_count})
             </h2>
             <RatingForm />
-            {movie.comments_count > 0 ? (
+            {/* {movie.comments_count > 0 ? (
                 <div className='flex flex-col gap-3 lg:w-[58%] w-full mt-2'>
                     {movie.comments?.map((comment, index) => (
                         <div key={index} className='pb-4'>
@@ -62,8 +62,8 @@ export default function CommentBlock({ informationFilm }: Props) {
                         className='opacity-70 mb-4'
                     />
                     <p className='text-gray-400 text-sm text-center'>{t('noCommentsMessage')}</p>
-                </div>
-            )}
+                </div> 
+            )}*/}
         </div>
     )
 }

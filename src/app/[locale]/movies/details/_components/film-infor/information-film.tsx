@@ -1,13 +1,13 @@
-import { FilmDetailType } from '@/types/film.type'
 import { useTranslations } from 'next-intl'
 import VideoProgressIndicator from '@/app/[locale]/movies/details/_components/social/video-progress-indicator'
 import MovieSocialButton from '@/app/[locale]/movies/details/_components/social/movie-social-button'
 import StarRating from '@/components/star-rating'
 import { formatNumber } from '@/utils/formatting/formatNumber'
 import SeeMore from '@/components/see-more'
+import { MovieType } from '@/types/models/movie.model'
 
 type Props = {
-    informationFilm: FilmDetailType
+    informationFilm: MovieType
 }
 
 export default function DetailFilm({ informationFilm }: Props) {

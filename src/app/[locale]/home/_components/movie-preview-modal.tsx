@@ -6,10 +6,10 @@ import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { useTranslations } from 'next-intl'
-import { FilmDetailType } from '@/types/film.type'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MoviePreviewModalProps {
-    movie: FilmDetailType | null
+    movie: MovieType | null
     onClose: () => void
 }
 

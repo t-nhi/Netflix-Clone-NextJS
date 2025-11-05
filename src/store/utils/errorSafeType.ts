@@ -5,13 +5,18 @@ export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryEr
     return typeof error === 'object' && error !== null && 'status' in error
 }
 
-export function isEntityError(error: unknown): error is EntityError {
+export function isEntityError(error: unknown): error is FetchBaseQueryError & {
+    data: { errors: EntityError[] }
+} {
     return (
         isFetchBaseQueryError(error) &&
         error.status === 422 &&
         typeof error.data === 'object' &&
         error.data !== null &&
-        !(error.data instanceof Array)
+        'errors' in error.data &&
+        error.data.errors !== null &&
+        typeof error.data.errors == 'object' &&
+        Array.isArray(error.data.errors)
     )
 }
 

@@ -4,7 +4,6 @@ import { Play, Plus, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TiInfoLarge } from 'react-icons/ti'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { FilmDetailType } from '@/types/film.type'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -14,9 +13,10 @@ import { useContext } from 'react'
 import { useMouseEnter } from '@/hooks/ui/useMouseEnter'
 import { isNewMovieRelease } from '@/helper/movie'
 import { useTranslations } from 'next-intl'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MovieCardContextProps {
-    movie: FilmDetailType
+    movie: MovieType
 }
 
 const MovieCardContext = createContext<MovieCardContextProps | null>(null)
@@ -30,7 +30,7 @@ const useMovieCardContext = () => {
 }
 
 interface MovieCardProviderProps {
-    movie: FilmDetailType
+    movie: MovieType
     children: React.ReactNode
 }
 
@@ -70,7 +70,7 @@ export function MovieCardHoverInfoProvider({ movie, children }: MovieCardProvide
 }
 
 interface TooltipContentProps {
-    movie: FilmDetailType
+    movie: MovieType
 }
 function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
     const [isPlayVideo, setIsPlayVideo] = useState<boolean>(false)
@@ -168,7 +168,7 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
 }
 
 interface MovieCardHoverInfoProps {
-    movie?: FilmDetailType
+    movie?: MovieType
     className?: string
     size?: 'sm' | 'md' | 'lg'
     showProgress?: boolean

@@ -4,7 +4,6 @@ import { Play, Plus, ThumbsUp, X, Volume2, VolumeX } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { FilmDetailType } from '@/types/film.type'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import StarRating from '@/components/star-rating'
 import { formatNumber } from '@/utils/formatting/formatNumber'
@@ -15,9 +14,10 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import { MovieType } from '@/types/models/movie.model'
 
 interface FilmDetailDialogProps {
-    film: FilmDetailType | null
+    film: MovieType | null
     isLoading?: boolean
     open: boolean
     onOpenChange: (open: boolean) => void

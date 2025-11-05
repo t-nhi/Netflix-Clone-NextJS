@@ -3,31 +3,36 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Resolver, SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import BrandInput from '@/components/brand-input'
 import { useTranslations } from 'next-intl'
-import { LoginBody, LoginBodyType } from '@/utils/validation/auth.validation'
 import LoginWithGGButton from '@/app/[locale]/(auth)/login/_components/login-with-GG-Button'
+import { LoginBodySchema, LoginBodyType } from '@/types/dtos/auth/login.dto'
+import { useLoginMutation } from '@/store/services/auth.services'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
+import { getLocaleMessage } from '@/utils/locale.util'
 
 export default function LoginForm() {
     const errorMessageT = useTranslations('errorMessages')
     const loginT = useTranslations('LoginPage')
+    const [loginMutate, { isLoading }] = useLoginMutation()
 
     const form = useForm<LoginBodyType>({
-        resolver: zodResolver(LoginBody) as Resolver<LoginBodyType>,
+        resolver: zodResolver(LoginBodySchema) as Resolver<LoginBodyType>,
         defaultValues: {
             email: '',
-            password: '',
-            remember: false
+            password: ''
         }
     })
 
-    const onSubmit: SubmitHandler<LoginBodyType> = (data) => {
-        toast('Login successful (mock)')
-        console.log('Form data:', data)
+    const onSubmit: SubmitHandler<LoginBodyType> = async (data) => {
+        try {
+            await loginMutate(data).unwrap()
+        } catch (error) {
+            handleFormError({ error, setFormError: form.setError })
+        }
     }
 
     return (
@@ -53,8 +58,7 @@ export default function LoginForm() {
                                 />
                             </FormControl>
                             <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
-                                {formState.errors.email?.message &&
-                                    errorMessageT(formState.errors.email.message as 'emailInvalid' | 'emailRequired')}
+                                {getLocaleMessage(errorMessageT, formState.errors.email?.message)}
                             </FormMessage>
                         </FormItem>
                     )}
@@ -74,16 +78,14 @@ export default function LoginForm() {
                                 />
                             </FormControl>
                             <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
-                                {formState.errors.password?.message &&
-                                    errorMessageT(
-                                        formState.errors.password.message as 'passwordMinLength' | 'passwordRequired'
-                                    )}
+                                {getLocaleMessage(errorMessageT, formState.errors.password?.message)}
                             </FormMessage>
                         </FormItem>
                     )}
                 />
 
                 <Button
+                    disabled={isLoading}
                     type='submit'
                     className='bg-red-600 hover:bg-red-700 text-white font-semibold netflix-sans-bold h-[40px] w-full px-4 sm:px-6 md:px-8 py-2 transition-colors duration-200 cursor-pointer'
                 >
@@ -108,24 +110,6 @@ export default function LoginForm() {
                         {loginT('forgotPassword')}
                     </Link>
                 </p>
-
-                <FormField
-                    control={form.control}
-                    name='remember'
-                    render={({ field }) => (
-                        <FormItem>
-                            <label className='flex items-center gap-2 netflix-sans-regular text-white cursor-pointer'>
-                                <input
-                                    className='dark:bg-black bg-white checked:bg-gray-400 dark:checked:bg-gray-600 cursor-pointer'
-                                    type='checkbox'
-                                    checked={field.value}
-                                    onChange={field.onChange}
-                                />
-                                {loginT('rememberMe')}
-                            </label>
-                        </FormItem>
-                    )}
-                />
 
                 <div className='mt-4 text-center netflix-sans-regular'>
                     <p className='text-white'>

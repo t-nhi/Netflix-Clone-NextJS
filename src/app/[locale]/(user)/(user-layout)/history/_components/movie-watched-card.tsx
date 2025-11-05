@@ -5,13 +5,13 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { FilmDetailType } from '@/types/film.type'
 import { Play, Plus } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useTranslations } from 'next-intl'
+import { MovieType } from '@/types/models/movie.model'
 
 interface WatchHistoryCardProps {
-    movie: FilmDetailType
+    movie: MovieType
     className?: string
     isEditing: boolean
     isSelected: boolean

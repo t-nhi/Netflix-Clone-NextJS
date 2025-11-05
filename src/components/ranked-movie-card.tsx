@@ -1,10 +1,10 @@
 import { isNewMovieRelease } from '@/helper/movie'
 import { cn } from '@/lib/utils'
-import { FilmDetailType } from '@/types/film.type'
+import { MovieType } from '@/types/models/movie.model'
 import { useTranslations } from 'next-intl'
 
 interface RankedMovieCardProps {
-    movie: FilmDetailType
+    movie: MovieType
     className?: string
 }
 

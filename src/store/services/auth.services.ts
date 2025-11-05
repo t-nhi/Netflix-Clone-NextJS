@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { proxyAuthBaseQuery } from './client'
-import { LoginResType } from '@/types/dtos/auth/login.dto'
-import { LoginBodyType } from '@/utils/validation/auth.validation'
+import { LoginBodyType, LoginResType } from '@/types/dtos/auth/login.dto'
 import { HttpMethod } from '@/constants/http.enum'
 import { LogoutResType } from '@/types/dtos/auth/logout.dto'
 import { SignUpBodyType, SignUpResType } from '@/types/dtos/auth/signUp.dto'

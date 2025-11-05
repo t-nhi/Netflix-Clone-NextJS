@@ -4,12 +4,12 @@ import * as React from 'react'
 import { Play, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { FilmDetailType } from '@/types/film.type'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MovieCardProps {
-    movie: FilmDetailType
+    movie: MovieType
     className?: string
 }
 

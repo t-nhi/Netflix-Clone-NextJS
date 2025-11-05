@@ -3,16 +3,16 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { useState } from 'react'
 import MoviePreviewModal from './movie-preview-modal'
-import { FilmDetailType } from '@/types/film.type'
+import { MovieType } from '@/types/models/movie.model'
 
 interface TrendingSectionProps {
-    trendingItems: FilmDetailType[]
+    trendingItems: MovieType[]
 }
 
 export default function TrendingSection({ trendingItems }: TrendingSectionProps) {
-    const [selectedMovie, setSelectedMovie] = useState<FilmDetailType | null>(null)
+    const [selectedMovie, setSelectedMovie] = useState<MovieType | null>(null)
 
-    const handleCardClick = (movie: FilmDetailType) => {
+    const handleCardClick = (movie: MovieType) => {
         setSelectedMovie(movie)
     }
 
@@ -41,7 +41,7 @@ export default function TrendingSection({ trendingItems }: TrendingSectionProps)
     )
 }
 
-function TrendingCard({ item, onClick }: { item: FilmDetailType; onClick: () => void }) {
+function TrendingCard({ item, onClick }: { item: MovieType; onClick: () => void }) {
     return (
         <article
             className='relative cursor-pointer py-2  px-[10px]  md:px-[22px] w-[132px] h-[166px] md:w-[184px] md:h-[208px] xl:w-[224px] xl:h-[268px] hover:scale-102 transition-transform duration-300'

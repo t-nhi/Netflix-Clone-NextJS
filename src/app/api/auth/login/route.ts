@@ -1,5 +1,5 @@
 import AuthRequestApi from '@/apis/auth.api'
-import { HttpMethod } from '@/constants/http.enum'
+import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
 import { TokenKeys } from '@/constants/token-keys.enum'
 import { HttpException } from '@/exceptions/http.exception'
 import { InternalException } from '@/exceptions/internalServer.exception'
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
         const cookieStore = await cookies()
 
         const response = await AuthRequestApi.login(body)
+
         const { access_token, refresh_token } = response.data
         const decodedAccessToken = decodeJwt<JwtPayload>(access_token)
         const decodedRefreshToken = decodeJwt<JwtPayload>(refresh_token)

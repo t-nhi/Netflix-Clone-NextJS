@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { FilmDetailType } from '@/types/film.type'
 import { cn } from '@/lib/utils'
 import { Play } from 'lucide-react'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MovieCardSimpleProps {
-    movie: FilmDetailType
+    movie: MovieType
     className?: string
 }
 

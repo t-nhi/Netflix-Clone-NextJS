@@ -3,15 +3,15 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { FilmDetailType } from '@/types/film.type'
 import { formatDayMonth } from '@/utils/formatting/formatTime'
 import FilmCarousel from '@/components/film-carousel'
 import { CarouselItem } from '@/components/ui/carousel'
 import WatchHistoryCard from './movie-watched-card'
 import { getMockFilms } from '@/_mock'
+import { MovieType } from '@/types/models/movie.model'
 
 interface HistoryBlockProps {
-    movies?: FilmDetailType[]
+    movies?: MovieType[]
     isEditing: boolean
     selectedMovies: string[]
     onSelect: (id: string) => void
@@ -22,7 +22,7 @@ export default function HistoryBlock({ isEditing, selectedMovies, onSelect }: Hi
     const t = useTranslations('HistoryPage')
     const locale = useLocale()
     const containerRef = useRef<HTMLDivElement>(null)
-    const [groupedByDate, setGroupedByDate] = useState<Record<string, FilmDetailType[]>>({})
+    const [groupedByDate, setGroupedByDate] = useState<Record<string, MovieType[]>>({})
 
     const stableMovies = useMemo(() => mockMovies ?? [], [mockMovies])
 
@@ -32,7 +32,7 @@ export default function HistoryBlock({ isEditing, selectedMovies, onSelect }: Hi
             return
         }
 
-        const grouped = stableMovies.reduce<Record<string, FilmDetailType[]>>((acc, movie) => {
+        const grouped = stableMovies.reduce<Record<string, MovieType[]>>((acc, movie) => {
             const dateKey = new Date(movie.watched_at).toISOString().split('T')[0]
             acc[dateKey] = acc[dateKey] ? [...acc[dateKey], movie] : [movie]
             return acc

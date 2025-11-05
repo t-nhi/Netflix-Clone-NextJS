@@ -13,6 +13,13 @@ export class EntityException extends HttpException {
         this._errors = payload.errors
         Object.setPrototypeOf(this, EntityException.prototype)
     }
+    override get payload() {
+        const basePayload = super.payload
+        return {
+            ...basePayload,
+            errors: this._errors
+        }
+    }
     get errors() {
         return this._errors
     }

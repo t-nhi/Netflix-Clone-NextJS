@@ -5,13 +5,13 @@ import ShareIcon from '@/components/icons/share'
 import HeartIcon from '@/components/icons/heart'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { FilmDetailType } from '@/types/film.type'
 import { useTranslations } from 'next-intl'
 import { ShareMenuDialog } from '@/components/ui/share-menu-dialog'
 import { formatNumber } from '@/utils/formatting/formatNumber'
+import { MovieType } from '@/types/models/movie.model'
 
 type Props = {
-    informationFilm: FilmDetailType
+    informationFilm: MovieType
 }
 
 export default function MovieSocialButton({ informationFilm }: Props) {
