@@ -29,7 +29,7 @@ export const HttpResponseWithMetaSchema = <T extends z.ZodTypeAny, M extends z.Z
 export const HttpResponseWithErrorSchema = HttpResponseSchema.extend({
     title: z.string(),
     detail: z.string()
-})
+}).omit({ message: true })
 
 export const EntityErrorSchema = z.object({
     field: z.string(),

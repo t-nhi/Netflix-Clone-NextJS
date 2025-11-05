@@ -13,7 +13,8 @@ const AuthenticationMiddleware: MiddlewareFn = (
 ) => {
     const { pathname } = req.nextUrl
     const cleanPath = stripLocaleFromPath(pathname)
-    const { refresh_token, access_token } = getTokensFromCookies(req)
+    const cookiesStore = req.cookies
+    const { refresh_token, access_token } = getTokensFromCookies(cookiesStore)
 
     ctx.refreshToken = refresh_token ?? null
     ctx.accessToken = access_token ?? null

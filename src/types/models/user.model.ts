@@ -9,3 +9,13 @@ export const UserSchema = z.object({
 })
 
 export type UserType = z.infer<typeof UserSchema>
+
+export const AuthUserSchema = UserSchema.pick({
+    id: true,
+    email: true,
+    first_name: true,
+    last_name: true,
+    is_enabled: true
+})
+
+export type AuthUserType = z.infer<typeof AuthUserSchema>

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { envConfig } from '@/config/env.config'
 import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
-import { EntityError } from '@/exceptions/entity.exception'
-import { HttpError } from '@/exceptions/http.exception'
+import { EntityException } from '@/exceptions/entity.exception'
+import { HttpException } from '@/exceptions/http.exception'
 import { redirect } from '@/i18n/navigation'
 import { getLocale } from 'next-intl/server'
 
@@ -36,17 +36,17 @@ export async function clientRequest<response>({ method, url, options = {} }: Req
 
         if (!response.ok) {
             const errorPayload = await response.json()
-            if (response.status === HttpStatusCode.ENTITY_ERROR_STATUS) {
-                throw new EntityError(errorPayload)
+            if (response.status === HttpStatusCode.ENTITY_ERROR) {
+                throw new EntityException(errorPayload)
             }
-            throw new HttpError({ payload: errorPayload, status: response.status })
+            throw new HttpException({ payload: errorPayload, status: response.status })
         }
 
         return await response.json()
     } catch (error) {
         if (isClient) throw error
 
-        if (error instanceof HttpError && error.status === HttpStatusCode.UNAUTHORIZED) {
+        if (error instanceof HttpException && error.status === HttpStatusCode.UNAUTHORIZED) {
             const token = (options.headers as any)?.Authorization?.replace('Bearer ', '') || ''
             const locale = await getLocale()
             redirect({

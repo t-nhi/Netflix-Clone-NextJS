@@ -1,14 +1,20 @@
-import { HttpResponseWithError } from '@/types/api/common'
+import { HttpStatusMessage } from '@/constants/http.enum'
+import { HttpResponseWithError } from '@/types/common/http-response'
 
-export class HttpError extends Error {
-    _payload: HttpResponseWithError
-    _httpStatus: number
+export interface HttpExceptionParams {
+    payload: Omit<HttpResponseWithError, 'status'>
+    status: number
+}
 
-    constructor({ payload, status }: { payload: HttpResponseWithError; status: number }) {
+export class HttpException extends Error {
+    private _payload: HttpResponseWithError
+    private _httpStatus: number
+
+    constructor({ payload, status }: HttpExceptionParams) {
         super(payload.title)
-        this._payload = payload
+        this._payload = { ...payload, status: HttpStatusMessage.ERROR }
         this._httpStatus = status
-        Object.setPrototypeOf(this, HttpError.prototype)
+        Object.setPrototypeOf(this, HttpException.prototype)
     }
 
     get payload() {

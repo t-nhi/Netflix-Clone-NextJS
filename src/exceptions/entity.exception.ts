@@ -1,15 +1,17 @@
 import { HttpStatusCode } from '@/constants/http.enum'
-import { HttpError } from '@/exceptions/http.exception'
-import { HttpResponseWithEntityErrors } from '@/types/api/common'
-import { EntityError as EntityErrorType } from '@/types/api/common'
+import { HttpException } from '@/exceptions/http.exception'
+import { EntityError as EntityErrorType, HttpResponseWithEntityErrors } from '@/types/common/http-response'
 import _ from 'lodash'
 
-export class EntityError extends HttpError {
-    _errors: EntityErrorType[]
-    constructor(payload: HttpResponseWithEntityErrors) {
-        super({ payload: _.omit(payload, 'errors'), status: HttpStatusCode.ENTITY_ERROR_STATUS })
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface EntityExceptionParams extends Omit<HttpResponseWithEntityErrors, 'status'> {}
+
+export class EntityException extends HttpException {
+    private _errors: EntityErrorType[]
+    constructor(payload: EntityExceptionParams) {
+        super({ payload: _.omit(payload, 'errors'), status: HttpStatusCode.ENTITY_ERROR })
         this._errors = payload.errors
-        Object.setPrototypeOf(this, EntityError.prototype)
+        Object.setPrototypeOf(this, EntityException.prototype)
     }
     get errors() {
         return this._errors
