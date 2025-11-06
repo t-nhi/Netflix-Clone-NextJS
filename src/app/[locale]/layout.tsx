@@ -6,7 +6,7 @@ import { routing } from '@/i18n/routing'
 import { setRequestLocale } from 'next-intl/server'
 import { NetflixIcons, NetflixSans } from '@/config/fonts.config'
 import { NextIntlClientProvider } from 'next-intl'
-import { AppProvider } from '@/provider/app-provider'
+import AppProviderWithStore from '@/provider/app-provider'
 
 export const metadata: Metadata = {
     title: 'Movie App',
@@ -35,7 +35,7 @@ export default async function RootLayout({
         <html lang={locale} suppressHydrationWarning>
             <body className={`${NetflixSans.variable} ${NetflixIcons.variable} antialiased`}>
                 <NextIntlClientProvider>
-                    <AppProvider>{children}</AppProvider>
+                    <AppProviderWithStore>{children}</AppProviderWithStore>
                 </NextIntlClientProvider>
             </body>
         </html>

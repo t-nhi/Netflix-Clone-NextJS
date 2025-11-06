@@ -5,6 +5,7 @@ export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryEr
     return typeof error === 'object' && error !== null && 'status' in error
 }
 
+
 export function isEntityError(error: unknown): error is FetchBaseQueryError & {
     data: { errors: EntityError[] }
 } {
@@ -20,6 +21,18 @@ export function isEntityError(error: unknown): error is FetchBaseQueryError & {
     )
 }
 
+export function isPayloadErrorWithMessage(payload: unknown): payload is { data: { message: string } } {
+    return (
+        typeof payload === 'object' &&
+        payload !== null &&
+        'data' in payload &&
+        typeof payload.data === 'object' &&
+        payload.data !== null &&
+        'message' in payload.data &&
+        typeof payload.data.message === 'string'
+    )
+}
+
 export function isActionHttpErrorWithMessage(
     action: unknown
 ): action is { payload: { data: { message: string }; status: number } } {
@@ -31,10 +44,21 @@ export function isActionHttpErrorWithMessage(
         action.payload !== null &&
         'data' in action.payload &&
         'status' in action.payload &&
-        typeof action.payload.data === 'object' &&
-        action.payload.data !== null &&
-        'message' in action.payload.data &&
-        typeof action.payload.data.message === 'string'
+        isPayloadErrorWithMessage(action.payload)
+    )
+}
+
+export function isPayloadErrorWithDetail(payload: unknown): payload is { data: { title: string; detail: string } } {
+    return (
+        typeof payload === 'object' &&
+        payload !== null &&
+        'data' in payload &&
+        typeof payload.data === 'object' &&
+        payload.data !== null &&
+        'title' in payload.data &&
+        'detail' in payload.data &&
+        typeof payload.data.title === 'string' &&
+        typeof payload.data.detail === 'string'
     )
 }
 
@@ -49,11 +73,6 @@ export function isActionHttpErrorWithDetail(
         action.payload !== null &&
         'data' in action.payload &&
         'status' in action.payload &&
-        typeof action.payload.data === 'object' &&
-        action.payload.data !== null &&
-        'title' in action.payload.data &&
-        'detail' in action.payload.data &&
-        typeof action.payload.data.title === 'string' &&
-        typeof action.payload.data.detail === 'string'
+        isPayloadErrorWithDetail(action.payload)
     )
 }

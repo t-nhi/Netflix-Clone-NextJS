@@ -1,5 +1,5 @@
 import AuthRequestApi from '@/apis/auth.api'
-import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
+import { HttpMethod } from '@/constants/http.enum'
 import { TokenKeys } from '@/constants/token-keys.enum'
 import { HttpException } from '@/exceptions/http.exception'
 import { InternalException } from '@/exceptions/internalServer.exception'

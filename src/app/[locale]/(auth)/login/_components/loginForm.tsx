@@ -13,8 +13,19 @@ import { LoginBodySchema, LoginBodyType } from '@/types/dtos/auth/login.dto'
 import { useLoginMutation } from '@/store/services/auth.services'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircleIcon, LoaderCircle } from 'lucide-react'
+import { useState } from 'react'
+import { isEntityError, isFetchBaseQueryError } from '@/store/utils/errorSafeType'
+import { formatFetchBaseQueryErrorMessage } from '@/utils/handleErrors/formatFetchBaseQueryErrorMessage'
+
+interface ErrorAlertType {
+    title: string
+    description: string
+}
 
 export default function LoginForm() {
+    const [errorAlert, setErrorAlert] = useState<ErrorAlertType>({ title: '', description: '' })
     const errorMessageT = useTranslations('errorMessages')
     const loginT = useTranslations('LoginPage')
     const [loginMutate, { isLoading }] = useLoginMutation()
@@ -31,20 +42,41 @@ export default function LoginForm() {
         try {
             await loginMutate(data).unwrap()
         } catch (error) {
-            handleFormError({ error, setFormError: form.setError })
+            if (isEntityError(error)) {
+                handleFormError({ error, setFormError: form.setError })
+            } else if (isFetchBaseQueryError(error)) {
+                const errorMessage = formatFetchBaseQueryErrorMessage(error)
+                setErrorAlert({
+                    title: errorMessage.title,
+                    description: errorMessage.description
+                })
+            }
         }
+    }
+
+    const onReset = () => {
+        setErrorAlert({ title: '', description: '' })
+        form.reset()
     }
 
     return (
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
+                onReset={onReset}
+                method='POST'
                 className='flex flex-col gap-4 p-4 sm:p-6 md:p-8 rounded-lg bg-black/65'
             >
                 <h1 className='text-2xl sm:text-3xl text-white font-semibold mb-4 text-center netflix-sans-bold'>
                     {loginT('title')}
                 </h1>
-
+                {errorAlert.description && (
+                    <Alert variant='destructive'>
+                        <AlertCircleIcon />
+                        <AlertTitle>{errorAlert.title}.</AlertTitle>
+                        <AlertDescription>{errorAlert.description}</AlertDescription>
+                    </Alert>
+                )}
                 <FormField
                     control={form.control}
                     name='email'
@@ -89,7 +121,7 @@ export default function LoginForm() {
                     type='submit'
                     className='bg-red-600 hover:bg-red-700 text-white font-semibold netflix-sans-bold h-[40px] w-full px-4 sm:px-6 md:px-8 py-2 transition-colors duration-200 cursor-pointer'
                 >
-                    {loginT('signIn')}
+                    {isLoading ? <LoaderCircle className='animate-spin size-5' /> : loginT('signIn')}
                 </Button>
 
                 <div className='flex items-center my-4 sm:my-6'>

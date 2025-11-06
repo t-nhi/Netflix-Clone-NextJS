@@ -1,10 +1,15 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import NextTopLoader from 'nextjs-toploader'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/provider/theme-provider'
 import StoreProvider from '@/provider/store-provider'
+import clientSessionToken from '@/services/storage/clientSessionToken'
+import { decodeJwt } from '@/utils/jwt.util'
+import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { useAppDispatch } from '@/store/hooks'
+import { setRole, setUserProfile, tokenReceived } from '@/store/features/authSlice'
 
 type AuthStatus = 'ready' | 'loading'
 interface AppContextType {
@@ -15,22 +20,50 @@ const AppContext = createContext<AppContextType>({
     authStatus: 'loading'
 })
 
-export function AppProvider({ children }: { children: React.ReactNode }) {
+function AppProvider({ children }: { children: React.ReactNode }) {
     const [authStatus, setAuthStatus] = useState<AuthStatus>('loading')
 
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const accessToken = clientSessionToken.getAccessToken()
+        const refreshToken = clientSessionToken.getRefreshToken()
+        const userProfile = clientSessionToken.getUserProfile()
+        if (!accessToken || !refreshToken) {
+            setAuthStatus('ready')
+            return
+        }
+        try {
+            const decodedAccessToken = decodeJwt<JwtPayload>(accessToken)
+            dispatch(tokenReceived({ access_token: accessToken, refresh_token: refreshToken }))
+            dispatch(setRole(decodedAccessToken!.role))
+            dispatch(setUserProfile(userProfile))
+        } catch (error) {
+            console.error('Failed to decode JWT:', error)
+        } finally {
+            setAuthStatus('ready')
+        }
+    }, [dispatch])
+
+    return (
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            <AppContext
+                value={{
+                    authStatus
+                }}
+            >
+                {children}
+                <Toaster />
+                <NextTopLoader showSpinner={false} color='var(--color-brand)' />
+            </AppContext>
+        </ThemeProvider>
+    )
+}
+
+export default function AppProviderWithStore({ children }: { children: React.ReactNode }) {
     return (
         <StoreProvider>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-                <AppContext
-                    value={{
-                        authStatus
-                    }}
-                >
-                    {children}
-                    <Toaster />
-                    <NextTopLoader showSpinner={false} color='var(--color-brand)' />
-                </AppContext>
-            </ThemeProvider>
+            <AppProvider>{children}</AppProvider>
         </StoreProvider>
     )
 }

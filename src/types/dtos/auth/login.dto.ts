@@ -4,7 +4,7 @@ import { AuthUserSchema } from '@/types/models/user.model'
 
 export const LoginBodySchema = z
     .object({
-        email: z.string().min(1, { message: 'emailRequired' }),
+        email: z.string().min(1, { message: 'emailRequired' }).email({ message: 'emailInvalid' }),
         password: z.string().min(1, { message: 'passwordRequired' })
     })
     .strict()

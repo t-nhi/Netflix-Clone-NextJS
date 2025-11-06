@@ -47,6 +47,8 @@ export async function clientRequest<response>({ method, url, options = {} }: Req
         if (isClient) throw error
 
         if (error instanceof HttpException && error.status === HttpStatusCode.UNAUTHORIZED) {
+            console.log('Redirecting to logout due to unauthorized error.')
+            console.log(error)
             const token = (options.headers as any)?.Authorization?.replace('Bearer ', '') || ''
             const locale = await getLocale()
             redirect({
