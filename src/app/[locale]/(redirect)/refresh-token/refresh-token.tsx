@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setAccessToken } from '@/store/features/authSlice'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
-import { useLogoutMutation } from '@/store/services/auth.services'
+import { useLogoutMutation } from '@/store/services/proxy-auth.services'
 import { handleRefreshToken } from '@/helper/handleRefreshToken'
 import { QueryKeys } from '@/constants/query-keys.constant'
 

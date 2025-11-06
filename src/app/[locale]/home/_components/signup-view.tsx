@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppSelector } from '@/store/hooks'
-import SignupForm from './signup-form'
+import VerifyEmailForm from './verify-email-form'
 import { useTranslations } from 'next-intl'
 
 export default function SignupView() {
@@ -13,7 +13,7 @@ export default function SignupView() {
     return (
         <>
             <p className='text-base mb-4'>{t('heroDescription')}</p>
-            <SignupForm />
+            <VerifyEmailForm />
         </>
     )
 }

@@ -1,9 +1,10 @@
 import videoReducer from '@/store/features/video.slice'
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './features/authSlice'
-import { AuthApi } from './services/auth.services'
+import { proxyAuthApi } from './services/proxy-auth.services'
 import { authMiddleware } from './middlewares/auth.middleware'
 import { errorHandleMiddleware } from './middlewares/errorHandling.middleware'
+import { authApi } from './services/auth.services'
 
 export const makeStore = () => {
     return configureStore({
@@ -11,10 +12,16 @@ export const makeStore = () => {
         reducer: {
             video: videoReducer,
             auth: authReducer,
-            [AuthApi.reducerPath]: AuthApi.reducer
+            [proxyAuthApi.reducerPath]: proxyAuthApi.reducer,
+            [authApi.reducerPath]: authApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(AuthApi.middleware, authMiddleware, errorHandleMiddleware)
+            getDefaultMiddleware().concat(
+                proxyAuthApi.middleware,
+                authApi.middleware,
+                authMiddleware,
+                errorHandleMiddleware
+            )
     })
 }
 
@@ -25,5 +32,6 @@ export type AppDispatch = AppStore['dispatch']
 export type storeApiType = { dispatch: AppDispatch; getState: () => RootState }
 
 export function clearStore(dispatch: AppDispatch) {
-    dispatch(AuthApi.util.resetApiState())
+    dispatch(proxyAuthApi.util.resetApiState())
+    dispatch(authApi.util.resetApiState())
 }

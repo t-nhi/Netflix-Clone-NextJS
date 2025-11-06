@@ -1,46 +1,32 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { proxyAuthBaseQuery } from './client'
-import { LoginBodyType, LoginResType } from '@/types/dtos/auth/login.dto'
+import { backendBaseQuery } from './client'
+import { VerifyEmailBodyType, VerifyEmailResType } from '@/types/dtos/auth/verifyEmail.dto'
 import { HttpMethod } from '@/constants/http.enum'
-import { LogoutResType } from '@/types/dtos/auth/logout.dto'
-import { SignUpBodyType, SignUpResType } from '@/types/dtos/auth/signUp.dto'
-import { RefreshTokenResType } from '@/types/dtos/auth/refreshToken.dto'
-import { UpdateCookieTokenBodyType } from '@/types/dtos/auth/updateCookieToken.dto'
+import { VerifyTokenBodyType } from '@/types/dtos/auth/verifyToken.dto'
+import { ChangePasswordBodyType, ChangePasswordResType } from '@/types/dtos/auth/changePassword.dto'
 
-export const AuthApi = createApi({
-    baseQuery: proxyAuthBaseQuery,
+export const authApi = createApi({
+    baseQuery: backendBaseQuery,
     reducerPath: 'AuthApi',
     refetchOnReconnect: true,
     endpoints: (builder) => ({
-        login: builder.mutation<LoginResType, LoginBodyType>({
+        verifyEmail: builder.mutation<VerifyEmailResType, VerifyEmailBodyType>({
             query: (body) => ({
-                url: '/api/auth/login',
+                url: '/auth/verify-email',
                 method: HttpMethod.POST,
                 body
             })
         }),
-        logout: builder.mutation<LogoutResType, void>({
-            query: () => ({
-                url: '/api/auth/logout',
-                method: HttpMethod.POST
-            })
-        }),
-        register: builder.mutation<SignUpResType, SignUpBodyType>({
+        verifyToken: builder.mutation<VerifyEmailResType, VerifyTokenBodyType>({
             query: (body) => ({
-                url: '/api/auth/register',
+                url: '/auth/verify-token',
                 method: HttpMethod.POST,
                 body
             })
         }),
-        refreshToken: builder.mutation<RefreshTokenResType, void>({
-            query: () => ({
-                url: '/api/auth/refresh-token',
-                method: HttpMethod.POST
-            })
-        }),
-        setTokens: builder.mutation<void, UpdateCookieTokenBodyType>({
+        changePasswordBodySchema: builder.mutation<ChangePasswordResType, ChangePasswordBodyType>({
             query: (body) => ({
-                url: '/api/auth/token',
+                url: '/auth/change-password',
                 method: HttpMethod.POST,
                 body
             })
@@ -48,10 +34,4 @@ export const AuthApi = createApi({
     })
 })
 
-export const {
-    useLoginMutation,
-    useLogoutMutation,
-    useRegisterMutation,
-    useRefreshTokenMutation,
-    useSetTokensMutation
-} = AuthApi
+export const { useVerifyEmailMutation, useVerifyTokenMutation, useChangePasswordBodySchemaMutation } = authApi

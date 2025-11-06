@@ -2,28 +2,34 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { RegisterEmailBody, RegisterEmailBodyType } from '@/utils/validation/auth.validation'
 import BrandInput from '@/components/brand-input'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { VerifyEmailBodySchema, VerifyEmailBodyType } from '@/types/dtos/auth/verifyEmail.dto'
+import { useVerifyEmailMutation } from '@/store/services/auth.services'
 
-export default function SignupForm() {
+export default function VerifyEmailForm() {
     const errorMessageT = useTranslations('errorMessages')
     const formT = useTranslations('SignupForm')
 
-    const form = useForm<RegisterEmailBodyType>({
-        resolver: zodResolver(RegisterEmailBody),
+    const [verifyEmailMutate, { isLoading: isVerifyEmailLoading }] = useVerifyEmailMutation()
+
+    const form = useForm<VerifyEmailBodyType>({
+        resolver: zodResolver(VerifyEmailBodySchema),
         defaultValues: {
             email: ''
         }
     })
 
-    function onSubmit(data: RegisterEmailBodyType) {
-        toast('You submitted the following values')
+    const onSubmit = async (data: VerifyEmailBodyType) => {
+        try {
+            await verifyEmailMutate(data).unwrap()
+        } catch (error) {
+            console.error('Error verifying email:', error)
+        }
     }
 
     return (
@@ -52,10 +58,16 @@ export default function SignupForm() {
                     )}
                 />
                 <Button
+                    disabled={isVerifyEmailLoading}
                     type='submit'
                     className='py-2 px-2 h-[48px]!  md:h-[56px]! md:w-[160px] bg-brand  hover:bg-brand/80 text-lg  md:text-xl text-white font-medium cursor-pointer items-center'
                 >
-                    {formT('getStartedButton')} <ChevronRight className='size-6' />
+                    {isVerifyEmailLoading ? (
+                        <LoaderCircle className='animate-spin size-5' />
+                    ) : (
+                        formT('getStartedButton')
+                    )}
+                    <ChevronRight className='size-6' />
                 </Button>
             </form>
         </Form>
