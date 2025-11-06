@@ -10,8 +10,11 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { getHueFromId } from '@/utils/color.util'
-import { ChevronDown, Loader, LogOut, User, UserCog } from 'lucide-react'
+import { ChevronDown, LoaderCircle, LogOut, UserCog } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useMemo } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useLogout } from '@/hooks/data/useAuth'
 
 interface HeaderProps {
     className?: string
@@ -20,9 +23,28 @@ interface HeaderProps {
 
 export default function Header({ className, buttonClassName }: HeaderProps) {
     const t = useTranslations('Header')
+    const router = useRouter()
+    const pathName = usePathname()
+
+    const isLoginPage = useMemo(() => {
+        return pathName.includes('/login')
+    }, [pathName])
+
+    const { handleLogout, logoutResult } = useLogout()
 
     const user = useAppSelector((state) => state.auth.user_profile)
-    const userHue = user ? getHueFromId(user.id) : 0
+    const userHue = useMemo(() => (user ? getHueFromId(user.id) : 0), [user?.id])
+
+    const onLogout = async () => {
+        if (!user) return
+        try {
+            await handleLogout()
+        } catch (error) {
+            console.error('Logout failed:', error)
+        } finally {
+            router.refresh()
+        }
+    }
 
     return (
         <header
@@ -34,7 +56,7 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
             {user ? (
                 <Popover>
                     <PopoverTrigger>
-                        <button className='bg-transparent flex items-center gap-2 focus:outline-none hover:cursor-pointer'>
+                        <div className='bg-transparent flex items-center gap-2 focus:outline-none hover:cursor-pointer'>
                             <Image
                                 src='/images/avatar_user.png'
                                 width={40}
@@ -46,18 +68,23 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
                                 }}
                             />
                             <ChevronDown className='text-white lg:size-4 size-3 ' />
-                        </button>
+                        </div>
                     </PopoverTrigger>
                     <PopoverContent className='w-48 p-2!' align='end'>
                         <div className='flex flex-col gap-2'>
                             <Link href='/account' className='block w-full'>
-                                <Button variant={'ghost'} className='justify-start w-full'>
+                                <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
                                     <UserCog />
                                     Settings
                                 </Button>
                             </Link>
-                            <Button variant={'ghost'} className='justify-start'>
-                                <LogOut />
+                            <Button
+                                variant={'ghost'}
+                                className='justify-start hover:cursor-pointer'
+                                onClick={onLogout}
+                                disabled={logoutResult.isLoading}
+                            >
+                                {logoutResult.isLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
                                 Logout
                             </Button>
                         </div>
@@ -67,13 +94,17 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
                 <div className='flex items-center gap-4 '>
                     <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
                     <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
-                    <Link href='/login'>
-                        <Button
-                            className={cn('text-sm bg-brand  hover:bg-brand/80 text-white  rounded-sm cursor-pointer')}
-                        >
-                            {t('signIn')}
-                        </Button>
-                    </Link>
+                    {!isLoginPage && (
+                        <Link href='/login'>
+                            <Button
+                                className={cn(
+                                    'text-sm bg-brand  hover:bg-brand/80 text-white  rounded-sm cursor-pointer'
+                                )}
+                            >
+                                {t('signIn')}
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             )}
         </header>

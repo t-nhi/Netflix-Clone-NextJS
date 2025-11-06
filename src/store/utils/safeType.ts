@@ -62,11 +62,6 @@ export function isSignUpMutationAction(action: unknown): action is {
     )
 }
 
-export function isSetLoggedOutAction(action: unknown): action is { type: string } {
-    return (
-        typeof action === 'object' && action !== null && 'type' in action && action.type === 'auth/setLoggedOutAction'
-    )
-}
 export function isTokenReceivedAction(
     action: unknown
 ): action is { type: string; payload: { access_token: string; refresh_token: string } } {

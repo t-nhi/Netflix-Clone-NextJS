@@ -15,7 +15,6 @@ export default function BrandInput(props: BrandInputProps) {
     return (
         <div className={cn('relative w-full h-fit', wrapperClassName)}>
             <Input
-                id={fieldID}
                 placeholder=' '
                 className={cn(
                     'peer w-full rounded-md border px-4  pt-7 pb-4 text-gray-900 dark:text-white',
@@ -28,6 +27,7 @@ export default function BrandInput(props: BrandInputProps) {
                     className
                 )}
                 {...rest}
+                id={fieldID}
             />
             <label
                 htmlFor={fieldID}

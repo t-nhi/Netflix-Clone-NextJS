@@ -7,6 +7,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { NetflixIcons, NetflixSans } from '@/config/fonts.config'
 import { NextIntlClientProvider } from 'next-intl'
 import AppProviderWithStore from '@/provider/app-provider'
+import RefreshToken from '@/components/refresh-token'
 
 export const metadata: Metadata = {
     title: 'Movie App',
@@ -35,7 +36,10 @@ export default async function RootLayout({
         <html lang={locale} suppressHydrationWarning>
             <body className={`${NetflixSans.variable} ${NetflixIcons.variable} antialiased`}>
                 <NextIntlClientProvider>
-                    <AppProviderWithStore>{children}</AppProviderWithStore>
+                    <AppProviderWithStore>
+                        {children}
+                        <RefreshToken />
+                    </AppProviderWithStore>
                 </NextIntlClientProvider>
             </body>
         </html>

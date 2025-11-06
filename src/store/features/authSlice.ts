@@ -31,6 +31,7 @@ const authSlice = createSlice({
             state.role = action.payload
         },
         setLoggedOutAction: (state) => {
+            state.user_profile = null
             state.refresh_token = null
             state.access_token = null
             state.role = null

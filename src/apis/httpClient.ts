@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { envConfig } from '@/config/env.config'
 import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
+import { QueryKeys } from '@/constants/query-keys.constant'
 import { EntityException } from '@/exceptions/entity.exception'
 import { HttpException } from '@/exceptions/http.exception'
 import { redirect } from '@/i18n/navigation'
@@ -47,12 +48,10 @@ export async function clientRequest<response>({ method, url, options = {} }: Req
         if (isClient) throw error
 
         if (error instanceof HttpException && error.status === HttpStatusCode.UNAUTHORIZED) {
-            console.log('Redirecting to logout due to unauthorized error.')
-            console.log(error)
             const token = (options.headers as any)?.Authorization?.replace('Bearer ', '') || ''
             const locale = await getLocale()
             redirect({
-                href: `/logout?accessToken=${token}`,
+                href: `/logout?${QueryKeys.ACCESS_TOKEN}=${token}`,
                 locale
             })
         }

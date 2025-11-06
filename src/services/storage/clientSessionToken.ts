@@ -1,6 +1,7 @@
 'use client'
 
-import { UserType } from '@/types/models/user.model'
+import { LocalStorageKeys } from '@/constants/localstorage-keys.enum'
+import { AuthUserType } from '@/types/models/user.model'
 
 const isClient = typeof window !== 'undefined'
 
@@ -8,14 +9,14 @@ class ClientSessionToken {
     private static instance: ClientSessionToken
     private access_token: string | null = null
     private refresh_token: string | null = null
-    private user_profile: UserType | null = null
+    private user_profile: AuthUserType | null = null
 
     private constructor() {
         if (!isClient) return
-        this.access_token = localStorage.getItem('access_token')
-        this.refresh_token = localStorage.getItem('refresh_token')
-        this.user_profile = localStorage.getItem('user_profile')
-            ? (JSON.parse(localStorage.getItem('user_profile') || '') as UserType | null)
+        this.access_token = localStorage.getItem(LocalStorageKeys.ACCESS_TOKEN)
+        this.refresh_token = localStorage.getItem(LocalStorageKeys.REFRESH_TOKEN)
+        this.user_profile = localStorage.getItem(LocalStorageKeys.USER_PROFILE)
+            ? (JSON.parse(localStorage.getItem(LocalStorageKeys.USER_PROFILE) || '') as AuthUserType | null)
             : null
     }
 
@@ -48,25 +49,25 @@ class ClientSessionToken {
         localStorage.setItem('refresh_token', token)
     }
 
-    public getUserProfile(): UserType | null {
+    public getUserProfile(): AuthUserType | null {
         if (!isClient) return null
         return this.user_profile
     }
 
-    public setUserProfile(profile: UserType | null): void {
+    public setUserProfile(profile: AuthUserType | null): void {
         if (!isClient) throw new Error('Not running in client environment')
         this.user_profile = profile
-        localStorage.setItem('user_profile', JSON.stringify(profile))
+        localStorage.setItem(LocalStorageKeys.USER_PROFILE, JSON.stringify(profile))
     }
 
-    public clearToken(): void {
+    public clearStorage(): void {
         if (!isClient) return
         this.access_token = null
-        localStorage.removeItem('access_token')
+        localStorage.removeItem(LocalStorageKeys.ACCESS_TOKEN)
         this.refresh_token = null
-        localStorage.removeItem('refresh_token')
+        localStorage.removeItem(LocalStorageKeys.REFRESH_TOKEN)
         this.user_profile = null
-        localStorage.removeItem('user_profile')
+        localStorage.removeItem(LocalStorageKeys.USER_PROFILE)
     }
 }
 

@@ -5,7 +5,6 @@ import {
     isLoginMutationAction,
     isLogoutMutationAction,
     isSetAccessTokenAction,
-    isSetLoggedOutAction,
     isSetUserProfileAction,
     isSignUpMutationAction,
     isTokenReceivedAction
@@ -25,11 +24,6 @@ export const authMiddleware: Middleware = (storeAPI: storeApiType) => (next) => 
     if (isSetAccessTokenAction(action)) {
         const access_token = action.payload
         clientSessionToken.setAccessToken(access_token)
-        return next(action)
-    }
-
-    if (isSetLoggedOutAction(action)) {
-        clientSessionToken.clearToken()
         return next(action)
     }
 
@@ -61,6 +55,7 @@ export const authMiddleware: Middleware = (storeAPI: storeApiType) => (next) => 
 
     if (isLogoutMutationAction(action)) {
         storeAPI.dispatch(setLoggedOutAction())
+        clientSessionToken.clearStorage()
         return next(action)
     }
 

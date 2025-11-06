@@ -46,7 +46,7 @@ const AuthenticationMiddleware: MiddlewareFn = (
         return NextResponse.redirect(url)
     }
 
-    const isUnauthPath = isPathIncluded(Object.values(UnauthPaths), pathname)
+    const isUnauthPath = isPathIncluded(Object.values(UnauthPaths), cleanPath)
 
     if (isUnauthPath && isAuthenticated) {
         const redirectFrom = req.nextUrl.searchParams.get(QueryKeys.REDIRECT)
@@ -57,6 +57,7 @@ const AuthenticationMiddleware: MiddlewareFn = (
             baseUrl: req.url,
             locale: ctx.locale
         })
+
         return NextResponse.redirect(url)
     }
 

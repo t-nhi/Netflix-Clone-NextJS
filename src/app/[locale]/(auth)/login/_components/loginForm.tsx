@@ -18,6 +18,7 @@ import { AlertCircleIcon, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import { isEntityError, isFetchBaseQueryError } from '@/store/utils/errorSafeType'
 import { formatFetchBaseQueryErrorMessage } from '@/utils/handleErrors/formatFetchBaseQueryErrorMessage'
+import { useRouter } from 'next/navigation'
 
 interface ErrorAlertType {
     title: string
@@ -28,6 +29,9 @@ export default function LoginForm() {
     const [errorAlert, setErrorAlert] = useState<ErrorAlertType>({ title: '', description: '' })
     const errorMessageT = useTranslations('errorMessages')
     const loginT = useTranslations('LoginPage')
+
+    const router = useRouter()
+
     const [loginMutate, { isLoading }] = useLoginMutation()
 
     const form = useForm<LoginBodyType>({
@@ -51,6 +55,8 @@ export default function LoginForm() {
                     description: errorMessage.description
                 })
             }
+        } finally {
+            router.refresh()
         }
     }
 
@@ -146,10 +152,7 @@ export default function LoginForm() {
                 <div className='mt-4 text-center netflix-sans-regular'>
                     <p className='text-white'>
                         {loginT('newToNetflix')}{' '}
-                        <Link
-                            href='/register'
-                            className='text-white font-semibold netflix-sans-bold underline hover:text-brand'
-                        >
+                        <Link href='/register' className='text-white font-semibold underline hover:text-brand'>
                             {loginT('signUpNow')}
                         </Link>
                     </p>

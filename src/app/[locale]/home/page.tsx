@@ -5,6 +5,7 @@ import SignupForm from '@/app/[locale]/home/_components/signup-form'
 import TrendingSection from '@/app/[locale]/home/_components/trending-section'
 import Header from '@/components/header'
 import { useTranslations } from 'next-intl'
+import SignupView from './_components/signup-view'
 
 export const metadata = {
     title: 'Home',
@@ -35,8 +36,7 @@ export default function HomePage() {
                     <div className='m-auto text-center text-white  max-w-xl px-8'>
                         <h1 className='text-3xl lg:text-6xl  md:text-4xl font-bold mb-5'>{t('heroTitle')}</h1>
                         <p className='text-base md:text-2xl font-normal mb-8'>{t('heroSubtitle')}</p>
-                        <p className='text-base mb-4'>{t('heroDescription')}</p>
-                        <SignupForm />
+                        <SignupView />
                     </div>
 
                     <div className=' overflow-hidden h-15 relative'>
