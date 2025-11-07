@@ -3,10 +3,10 @@
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
-import { Movie } from '@/types/models/movie.model'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MovieCardProps {
-    movie: Movie
+    movie: MovieType
     className?: string
     isEditing: boolean
     isSelected: boolean

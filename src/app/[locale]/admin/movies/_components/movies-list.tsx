@@ -6,9 +6,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Pencil, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { FilmDetailType } from '@/types/film.type'
 import { getMockFilms } from '@/_mock'
 import { maskId } from '@/utils/formatting/formatId'
+import { MovieType } from '@/types/models/movie.model'
 
 type FilmsListProps = {
     onEdit: (id: string) => void
@@ -20,9 +20,9 @@ const imageSrc = (url: string): string => {
     return url
 }
 
-export default function FilmsList({ onEdit, onDelete }: FilmsListProps) {
+export default function ListMovie({ onEdit, onDelete }: FilmsListProps) {
     const t = useTranslations('AdminPage.filmsPage')
-    const [films, setFilms] = useState<FilmDetailType[]>([])
+    const [films, setFilms] = useState<MovieType[]>([])
 
     useEffect(() => {
         setFilms(getMockFilms(20))
@@ -70,7 +70,7 @@ export default function FilmsList({ onEdit, onDelete }: FilmsListProps) {
                                         {maskedId}
                                     </td>
                                     <td className='px-4 py-2'>
-                                        <div className='w-[60px] aspect-[3/4] relative overflow-hidden rounded-md border border-gray-200'>
+                                        <div className='w-[60px] aspect-3/4 relative overflow-hidden rounded-md border border-gray-200'>
                                             <Image
                                                 src={imgSrc}
                                                 alt={film.title}
@@ -82,7 +82,9 @@ export default function FilmsList({ onEdit, onDelete }: FilmsListProps) {
                                     <td className='px-4 py-2 font-medium'>{film.title}</td>
                                     <td className='px-4 py-2 text-gray-700 dark:text-gray-300'>{film.year}</td>
                                     <td className='px-4 py-2 text-gray-600 dark:text-gray-400'>{duration}</td>
-                                    <td className='px-4 py-2 text-gray-600 dark:text-gray-400'>{film.rating.toFixed(1)}</td>
+                                    <td className='px-4 py-2 text-gray-600 dark:text-gray-400'>
+                                        {film.rating.toFixed(1)}
+                                    </td>
 
                                     <td className='px-4 py-2'>
                                         <div className='flex items-center justify-center gap-1'>

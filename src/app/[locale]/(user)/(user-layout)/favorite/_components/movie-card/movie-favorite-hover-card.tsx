@@ -13,10 +13,10 @@ import { useContext } from 'react'
 import { useMouseEnter } from '@/hooks/ui/useMouseEnter'
 import { isNewMovieRelease } from '@/helper/movie'
 import { useTranslations } from 'next-intl'
-import { Movie } from '@/types/models/movie.model'
+import { MovieType } from '@/types/models/movie.model'
 
 interface MovieCardContextProps {
-    movie: Movie
+    movie: MovieType
 }
 
 const MovieCardContext = createContext<MovieCardContextProps | null>(null)
@@ -30,7 +30,7 @@ const useMovieCardContext = () => {
 }
 
 interface MovieCardProviderProps {
-    movie: Movie
+    movie: MovieType
     disableHover?: boolean
     children: React.ReactNode
 }
@@ -72,7 +72,7 @@ export function MovieFavoriteCardHoverInfoProvider({ movie, disableHover, childr
 }
 
 interface TooltipContentProps {
-    movie: Movie
+    movie: MovieType
 }
 function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
     const [isPlayVideo, setIsPlayVideo] = useState<boolean>(false)
@@ -114,7 +114,7 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
                     Your browser does not support the video tag.
                 </video>
 
-                <div className='absolute inset-0 bg-gradient-to-t from-neutral-900/85 via-neutral-900/20 to-transparent' />
+                <div className='absolute inset-0 bg-leaner-to-t from-neutral-900/85 via-neutral-900/20 to-transparent' />
 
                 <Button
                     size='icon'
@@ -170,7 +170,7 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
 }
 
 interface MovieCardHoverInfoProps {
-    movie?: Movie
+    movie?: MovieType
     className?: string
     size?: 'sm' | 'md' | 'lg'
     showProgress?: boolean
@@ -201,8 +201,8 @@ export function MovieCard({ movie, className, size = 'md', showProgress = false 
                         [clip-path:polygon(0_0,100%_0,100%_100%,0_80%)] 
                         overflow-hidden
                         text-[10px] 
-                        p-[2px] sm:p-[3px]  
-                        pb-[5px] sm:pb-[6px]  '
+                        p-0.5 sm:p-[3px]  
+                        pb-[5px] sm:pb-1.5  '
                     >
                         <span>TOP</span>
                         <span>10</span>
@@ -223,7 +223,7 @@ export function MovieCard({ movie, className, size = 'md', showProgress = false 
                     bg-red-600 text-white 
                     text-[8px] sm:text-[9px] 
                     px-1 sm:px-2
-                    py-[1px] sm:py-[2px] 
+                    py-px sm:py-0.5 
                     rounded-t-xs font-medium backdrop-blur-sm'
                     >
                         {t('recentlyAdded')}

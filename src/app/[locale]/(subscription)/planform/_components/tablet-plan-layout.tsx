@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { mockSubscriptionPlans } from '@/app/[locale]/(auth)/signup/planform/_mock'
+import { mockSubscriptionPlans } from '../_mock'
 
 interface TabletPlanLayoutProps {
     selectedPlan: string
@@ -20,7 +20,7 @@ export default function TabletPlanLayout({ selectedPlan, onPlanSelect }: TabletP
                         className={cn(
                             'relative rounded-lg cursor-pointer transition-all duration-200 min-h-[107px] p-4',
                             {
-                                '[background:radial-gradient(140.76%_131.96%_at_100%_100%,_rgb(109,59,227)_0%,_rgba(74,42,150,0.5)_73.57%,_rgba(74,42,150,0)_100%),_rgb(29,82,157)] shadow-lg':
+                                ' [background:radial-gradient(140.76%_131.96%_at_100%_100%,rgb(109,59,227)_0%,rgba(74,42,150,0.5)_73.57%,rgba(74,42,150,0)_100%),rgb(29,82,157)] shadow-lg':
                                     selectedPlan === plan.id,
                                 'rounded-tl-none rounded-tr-none': plan.isPopular,
                                 'border-2 border-gray-200': selectedPlan !== plan.id
@@ -76,7 +76,7 @@ export default function TabletPlanLayout({ selectedPlan, onPlanSelect }: TabletP
                                 </div>
 
                                 <div className='p-4 flex justify-between items-start'>
-                                    <span className='text-gray-600 flex-shrink-0 mr-4'>
+                                    <span className='text-gray-600 shrink-0 mr-4'>
                                         {t('features.supportedDevices')}
                                     </span>
                                     <span className='font-medium text-right'>{plan.features.supportedDevices}</span>

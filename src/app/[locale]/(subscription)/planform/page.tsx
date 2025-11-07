@@ -1,5 +1,5 @@
-import PlanSelector from '@/app/[locale]/(auth)/signup/planform/_components/plan-selector'
 import { getTranslations } from 'next-intl/server'
+import PlanSelector from './_components/plan-selector'
 
 export default async function PlanFormPage() {
     const t = await getTranslations('PlanformPage')

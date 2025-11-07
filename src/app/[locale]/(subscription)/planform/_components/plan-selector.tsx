@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
-import DesktopPlanLayout from '@/app/[locale]/(auth)/signup/planform/_components/desktop-plan-layout'
-import TabletPlanLayout from '@/app/[locale]/(auth)/signup/planform/_components/tablet-plan-layout'
+import DesktopPlanLayout from './desktop-plan-layout'
+import TabletPlanLayout from './tablet-plan-layout'
 
 export default function PlanSelector() {
     const t = useTranslations('PlanformPage')

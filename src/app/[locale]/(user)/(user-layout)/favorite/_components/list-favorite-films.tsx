@@ -6,10 +6,10 @@ import Image from 'next/image'
 import FavoriteCard from './movie-card/movie-favorite-card'
 import { getMockFilms } from '@/_mock'
 import { MovieFavoriteCardHoverInfoProvider } from './movie-card/movie-favorite-hover-card'
-import { Movie } from '@/types/models/movie.model'
+import { MovieType } from '@/types/models/movie.model'
 
 interface FavoriteListProps {
-    movies?: Movie[]
+    movies?: MovieType[]
     isEditing: boolean
     selectedMovies: string[]
     onSelect: (id: string) => void
