@@ -9,7 +9,7 @@
         "emailRequired": "Email is required",
         "passwordRequired": "Password is required",
         "passwordMinLength": "Password must be at least 8 characters long",
-        "passwordInvalid": "Password must include 1 letter, 1 number",
+        "passwordInvalid": "Password must include at least 1 letter, 1 number, and 1 special character.",
         "passwordMismatch": "Passwords do not match",
         "mustAgreeToTerms": "You must agree to the terms to continue",
         "genericError": "An error occurred. Please try again"
@@ -96,6 +96,15 @@
         "title": "Finish setting up your account",
         "description": "Netflix is personalized for you. Create a password to watch on any device at any time.",
         "nextButton": "Next"
+    },
+    "VerifyEmailPage": {
+        "title": "Get started with Netflix",
+        "description": "Please confirm your email address to continue."
+    },
+    "VerifyEmailSentPage": {
+        "title": "Check your inbox",
+        "message": "We've sent a verification email to {email}. Click the link in the email to finish setting up your account.",
+        "resendButton": "Resend link"
     },
     "SignupPage": {
         "stepIndicator": "STEP {step}/{total}",
@@ -325,11 +334,11 @@
         "editFavorites": "Edit favorite list",
         "searchFavorites": "Search in favorites",
         "messages": {
-            "deleteSuccess": "All favorite movies deleted!",           
+            "deleteSuccess": "All favorite movies deleted!",
             "confirmDelete": "Are you sure you want to delete all favorite movies?"
         },
         "tooltip": {
-            "play": "Play",             
+            "play": "Play",
             "removeFromList": "Remove from favorite"
         }
     },

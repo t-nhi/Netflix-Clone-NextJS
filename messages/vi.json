@@ -4,7 +4,7 @@
         "emailRequired": "Email là bắt buộc",
         "passwordRequired": "Mật khẩu là bắt buộc",
         "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự",
-        "passwordInvalid": "Mật khẩu phải bao gồm 1 chữ, 1 số",
+        "passwordInvalid": "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 chữ số và 1 ký tự đặc biệt.",
         "passwordMismatch": "Mật khẩu không khớp",
         "mustAgreeToTerms": "Bạn phải đồng ý với các điều khoản để tiếp tục",
         "genericError": "Đã xảy ra lỗi. Vui lòng thử lại"
@@ -96,6 +96,15 @@
         "title": "Hoàn thành việc cài đặt tài khoản của bạn",
         "description": "Netflix được cá nhân hóa cho riêng bạn. Tạo mật khẩu để xem Netflix trên bất kỳ thiết bị nào, vào bất cứ lúc nào.",
         "nextButton": "Tiếp theo"
+    },
+    "VerifyEmailPage": {
+        "title": "Bắt đầu với Netflix",
+        "description": "Vui lòng xác nhận địa chỉ email của bạn để tiếp tục."
+    },
+    "VerifyEmailSentPage": {
+        "title": "Kiểm Tra hộp thư đến",
+        "message": "Chúng tôi đã gửi một email xác nhận đến {email}. Nhấn vào liên kết trong email để hoàn tất việc thiết lập tài khoản.",
+        "resendButton": "Gửi lại liên kết"
     },
     "SignupPage": {
         "stepIndicator": "BƯỚC {step}/{total}",
@@ -321,7 +330,6 @@
             "play": "Phát",
             "addToList": "Thêm vào yêu thích"
         }
-
     },
     "FavoritePage": {
         "title": "Danh sách phim yêu thích",
@@ -329,7 +337,7 @@
         "editFavorites": "Chỉnh sửa danh sách yêu thích",
         "searchFavorites": "Tìm kiếm trong danh sách yêu thích",
         "messages": {
-            "deleteSuccess": "Đã xóa phim danh sách yêu thích!",            
+            "deleteSuccess": "Đã xóa phim danh sách yêu thích!",
             "confirmDelete": "Bạn có chắc muốn xóa toàn bộ danh sách yêu thích không?"
         },
         "tooltip": {
@@ -337,8 +345,7 @@
             "removeFromList": "Xóa khỏi danh sách yêu thích"
         }
     },
-    "RemoveToggle":
-    {
+    "RemoveToggle": {
         "noSelected": "Không có phim nào được chọn!",
         "remove": "Xóa",
         "setting": "Cài đặt",

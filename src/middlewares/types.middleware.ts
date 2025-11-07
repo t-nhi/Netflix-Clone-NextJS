@@ -7,6 +7,7 @@ export type MiddlewareContext = {
     accessToken: string | null
     jwtPayload: JwtPayload | null
     locale: localesType | null
+    cleanPathname: string | null
     [key: string]: any
 }
 

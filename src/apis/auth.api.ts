@@ -13,7 +13,7 @@ import { VerifyTokenBodyType, VerifyTokenResType } from '@/types/dtos/auth/verif
 const AuthRequestApi = {
     login: (body: LoginBodyType) => httpClient.post<LoginResType>('/auth/login', body),
     verifyEmail: (body: VerifyEmailBodyType) => httpClient.post<VerifyEmailResType>('/auth/verify-email', body),
-    signUp: (body: SignUpBodyType) => httpClient.post<SignUpResType>('/auth/siÂQgn-up', body),
+    signUp: (body: SignUpBodyType) => httpClient.post<SignUpResType>('/auth/sign-up', body),
     logout: (data: LogoutBodyType & { access_token: string }) => {
         const { access_token, ...body } = data
         return httpClient.post<LogoutResType>('/auth/log-out', body, {

@@ -1,6 +1,6 @@
 export enum UnauthPaths {
     LOGIN = '/login',
-    REGISTER = '/register'
+    REGISTER = '/signup'
 }
 
 export enum AuthPaths {

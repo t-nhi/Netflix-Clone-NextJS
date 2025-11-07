@@ -49,13 +49,13 @@ export function isLoginMutationAction(action: unknown): action is {
 
 export function isSignUpMutationAction(action: unknown): action is {
     type: string
-    meta: { arg: { endpointName: 'signUp' } }
+    meta: { arg: { endpointName: 'register' } }
     payload: SignUpResType
 } {
     return (
         isExecuteMutation(action) &&
         action.type.includes('AuthApi/executeMutation/fulfilled') &&
-        action.meta.arg.endpointName === 'signUp' &&
+        action.meta.arg.endpointName === 'register' &&
         'payload' in action &&
         typeof action.payload === 'object' &&
         action.payload !== null

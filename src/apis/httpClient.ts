@@ -45,11 +45,13 @@ export async function clientRequest<response>({ method, url, options = {} }: Req
 
         return await response.json()
     } catch (error) {
+        console.log('HTTP Client Error:', JSON.stringify(error))
         if (isClient) throw error
 
         if (error instanceof HttpException && error.status === HttpStatusCode.UNAUTHORIZED) {
             const token = (options.headers as any)?.Authorization?.replace('Bearer ', '') || ''
             const locale = await getLocale()
+            if (!token) redirect({ href: '/login', locale })
             redirect({
                 href: `/logout?${QueryKeys.ACCESS_TOKEN}=${token}`,
                 locale

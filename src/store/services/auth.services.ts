@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { backendBaseQuery } from './client'
 import { VerifyEmailBodyType, VerifyEmailResType } from '@/types/dtos/auth/verifyEmail.dto'
 import { HttpMethod } from '@/constants/http.enum'
-import { VerifyTokenBodyType } from '@/types/dtos/auth/verifyToken.dto'
+import { VerifyTokenBodyType, VerifyTokenResType } from '@/types/dtos/auth/verifyToken.dto'
 import { ChangePasswordBodyType, ChangePasswordResType } from '@/types/dtos/auth/changePassword.dto'
 
 export const authApi = createApi({
@@ -17,7 +17,7 @@ export const authApi = createApi({
                 body
             })
         }),
-        verifyToken: builder.mutation<VerifyEmailResType, VerifyTokenBodyType>({
+        verifyToken: builder.mutation<VerifyTokenResType, VerifyTokenBodyType>({
             query: (body) => ({
                 url: '/auth/verify-token',
                 method: HttpMethod.POST,

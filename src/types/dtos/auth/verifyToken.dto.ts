@@ -1,4 +1,4 @@
-import { HttpResponseSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response'
 import z from 'zod'
 
 export const verifyTokenBodySchema = z
@@ -9,5 +9,8 @@ export const verifyTokenBodySchema = z
 
 export type VerifyTokenBodyType = z.infer<typeof verifyTokenBodySchema>
 
-export const verifyTokenResSchema = HttpResponseSchema
+export const verifyTokenResDataSchema = z.object({
+    email: z.string().email()
+})
+export const verifyTokenResSchema = HttpResponseWithDataSchema(verifyTokenResDataSchema)
 export type VerifyTokenResType = z.infer<typeof verifyTokenResSchema>

@@ -45,6 +45,7 @@ export default function LoginForm() {
     const onSubmit: SubmitHandler<LoginBodyType> = async (data) => {
         try {
             await loginMutate(data).unwrap()
+            router.replace('/')
         } catch (error) {
             if (isEntityError(error)) {
                 handleFormError({ error, setFormError: form.setError })
@@ -125,7 +126,7 @@ export default function LoginForm() {
                 <Button
                     disabled={isLoading}
                     type='submit'
-                    className='bg-red-600 hover:bg-red-700 text-white font-semibold netflix-sans-bold h-[40px] w-full px-4 sm:px-6 md:px-8 py-2 transition-colors duration-200 cursor-pointer'
+                    className='bg-red-600 hover:bg-red-700 text-white font-semibold netflix-sans-bold h-10 w-full px-4 sm:px-6 md:px-8 py-2 transition-colors duration-200 cursor-pointer'
                 >
                     {isLoading ? <LoaderCircle className='animate-spin size-5' /> : loginT('signIn')}
                 </Button>

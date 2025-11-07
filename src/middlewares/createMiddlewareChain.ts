@@ -7,7 +7,8 @@ export function createMiddlewareChain(...middlewares: MiddlewareFn[]) {
             refreshToken: null,
             accessToken: null,
             jwtPayload: null,
-            locale: null
+            locale: null,
+            cleanPathname: null
         }
 
         for (let i = 0; i < middlewares.length; i++) {

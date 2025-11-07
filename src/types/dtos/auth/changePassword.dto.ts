@@ -7,17 +7,17 @@ export const changePasswordBodySchema = z
             .string()
             .min(1, { message: 'passwordRequired' })
             .min(8, { message: 'passwordMinLength' })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)+$/, { message: 'passwordInvalid' }),
+            .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, { message: 'passwordInvalid' }),
         new_password: z
             .string()
             .min(1, { message: 'newPasswordRequired' })
             .min(8, { message: 'newPasswordMinLength' })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)+$/, { message: 'passwordInvalid' }),
+            .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, { message: 'passwordInvalid' }),
         new_password_confirmation: z
             .string()
             .min(1, { message: 'newPasswordConfirmationRequired' })
             .min(8, { message: 'newPasswordConfirmationMinLength' })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)+$/, { message: 'passwordInvalid' })
+            .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, { message: 'passwordInvalid' })
     })
     .refine((data) => data.new_password === data.new_password_confirmation, {
         message: 'passwordMismatch',

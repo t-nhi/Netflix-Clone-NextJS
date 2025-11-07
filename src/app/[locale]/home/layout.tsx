@@ -4,10 +4,6 @@ interface HomeLayoutProps {
     children: React.ReactNode
 }
 
-export const metadata = {
-    title: 'Account'
-}
-
 export default function HomeLayout({ children }: HomeLayoutProps) {
     return (
         <>

@@ -10,7 +10,6 @@ interface HandleFormErrorParams<T extends FieldValues> {
 export function handleFormError<T extends FieldValues>({ error, setFormError }: HandleFormErrorParams<T>): void {
     if (isEntityError(error)) {
         error.data.errors.forEach((err) => {
-            console.log(err)
             setFormError(err.field as Path<T>, {
                 type: CustomErrorCode.SERVER_ENTITY_ERROR,
                 message: err.message

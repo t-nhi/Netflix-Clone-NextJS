@@ -2,7 +2,7 @@ import { AdminPaths, AuthPaths, CommonPaths, UnauthPaths, UserPaths, isPathInclu
 import { QueryKeys } from '@/constants/query-keys.constant'
 import { MiddlewareContext, MiddlewareFn, MiddlewareNext } from '@/middlewares/types.middleware'
 import { getTokensFromCookies } from '@/utils/cookies.util'
-import { buildURLObjWithLocale, stripLocaleFromPath } from '@/utils/locale.util'
+import { buildURLObjWithLocale } from '@/utils/locale.util'
 import { NextRequest, NextResponse } from 'next/server'
 
 const AuthenticationMiddleware: MiddlewareFn = (
@@ -12,7 +12,7 @@ const AuthenticationMiddleware: MiddlewareFn = (
     ctx: MiddlewareContext
 ) => {
     const { pathname } = req.nextUrl
-    const cleanPath = stripLocaleFromPath(pathname)
+
     const cookiesStore = req.cookies
     const { refresh_token, access_token } = getTokensFromCookies(cookiesStore)
 
@@ -33,7 +33,10 @@ const AuthenticationMiddleware: MiddlewareFn = (
         return NextResponse.redirect(url)
     }
 
-    const isPrivatePath = isPathIncluded([...Object.values(AdminPaths), ...Object.values(UserPaths)], cleanPath)
+    const isPrivatePath = isPathIncluded(
+        [...Object.values(AdminPaths), ...Object.values(UserPaths)],
+        ctx.cleanPathname!
+    )
 
     if (isPrivatePath && !isAuthenticated) {
         const url = buildURLObjWithLocale({
@@ -46,7 +49,7 @@ const AuthenticationMiddleware: MiddlewareFn = (
         return NextResponse.redirect(url)
     }
 
-    const isUnauthPath = isPathIncluded(Object.values(UnauthPaths), cleanPath)
+    const isUnauthPath = isPathIncluded(Object.values(UnauthPaths), ctx.cleanPathname!)
 
     if (isUnauthPath && isAuthenticated) {
         const redirectFrom = req.nextUrl.searchParams.get(QueryKeys.REDIRECT)

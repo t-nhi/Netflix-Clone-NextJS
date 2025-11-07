@@ -10,8 +10,13 @@ import { ChevronRight, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { VerifyEmailBodySchema, VerifyEmailBodyType } from '@/types/dtos/auth/verifyEmail.dto'
 import { useVerifyEmailMutation } from '@/store/services/auth.services'
+import { useRouter } from '@/i18n/navigation'
+import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
+import { getLocaleMessage } from '@/utils/locale.util'
 
 export default function VerifyEmailForm() {
+    const router = useRouter()
     const errorMessageT = useTranslations('errorMessages')
     const formT = useTranslations('SignupForm')
 
@@ -27,8 +32,14 @@ export default function VerifyEmailForm() {
     const onSubmit = async (data: VerifyEmailBodyType) => {
         try {
             await verifyEmailMutate(data).unwrap()
+            sessionStorage.setItem(SessionStorageKeys.SIGNUP_EMAIL, data.email)
+            router.push('/signup/verify-email-sent')
         } catch (error) {
             console.error('Error verifying email:', error)
+            handleFormError({
+                error,
+                setFormError: form.setError
+            })
         }
     }
 
@@ -46,13 +57,12 @@ export default function VerifyEmailForm() {
                             <FormControl className='h-fit'>
                                 <BrandInput
                                     label={formT('emailLabel')}
-                                    className='h-[48px] md:h-[56px] bg-black/50!'
+                                    className='h-12 md:h-14 bg-black/50!'
                                     {...field}
                                 />
                             </FormControl>
                             <FormMessage>
-                                {formState.errors.email?.message &&
-                                    errorMessageT(formState.errors.email.message as 'emailInvalid' | 'emailRequired')}
+                                {getLocaleMessage(errorMessageT, formState.errors.email?.message)}
                             </FormMessage>
                         </FormItem>
                     )}
@@ -60,7 +70,7 @@ export default function VerifyEmailForm() {
                 <Button
                     disabled={isVerifyEmailLoading}
                     type='submit'
-                    className='py-2 px-2 h-[48px]!  md:h-[56px]! md:w-[160px] bg-brand  hover:bg-brand/80 text-lg  md:text-xl text-white font-medium cursor-pointer items-center'
+                    className='py-2 px-2 h-12!  md:h-14! md:w-40 bg-brand  hover:bg-brand/80 text-lg  md:text-xl text-white font-medium cursor-pointer items-center'
                 >
                     {isVerifyEmailLoading ? (
                         <LoaderCircle className='animate-spin size-5' />

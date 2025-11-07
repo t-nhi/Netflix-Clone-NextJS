@@ -9,7 +9,7 @@ export const SignUpBodySchema = z
             .string()
             .min(1, { message: 'passwordRequired' })
             .min(8, { message: 'passwordMinLength' })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)+$/, { message: 'passwordInvalid' }),
+            .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, { message: 'passwordInvalid' }),
         token: z.string().min(1)
     })
     .strict()

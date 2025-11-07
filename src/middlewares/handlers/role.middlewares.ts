@@ -14,8 +14,6 @@ const RoleAccessMiddleware: MiddlewareFn = (
 ) => {
     if (ctx.refreshToken == null) return next()
 
-    const { pathname } = req.nextUrl
-
     const decodedToken = decodeJwt<JwtPayload>(ctx.refreshToken)
     ctx.jwtPayload = decodedToken
 
@@ -29,12 +27,12 @@ const RoleAccessMiddleware: MiddlewareFn = (
 
     if (decodedToken == null) return unauthorizedRedirect
 
-    const isAdminPath = isPathIncluded([...Object.values(AdminPaths)], pathname)
+    const isAdminPath = isPathIncluded([...Object.values(AdminPaths)], ctx.cleanPathname!)
     if (isAdminPath && decodedToken.role != Role.ADMIN) {
         return unauthorizedRedirect
     }
 
-    const isUserPath = isPathIncluded([...Object.values(UserPaths)], pathname)
+    const isUserPath = isPathIncluded([...Object.values(UserPaths)], ctx.cleanPathname!)
     if (isUserPath && decodedToken.role != Role.USER) {
         return unauthorizedRedirect
     }
