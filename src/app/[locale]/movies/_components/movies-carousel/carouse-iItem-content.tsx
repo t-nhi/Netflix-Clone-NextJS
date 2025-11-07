@@ -7,19 +7,20 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import useInView from '@/hooks/ui/useInView'
 import { useAppSelector } from '@/store/hooks'
-import FilmDetailDialog from '@/components/film-detail-dialog'
-import ButtonMuted from '@/app/[locale]/(user)/films/_components/video-carousel/button-muted'
+import MovieDetailDialog from '@/components/movie-detail-dialog'
 import { useEffect, useRef, useState } from 'react'
-import { HERO_VIEW_MODE, useFilmsPageContext } from '@/app/[locale]/(user)/films/context'
 import { useTranslations } from 'next-intl'
-import { Movie } from '@/types/models/movie.model'
+import { MovieType } from '@/types/models/movie.model'
+import { HERO_VIEW_MODE, useMoviesPageContext } from '../../_context'
+import ButtonMuted from './button-muted'
+import SeeMore from '@/components/see-more'
 
 interface CarouselItemContentProps {
-    movie: Movie
+    movie: MovieType
 }
 
 export default function CarouselItemContent({ movie }: CarouselItemContentProps) {
-    const { heroViewMode, setHeroViewMode } = useFilmsPageContext()
+    const { heroViewMode, setHeroViewMode } = useMoviesPageContext()
     const { ref, isInView } = useInView()
     const [isPlayVideo, setIsPlayVideo] = useState<boolean>(false)
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -94,16 +95,19 @@ export default function CarouselItemContent({ movie }: CarouselItemContentProps)
                     <h2 className='text-white hidden md:block font-black text-xl md:text-3xl lg:text-4xl xl:text-5xl mb-1 sm:mb-3 lg:mb-4 leading-tight'>
                         {movie.title.toUpperCase()}
                     </h2>
-
-                    <p className='text-gray-200 hidden md:block text-sm md:text-base lg:text-lg mb-4 lg:mb-6 line-clamp-1 sm:line-clamp-3 leading-relaxed'>
-                        {movie.description}
-                    </p>
-
+                    <SeeMore
+                        text={movie.description}
+                        maxLines={3}
+                        className='text-gray-200 hidden md:block text-sm md:text-base lg:text-lg  lg:mb-6 line-clamp-1 sm:line-clamp-3 leading-relaxed text-justify wrap-break-word'
+                        classLabel='font-medium! text-gray-300!'
+                        seeMoreText={t('seeMore')}
+                        seeLessText={t('seeLess')}
+                    />
                     <div className='flex items-center gap-3'>
                         <Button
                             className={cn(
                                 'bg-white text-black hover:text-black hover:bg-gray-200 font-semibold rounded-xs flex items-center gap-1 sm:gap-2 cursor-pointer',
-                                'px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm md:px-10! md:py-3 md:text-base lg:px-10 lg:py-4 lg:h-[48px]'
+                                'px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm md:px-10! md:py-3 md:text-base lg:px-10 lg:py-4 lg:h-12'
                             )}
                         >
                             <IoPlaySharp className='size-3 sm:size-4 md:size-5 lg:size-6 fill-current' />
@@ -115,7 +119,7 @@ export default function CarouselItemContent({ movie }: CarouselItemContentProps)
                             onClick={onOpenVideoDetail}
                             className={cn(
                                 'bg-gray-600/70 hover:bg-gray-600 text-white hover:text-white font-semibold rounded-xs flex items-center gap-1 sm:gap-2 cursor-pointer',
-                                'px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm md:px-6 md:py-3 md:text-base lg:px-10 lg:py-4 lg:h-[48px]'
+                                'px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm md:px-6 md:py-3 md:text-base lg:px-10 lg:py-4 lg:h-12'
                             )}
                         >
                             <Info className='size-3 sm:size-4 md:size-5 lg:size-6' />
@@ -130,7 +134,7 @@ export default function CarouselItemContent({ movie }: CarouselItemContentProps)
                 <div
                     className={cn(
                         'right-0 border-l-3 border-brand bg-black/50!',
-                        'pr-5 md:pr-20 pl-2 h-5 md:h-8 bg-gradient-to-r to-transparent  flex items-center '
+                        'pr-5 md:pr-20 pl-2 h-5 md:h-8 bg-linear-to-r to-transparent  flex items-center '
                     )}
                 >
                     <span className='text-white text-md md:text-base font-semibold '>T{movie.age}</span>
@@ -138,16 +142,16 @@ export default function CarouselItemContent({ movie }: CarouselItemContentProps)
             </div>
             <div
                 className='absolute bottom-0 left-0 right-0 h-40
-             bg-gradient-to-t from-[#141414] via-[#141414]/60 via-40% to-transparent
+             bg-linear-to-t from-[#141414] via-[#141414]/60 via-40% to-transparent
              pointer-events-none z-1'
             />
             <div
-                className='absolute top-0 left-0 right-0 h-24 md:h-28 
-             bg-gradient-to-b from-[#141414]/100 via-black/40 to-transparent 
+                className='absolute top-0 left-0 right-0 h-24 md:h-28
+             bg-linear-to-b from-[#141414] via-black/40 to-transparent
              z-1'
             />
-            <FilmDetailDialog
-                film={movie}
+            <MovieDetailDialog
+                movie={movie}
                 open={isOpenFilmDetail}
                 onOpenChange={setIsOpenFilmDetail}
                 onClose={onCloseVideoDetail}

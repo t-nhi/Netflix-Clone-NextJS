@@ -4,7 +4,7 @@ import { useCarousel } from '@/components/ui/carousel'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useEffect } from 'react'
-import { HERO_VIEW_MODE, useFilmsPageContext } from '@/app/[locale]/(user)/films/context'
+import { HERO_VIEW_MODE, useMoviesPageContext } from '../../_context'
 
 interface IndicatorProps {
     wrapperClassName?: string
@@ -24,7 +24,7 @@ export default function Indicator({
     const { currentIndex, slidesCount, scrollToIndex, scrollPrev, scrollNext, canScrollPrev, canScrollNext } =
         useCarousel()
 
-    const { heroViewMode } = useFilmsPageContext()
+    const { heroViewMode } = useMoviesPageContext()
 
     useEffect(() => {
         if (!autoPlayInterval || slidesCount <= 1) return

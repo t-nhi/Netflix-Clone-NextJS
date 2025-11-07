@@ -1,10 +1,10 @@
 import StickyHeaderWrapper from './_components/sticky-header-wrapper'
 import DetailFilm from './_components/film-infor/information-film'
 import { filmDetail } from '@/_mock/index'
-import CommentBlock from '@/app/[locale]/movies/details/_components/comments/comment-block'
+import CommentBlock from '@/app/[locale]/movies/[slug]/_components/comments/comment-block'
 import Footer from '@/components/footer'
-import VideoPlay from '@/app/[locale]/movies/details/_components/social/video-play'
-import SuggestForYou from '@/app/[locale]/movies/details/_components/suggest/suggest-for-you'
+import VideoPlay from '@/app/[locale]/movies/[slug]/_components/social/video-play'
+import SuggestForYou from '@/app/[locale]/movies/[slug]/_components/suggest/suggest-for-you'
 
 export default function MovieDetailPage() {
     return (

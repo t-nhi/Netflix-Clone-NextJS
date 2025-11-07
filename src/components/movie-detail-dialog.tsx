@@ -16,15 +16,15 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { MovieType } from '@/types/models/movie.model'
 
-interface FilmDetailDialogProps {
-    film: MovieType | null
+interface MovieDetailDialogProps {
+    movie: MovieType | null
     isLoading?: boolean
     open: boolean
     onOpenChange: (open: boolean) => void
     onClose?: () => void
 }
 
-export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: FilmDetailDialogProps) {
+export default function MovieDetailDialog({ movie, open, onOpenChange, onClose }: MovieDetailDialogProps) {
     const [isPlayVideo, setIsPlayVideo] = useState<boolean>(false)
     const isMuted = useAppSelector((state) => state.video.isMuted)
     const appDispatch = useAppDispatch()
@@ -51,7 +51,7 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
         }
     }
 
-    if (!film) return null
+    if (!movie) return null
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -60,12 +60,12 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
                 showCloseButton={false}
             >
                 <DialogHeader className='hidden'>
-                    <DialogTitle>{film.title}</DialogTitle>
+                    <DialogTitle>{movie.title}</DialogTitle>
                 </DialogHeader>
                 <div className='relative h-[400px] md:h-[500px] overflow-hidden'>
                     <Image
-                        src={film.horizontal_poster}
-                        alt={film.title}
+                        src={movie.horizontal_poster}
+                        alt={movie.title}
                         fill
                         className={cn('w-full h-full object-cover', {
                             'opacity-0': isPlayVideo,
@@ -82,11 +82,11 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
                         loop
                         playsInline
                     >
-                        <source src={film.trailer_url} type='video/mp4' />
+                        <source src={movie.trailer_url} type='video/mp4' />
                         Your browser does not support the video tag.
                     </video>
 
-                    <div className='absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/20 to-transparent' />
+                    <div className='absolute inset-0 bg-linear-to-t from-[#141414] via-[#141414]/20 to-transparent' />
 
                     <Button
                         variant='ghost'
@@ -108,7 +108,7 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
 
                     <div className='absolute bottom-0 left-0 right-0 p-6 md:p-8'>
                         <h1 className='text-white font-black text-2xl md:text-3xl lg:text-4xl mb-4 leading-tight'>
-                            {film.title.toUpperCase()}
+                            {movie.title.toUpperCase()}
                         </h1>
 
                         <div className='flex items-center gap-3 mb-4'>
@@ -143,43 +143,43 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
                     <div className='flex flex-col md:flex-row gap-6'>
                         <div className='flex-1 space-y-4'>
                             <div className='flex items-center gap-3 text-sm'>
-                                <span className='text-white'>{film.year}</span>
+                                <span className='text-white'>{movie.year}</span>
                                 <Badge variant='outline' className='text-white border-gray-500 text-xs '>
-                                    {film.quality}
+                                    {movie.quality}
                                 </Badge>
-                                <Badge className='bg-red-600  text-white  text-xs font-bold'>T{film.age}</Badge>
+                                <Badge className='bg-red-600  text-white  text-xs font-bold'>T{movie.age}</Badge>
                             </div>
                             <div className='flex items-center gap-3 text-white text-sm'>
                                 <div>
                                     <span>
-                                        {formatNumber.format(film.views_count)} {t('views')}
+                                        {formatNumber.format(movie.views_count)} {t('views')}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-1'>
-                                    <span>{film.rating.toFixed(1)}</span>{' '}
-                                    <StarRating rating={film.rating} className='[&_svg]:size-4' />
+                                    <span>{movie.rating.toFixed(1)}</span>{' '}
+                                    <StarRating rating={movie.rating} className='[&_svg]:size-4' />
                                 </div>
                             </div>
-                            <p className='text-white text-base leading-relaxed'>{film.description}</p>
+                            <p className='text-white text-base leading-relaxed'>{movie.description}</p>
                         </div>
 
                         <div className='md:w-1/3 space-y-4 text-sm'>
                             <div>
                                 <span className='text-gray-400'>{t('cast')} </span>
                                 <span className='text-white'>
-                                    {film.actors.slice(0, 3).join(', ')}
-                                    {film.actors.length > 3 && ', more'}
+                                    {movie.actors.slice(0, 3).join(', ')}
+                                    {movie.actors.length > 3 && ', more'}
                                 </span>
                             </div>
 
                             <div>
                                 <span className='text-gray-400'>{t('genres')} </span>
-                                <span className='text-white'>{film.genres.join(', ')}</span>
+                                <span className='text-white'>{movie.genres.join(', ')}</span>
                             </div>
 
                             <div>
                                 <span className='text-gray-400'>{t('thisShowIs')} </span>
-                                <span className='text-white'>{film.category}, Suspenseful, Exiting</span>
+                                <span className='text-white'>{movie.category}, Suspenseful, Exiting</span>
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@ export default function FilmDetailDialog({ film, open, onOpenChange, onClose }: 
                         <h2 className='text-white text-xl font-semibold'>{t('moreLikeThis')}</h2>
                         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 @container'>
                             {Array.from({ length: 6 }, (_, i) => (
-                                <MovieCard key={i} movie={film} />
+                                <MovieCard key={i} movie={movie} />
                             ))}
                         </div>
                     </div>

@@ -3,7 +3,8 @@ import { backendBaseQuery } from './client'
 import { VerifyEmailBodyType, VerifyEmailResType } from '@/types/dtos/auth/verifyEmail.dto'
 import { HttpMethod } from '@/constants/http.enum'
 import { VerifyTokenBodyType, VerifyTokenResType } from '@/types/dtos/auth/verifyToken.dto'
-import { ChangePasswordBodyType, ChangePasswordResType } from '@/types/dtos/auth/changePassword.dto'
+import { ForgotPasswordBodyType, ForgotPasswordResType } from '@/types/dtos/auth/forgotPassword.dto'
+import { ResetPasswordBodyType, ResetPasswordResType } from '@/types/dtos/auth/resetPassword.dto'
 
 export const authApi = createApi({
     baseQuery: backendBaseQuery,
@@ -24,9 +25,23 @@ export const authApi = createApi({
                 body
             })
         }),
-        changePasswordBodySchema: builder.mutation<ChangePasswordResType, ChangePasswordBodyType>({
+        forgotPassword: builder.mutation<ForgotPasswordResType, ForgotPasswordBodyType>({
             query: (body) => ({
-                url: '/auth/change-password',
+                url: '/auth/forgot-password',
+                method: HttpMethod.POST,
+                body
+            })
+        }),
+        resetPassword: builder.mutation<ResetPasswordResType, ResetPasswordBodyType>({
+            query: (body) => ({
+                url: '/auth/reset-password',
+                method: HttpMethod.POST,
+                body
+            })
+        }),
+        verifyOtp: builder.mutation<VerifyTokenResType, VerifyTokenBodyType>({
+            query: (body) => ({
+                url: '/auth/verify-otp',
                 method: HttpMethod.POST,
                 body
             })
@@ -34,4 +49,10 @@ export const authApi = createApi({
     })
 })
 
-export const { useVerifyEmailMutation, useVerifyTokenMutation, useChangePasswordBodySchemaMutation } = authApi
+export const {
+    useVerifyEmailMutation,
+    useVerifyTokenMutation,
+    useResetPasswordMutation,
+    useForgotPasswordMutation,
+    useVerifyOtpMutation
+} = authApi

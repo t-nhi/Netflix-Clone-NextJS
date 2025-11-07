@@ -4,7 +4,7 @@ import { MovieCardHoverInfoProvider } from '@/components/movie-card-hover-info'
 import { CarouselItem } from '@/components/ui/carousel'
 import { getMockFilms } from '@/_mock'
 import { useTranslations } from 'next-intl'
-import MovieCardSimple from '@/app/[locale]/movies/details/_components/suggest/movie-card-suggest'
+import MovieCardSimple from '@/app/[locale]/movies/[slug]/_components/suggest/movie-card-suggest'
 
 export default function SuggestForYou() {
     const mockMovies = getMockFilms(20)

@@ -1,7 +1,7 @@
 import { HttpResponseSchema } from '@/types/common/http-response'
 import z from 'zod'
 
-export const resetPasswordBodySchema = z
+export const ResetPasswordBodySchema = z
     .object({
         email: z.string().min(1, { message: 'emailRequired' }).email({ message: 'emailInvalid' }),
         otp: z.string().min(1),
@@ -12,7 +12,7 @@ export const resetPasswordBodySchema = z
             .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, { message: 'passwordInvalid' })
     })
     .strict()
-export type ResetPasswordBodyType = z.infer<typeof resetPasswordBodySchema>
+export type ResetPasswordBodyType = z.infer<typeof ResetPasswordBodySchema>
 
-export const resetPasswordResSchema = HttpResponseSchema
-export type ResetPasswordResType = z.infer<typeof resetPasswordResSchema>
+export const ResetPasswordResSchema = HttpResponseSchema
+export type ResetPasswordResType = z.infer<typeof ResetPasswordResSchema>

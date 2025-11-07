@@ -7,7 +7,8 @@
         "passwordInvalid": "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 chữ số và 1 ký tự đặc biệt.",
         "passwordMismatch": "Mật khẩu không khớp",
         "mustAgreeToTerms": "Bạn phải đồng ý với các điều khoản để tiếp tục",
-        "genericError": "Đã xảy ra lỗi. Vui lòng thử lại"
+        "genericError": "Đã xảy ra lỗi. Vui lòng thử lại",
+        "otpMismatch": "Mã xác nhận không đúng"
     },
     "SwitchLanguage": {
         "label": "Chuyển ngôn ngữ",
@@ -229,22 +230,16 @@
     },
     "ResetPasswordPage": {
         "emailLabel": "{email}",
+
         "title": "Đặt lại mật khẩu",
+        "description": "Quên mật khẩu? Hãy để chúng tôi giúp bạn khôi phục quyền truy cập vào tài khoản và tiếp tục sử dụng các dịch vụ của bạn.",
         "passwordLabel": "Mật khẩu mới",
-        "confirmPasswordLabel": "Xác nhận mật khẩu mới",
+        "otpLabel": "Mã xác nhận",
+        "resendOtp": "Gửi lại mã",
+        "sendOtp": "Gửi mã",
         "resetPasswordButton": "Đặt lại mật khẩu",
         "save": "Lưu",
         "cancel": "Hủy"
-    },
-    "ForgotPasswordPage": {
-        "title": "Đặt lại mật khẩu",
-        "description": "Nhập email liên kết với tài khoản của bạn và chúng tôi sẽ gửi email hướng dẫn để đặt lại mật khẩu.",
-        "emailLabel": "Email",
-        "sendEmail": "Gửi email cho tôi",
-        "backToLogin": "Quay lại đăng nhập",
-        "successTitle": "Đã gửi email!",
-        "successDescription": "Chúng tôi đã gửi email với hướng dẫn để đặt lại mật khẩu đến {email}. Nếu bạn không thấy email, hãy kiểm tra thư mục spam hoặc thử lại.",
-        "resendEmail": "Gửi lại email"
     },
     "InformationForm": {
         "views": "lượt xem",
@@ -275,7 +270,9 @@
         },
         "heroSection": {
             "play": "Phát",
-            "moreInfo": "Thêm thông tin"
+            "moreInfo": "Thêm thông tin",
+            "seeMore": "Xem thêm",
+            "seeLess": "Rút gọn"
         },
         "tagForMovie": {
             "recentlyAdded": "Mới thêm"

@@ -1,12 +1,12 @@
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { cn } from '@/lib/utils'
-import CarouselItemContent from '@/app/[locale]/(user)/films/_components/video-carousel/carouse-iItem-content'
-import Indicator from '@/app/[locale]/(user)/films/_components/video-carousel/indicator'
-import { Movie } from '@/types/models/movie.model'
+import CarouselItemContent from './carouse-iItem-content'
+import Indicator from './indicator'
+import { MovieType } from '@/types/models/movie.model'
 
 interface VideoCarouselProps {
     className?: string
-    movies: Movie[]
+    movies: MovieType[]
 }
 
 export default function VideoCarousel({ className, movies }: VideoCarouselProps) {

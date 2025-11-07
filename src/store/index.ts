@@ -5,6 +5,7 @@ import { proxyAuthApi } from './services/proxy-auth.services'
 import { authMiddleware } from './middlewares/auth.middleware'
 import { errorHandleMiddleware } from './middlewares/errorHandling.middleware'
 import { authApi } from './services/auth.services'
+import { UserApi } from './services/user.services'
 
 export const makeStore = () => {
     return configureStore({
@@ -13,12 +14,14 @@ export const makeStore = () => {
             video: videoReducer,
             auth: authReducer,
             [proxyAuthApi.reducerPath]: proxyAuthApi.reducer,
-            [authApi.reducerPath]: authApi.reducer
+            [authApi.reducerPath]: authApi.reducer,
+            [UserApi.reducerPath]: UserApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
                 proxyAuthApi.middleware,
                 authApi.middleware,
+                UserApi.middleware,
                 authMiddleware,
                 errorHandleMiddleware
             )

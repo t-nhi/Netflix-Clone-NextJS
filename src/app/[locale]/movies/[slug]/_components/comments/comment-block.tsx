@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { timeAgo } from '@/utils/formatting/formatTime'
-import RatingForm from '@/app/[locale]/movies/details/_components/comments/rating-form'
+import RatingForm from '@/app/[locale]/movies/[slug]/_components/comments/rating-form'
 import StarRating from '@/components/star-rating'
 import { useLocale } from 'next-intl'
 import SeeMore from '@/components/see-more'

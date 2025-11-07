@@ -23,7 +23,7 @@ function FeatureCard({ feature }: { feature: FeatureType }) {
         <div
             className='rounded-2xl xl:min-h-[308px] flex flex-col justify-between 
                 border backdrop-blur-sm p-4
-                bg-gradient-to-br from-white via-purple-50 to-blue-50
+                bg-linear-to-br from-white via-purple-50 to-blue-50
                 dark:from-purple-900/30 dark:via-blue-900/30 dark:to-purple-800/40
                 border-gray-200 dark:border-purple-500/20'
         >

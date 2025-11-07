@@ -143,7 +143,7 @@ export default function LoginForm() {
 
                 <p className='text-center'>
                     <Link
-                        href='/forgotPassword'
+                        href='/reset-password'
                         className='text-white netflix-sans-bold hover:underline focus:underline-offset-2 cursor-pointer'
                     >
                         {loginT('forgotPassword')}
@@ -153,7 +153,7 @@ export default function LoginForm() {
                 <div className='mt-4 text-center netflix-sans-regular'>
                     <p className='text-white'>
                         {loginT('newToNetflix')}{' '}
-                        <Link href='/register' className='text-white font-semibold underline hover:text-brand'>
+                        <Link href='/signup' className='text-white font-semibold underline hover:text-brand'>
                             {loginT('signUpNow')}
                         </Link>
                     </p>

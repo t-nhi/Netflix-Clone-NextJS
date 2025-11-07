@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
-import VideoProgressIndicator from '@/app/[locale]/movies/details/_components/social/video-progress-indicator'
-import MovieSocialButton from '@/app/[locale]/movies/details/_components/social/movie-social-button'
+import VideoProgressIndicator from '@/app/[locale]/movies/[slug]/_components/social/video-progress-indicator'
+import MovieSocialButton from '@/app/[locale]/movies/[slug]/_components/social/movie-social-button'
 import StarRating from '@/components/star-rating'
 import { formatNumber } from '@/utils/formatting/formatNumber'
 import SeeMore from '@/components/see-more'
@@ -20,13 +20,11 @@ export default function DetailFilm({ informationFilm }: Props) {
         <div className='mx-auto w-full px-6 md:px-8 lg:px-14'>
             <div className='flex flex-col lg:flex-row md:gap-6 lg:gap-26 xl:gap-38 gap-2 sm:gap-4'>
                 <div className='flex-1 lg:flex-[0_0_58%] min-w-0'>
-                    <h1 className='lg:text-base sm:text-2xl md:text-[18px] text-[26px] font-normal lg:mb-[16px] md:mb-[16px] sm:mb-[16px] mb-[12px] break-words'>
+                    <h1 className='lg:text-base sm:text-2xl md:text-[18px] text-[26px] font-normal lg:mb-4 md:mb-4 sm:mb-4 mb-3 wrap-wrap-break-word'>
                         {movie.title}
                     </h1>
-                    <h2 className='text-base lg:mb-[16px] md:mb-[16px] sm:mb-[16px] mb-[12px] break-words'>
-                        {movie.title_other}
-                    </h2>
-                    <div className='flex flex-wrap items-center lg:mb-[16px] md:mb-[16px] sm:mb-[16px] mb-[12px] gap-2 xs:gap-3 sm:gap-4 xs:mb-4'>
+                    <h2 className='text-base lg:mb-4 md:mb-4 sm:mb-4 mb-3 wrap-break-word'>{movie.title_other}</h2>
+                    <div className='flex flex-wrap items-center lg:mb-4 md:mb-4 sm:mb-4 mb-3 gap-2 xs:gap-3 sm:gap-4 xs:mb-4'>
                         <strong className='text-sm xs:text-base font-normal'>
                             {formatNumber.format(movie.views_count)}
                             <span className='ml-1'>{t('views')}</span>
@@ -36,7 +34,7 @@ export default function DetailFilm({ informationFilm }: Props) {
                             <StarRating rating={movie.rating} readOnly size={15} />
                         </div>
                     </div>
-                    <div className='flex flex-wrap font-medium items-center text-sm xs:text-base lg:mb-[16px] md:mb-[16px] sm:mb-[16px] mb-[12px] gap-3'>
+                    <div className='flex flex-wrap font-medium items-center text-sm xs:text-base lg:mb-4 md:mb-4 sm:mb-4 mb-3 gap-3'>
                         <span>{movie.year}</span>
                         <span className='text-gray-400 font-light'>|</span>
                         <span>{movie.age}</span>
@@ -46,9 +44,9 @@ export default function DetailFilm({ informationFilm }: Props) {
                         <span>{movie.quality}</span>
                     </div>
 
-                    <div className='flex items-center gap-2 xs:gap-3 sm:gap-4 lg:mb-[16px] md:mb-[16px] sm:mb-[16px] mb-[12px] xs:mb-4 flex-wrap'>
+                    <div className='flex items-center gap-2 xs:gap-3 sm:gap-4 lg:mb-4 md:mb-4 sm:mb-4 mb-3 xs:mb-4 flex-wrap'>
                         <VideoProgressIndicator />
-                        <span className='ml-1 xs:ml-2 xs:text-base flex-shrink-0 text-xs'>
+                        <span className='ml-1 xs:ml-2 xs:text-base shrink-0 text-xs'>
                             {t('still_has')} {movie.duration_minutes}
                         </span>
                     </div>
@@ -56,7 +54,7 @@ export default function DetailFilm({ informationFilm }: Props) {
                         <SeeMore
                             text={movie.description}
                             maxLines={5}
-                            className='text-sm xs:text-base text-white leading-relaxed text-justify break-words'
+                            className='text-sm xs:text-base text-white leading-relaxed text-justify wrap-break-word'
                             classLabel='font-medium! text-gray-300!'
                             seeMoreText={t('seeMore')}
                             seeLessText={t('seeLess')}
@@ -68,7 +66,7 @@ export default function DetailFilm({ informationFilm }: Props) {
                     className='
                         w-full 
                         lg:w-2/9 
-                        flex-shrink-0 
+                        shrink-0 
                         ml-0 
                         lg:ml-auto 
                         text-left
@@ -78,19 +76,19 @@ export default function DetailFilm({ informationFilm }: Props) {
                     <div className='text-sm gap-2'>
                         <div className='items-baseline py-1.5'>
                             <span className='text-[#b3b3b3] pr-0.5'>{t('actors')}:</span>
-                            <span className='mt-1 font-medium break-words cursor-pointer'>
+                            <span className='mt-1 font-medium wrap-break-word cursor-pointer'>
                                 {movie.actors.join(', ')}
                             </span>
                         </div>
                         <div className='items-baseline gap-1 py-1.5'>
                             <span className='text-[#b3b3b3] pr-0.5'>{t('director')}:</span>
-                            <span className='mt-1 font-medium break-words cursor-pointer'>
+                            <span className='mt-1 font-medium wrap-break-word cursor-pointer'>
                                 {movie.directors.join(', ')}
                             </span>
                         </div>
                         <div className='items-baseline gap-1 py-1.5'>
                             <span className='text-[#b3b3b3] pr-0.5'>{t('genre')}:</span>
-                            <span className='mt-1 font-medium break-words cursor-pointer'>
+                            <span className='mt-1 font-medium wrap-break-word cursor-pointer'>
                                 {movie.genres.join(', ')}
                             </span>
                         </div>

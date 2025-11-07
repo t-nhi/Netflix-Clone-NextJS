@@ -1,13 +1,13 @@
 import { getMockFilms, getMockFilmsWithRank } from '@/_mock'
-import HeaderFixed from '@/app/[locale]/(user)/films/_components/header-fixed'
-import VideoCarousel from '@/app/[locale]/(user)/films/_components/video-carousel'
-import FilmsPageProvider from '@/app/[locale]/(user)/films/context'
 import FilmCarousel from '@/components/film-carousel'
 import Footer from '@/components/footer'
 import { MovieCardHoverInfoProvider, MovieCard } from '@/components/movie-card-hover-info'
 import RankedMovieCard from '@/components/ranked-movie-card'
 import { CarouselItem } from '@/components/ui/carousel'
 import { useTranslations } from 'next-intl'
+import MoviesPageProvider from './_context'
+import HeaderFixed from './_components/header-fixed'
+import MoviesCarousel from './_components/movies-carousel'
 
 const MockSliderMovies = getMockFilms(5)
 const mockMovies = getMockFilms(20)
@@ -16,10 +16,10 @@ const mockTrendingMovies = getMockFilmsWithRank(9)
 export default function AccountHomePage() {
     const t = useTranslations('FilmsPage.sections')
     return (
-        <FilmsPageProvider>
+        <MoviesPageProvider>
             <HeaderFixed />
             <main className='bg-[#141414] text-white'>
-                <VideoCarousel movies={MockSliderMovies} />
+                <MoviesCarousel movies={MockSliderMovies} />
                 <div className='pt-6'>
                     <h2 className='px-6 md:px-8 lg:px-14 mb-4 text-base md:text-lg lg:text-xl font-semibold'>
                         {t('matchedToYou')}
@@ -92,6 +92,6 @@ export default function AccountHomePage() {
                 </div>
             </main>
             <Footer className='px-6 md:px-8 lg:px-14 bg-[#141414]' />
-        </FilmsPageProvider>
+        </MoviesPageProvider>
     )
 }

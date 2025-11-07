@@ -10,7 +10,6 @@ export function formatFetchBaseQueryErrorMessage(error: FetchBaseQueryError): Re
     const silentStatuses = [
         HttpStatusCode.UNAUTHORIZED,
         HttpStatusCode.FORBIDDEN,
-        HttpStatusCode.NOT_FOUND,
         HttpStatusCode.ENTITY_ERROR,
         HttpStatusCode.TOO_MANY_REQUESTS
     ]

@@ -12,7 +12,8 @@
         "passwordInvalid": "Password must include at least 1 letter, 1 number, and 1 special character.",
         "passwordMismatch": "Passwords do not match",
         "mustAgreeToTerms": "You must agree to the terms to continue",
-        "genericError": "An error occurred. Please try again"
+        "genericError": "An error occurred. Please try again",
+        "otpMismatch": "OTP code is incorrect"
     },
     "HomePage": {
         "title": "Hello world!",
@@ -191,19 +192,14 @@
         "googleSignIn": "Sign In with Google",
         "or": "or"
     },
-    "ForgotPasswordPage": {
-        "title": "Reset Password",
-        "description": "Enter the email associated with your account and we'll send an email with instructions to reset your password.",
-        "emailLabel": "Email",
-        "sendEmail": "Send email to me",
-        "successTitle": "Email Sent!",
-        "successDescription": "We've sent an email with instructions to reset your password to {email}. If you don't see the email, please check your spam folder or try again"
-    },
     "ResetPasswordPage": {
         "emailLabel": "{email}",
+        "description": "Forgot your password? Let’s help you recover access to your account and get back to your services.",
         "title": "Reset Password",
         "passwordLabel": "New password",
-        "confirmPasswordLabel": "Confirm new password",
+        "otpLabel": "OTP Code",
+        "resendOtp": "Resend OTP",
+        "sendOtp": "Send OTP",
         "save": "Save",
         "cancel": "Cancel"
     },
@@ -258,7 +254,9 @@
         },
         "heroSection": {
             "play": "Play",
-            "moreInfo": "More Info"
+            "moreInfo": "More Info",
+            "seeMore": "See more",
+            "seeLess": "See less"
         },
         "tagForMovie": {
             "recentlyAdded": "Recently Added"

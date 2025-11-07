@@ -8,32 +8,33 @@ export const HERO_VIEW_MODE = {
 } as const
 export type HeroViewModeType = (typeof HERO_VIEW_MODE)[keyof typeof HERO_VIEW_MODE]
 
-interface FilmsContextProps {
+interface MoviesContextProps {
     heroViewMode: HeroViewModeType
     setHeroViewMode: (mode: HeroViewModeType) => void
 }
 
-const FilmsContext = createContext<FilmsContextProps | undefined>(undefined)
+const MoviesContext = createContext<MoviesContextProps | undefined>(undefined)
 
-export default function FilmsPageProvider({ children }: { children: React.ReactNode }) {
+export default function MoviesPageProvider({ children }: { children: React.ReactNode }) {
     const [heroViewMode, setHeroViewMode] = useState<HeroViewModeType>('videos')
 
     return (
-        <FilmsContext
+        <MoviesContext.Provider
             value={{
                 heroViewMode,
                 setHeroViewMode
             }}
         >
             {children}
-        </FilmsContext>
+        </MoviesContext.Provider>
     )
 }
 
-export function useFilmsPageContext() {
-    const context = useContext(FilmsContext)
+export function useMoviesPageContext() {
+    const context = useContext(MoviesContext)
     if (!context) {
-        throw new Error('useFilmsContext must be used within a FilmsProvider')
+        throw new Error('useMoviesContext must be used within a MoviesProvider')
     }
     return context
 }
+
