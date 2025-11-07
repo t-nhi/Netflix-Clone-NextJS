@@ -11,6 +11,10 @@ const routesNeedRewrite: Rewrite[] = [
     {
         source: '/signup',
         destination: '/signup/verify-email'
+    },
+    {
+        source: '/admin',
+        destination: '/admin/movies/add'
     }
 ]
 
