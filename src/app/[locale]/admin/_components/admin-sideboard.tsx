@@ -21,7 +21,6 @@ import Logo from '@/components/icons/logo'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar-admin'
 import { ModeToggle } from '@/components/mode-toggle'
 import SelectLanguage from '@/components/locale-switcher-select'
-import ArrowLeftIcon from '@/components/icons/arrow-left'
 
 interface AdminSideboardProps {
     className?: string
@@ -39,7 +38,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
         { label: 'Services', icon: PackageCheck, href: '/admin/services' },
         { label: 'Movies', icon: Film, href: '/admin/movies' },
         { label: 'Purchases', icon: ShoppingCart, href: '/admin/purchases' },
-        { label: 'Genres', icon: Package, href: '/admin/categories' },
+        { label: 'Categories', icon: Package, href: '/admin/categories' },
         { label: 'Actors', icon: User, href: '/admin/actors' },
         { label: 'Top Contents', icon: TrendingUp, href: '/admin/top-contents' },
         { label: 'Notifications', icon: Bell, href: '/admin/notifications' }
@@ -70,11 +69,13 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                 >
                     <div className='pb-6'>
                         <div className='px-4 mb-4'>
-                            <button className='w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center gap-2 cursor-pointer'>
+                            <Link
+                                href='/admin/movies/add'
+                                className='w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center gap-2 transition-colors'
+                            >
                                 <Upload className='h-4 w-4' /> Upload
-                            </button>
+                            </Link>
                         </div>
-
                         <nav className='flex flex-col gap-1 px-4'>
                             <div className='px-4 text-gray-400 text-xs mt-4'>Manage</div>
                             {menuItems.map(({ label, icon: Icon, href }) => (
@@ -114,15 +115,6 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                                 </Link>
                             ))}
                         </nav>
-                    </div>
-                    <div className='mb-6 px-4 flex items-center gap-2'>
-                        <ArrowLeftIcon
-                            className='h-4 w-4 cursor-pointer text-gray-300 hover:text-white transition-colors'
-                            onClick={() => window.history.back()}
-                        />
-                        <Link href='/' className='text-sm text-gray-300 hover:text-white truncate'>
-                            Back to Netflix
-                        </Link>
                     </div>
                 </div>
             </aside>

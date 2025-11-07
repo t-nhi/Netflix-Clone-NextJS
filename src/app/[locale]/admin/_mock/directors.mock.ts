@@ -1,6 +1,6 @@
-import { ActorType } from '@/types/actor-director.type'
+import { DirectorType } from '@/types/actor-director.type'
 
-export const actorDetail: ActorType = {
+export const directorDetail: DirectorType = {
     id: 'act001',
     fullName: 'Leonardo DiCaprio',
     image: '/images/actor/actor.jpg',
@@ -8,7 +8,7 @@ export const actorDetail: ActorType = {
     dateOfBirth: '1974-11-11',
     createdAt: '2025-10-25',
     updatedAt: '2025-10-25',
-    type: 'actor'
+    type: 'director'
 }
 
 const now = new Date()
@@ -31,7 +31,7 @@ const randomDate = () => {
     return randomDate.toISOString().split('T')[0]
 }
 
-const actorTemplates: Partial<ActorType>[] = [
+const actorTemplates: Partial<DirectorType>[] = [
     {
         fullName: 'Leonardo DiCaprio',
         biography: 'Nam dien vien noi tieng voi vai dien trong Titanic va Inception.',
@@ -69,26 +69,21 @@ const actorTemplates: Partial<ActorType>[] = [
     }
 ]
 
-export const getMockActors = (count: number): ActorType[] => {
+export const getMockDirectors = (count: number): DirectorType[] => {
     return Array(count)
-        .fill(actorDetail)
+        .fill(directorDetail)
         .map((item, index) => {
             const template = actorTemplates[index % actorTemplates.length]
             return {
                 ...item,
                 id: `${index + 1}act${(index + 1000).toString(36)}`,
-                fullName: template.fullName || actorDetail.fullName,
+                fullName: template.fullName || directorDetail.fullName,
                 image: template.image ?? '/images/actor/đefault.png',
-                biography: template.biography || actorDetail.biography,
-                dateOfBirth: actorDetail.dateOfBirth,
+                biography: template.biography || directorDetail.biography,
+                dateOfBirth: directorDetail.dateOfBirth,
                 createdAt: randomDate(),
                 updatedAt: randomDate(),
-                type: 'actor'
+                type: 'director'
             }
         })
-}
-
-export const getMockActorById = (id: string): ActorType | undefined => {
-    const actors = getMockActors(20)
-    return actors.find((actor) => actor.id === id)
 }

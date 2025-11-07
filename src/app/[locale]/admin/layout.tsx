@@ -1,6 +1,6 @@
 'use client'
 
-import AdminSideboard from '@/components/admin-sideboard'
+import AdminSideboard from '@/app/[locale]/admin/_components/admin-sideboard'
 import ScrollToTopButton from '@/components/scroll-to-top'
 
 interface AdminLayoutProps {

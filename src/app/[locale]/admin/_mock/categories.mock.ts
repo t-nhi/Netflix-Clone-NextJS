@@ -54,6 +54,6 @@ export const getMockCategories = (number: number): CategoryType[] => {
 }
 
 export const getMockCategoryById = (id: string): CategoryType | undefined => {
-    const categories = getMockCategories(20) // Đồng bộ với CategoriesList
+    const categories = getMockCategories(20)
     return categories.find((category) => category.id === id)
 }

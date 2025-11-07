@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import BrandInput from '@/components/brand-input'
 import { useTranslations } from 'next-intl'
 import React from 'react'
-import { GenreBody, GenreBodyType } from '@/utils/validation/categories.validation'
+import { GenreBody, GenreBodyType } from '@/utils/validation/category.validation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 

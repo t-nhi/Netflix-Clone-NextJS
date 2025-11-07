@@ -436,6 +436,105 @@
             "genreNameTooShort": "Tên thể loại quá ngắn (tối thiểu 2 ký tự)",
             "genreNameTooLong": "Tên thể loại quá dài (tối đa 50 ký tự)",
             "genreDescriptionTooLong": "Mô tả thể loại quá dài (tối đa 300 ký tự)"
+        },
+        "filmsPage": {
+            "emptyFilm": "Danh sách phim rỗng. Hãy thêm phim đầu tiên",
+            "title": "Danh sách phim",
+            "searchFilms": "Tìm kiếm phim",
+            "addFilm": "Thêm phim",
+            "id": "ID",
+            "poster": "Poster",
+            "name": "Tên phim",
+            "year": "Năm phát hành",
+            "rating": "Đánh giá",
+            "duration": "Thời gian",
+            "hide": "Ẩn",
+            "actions": "Hành động",
+            "edit": "Chình sửa",
+            "delete": "Xóa",
+            "searchFilm": "Tìm kiếm phim",
+            "messages": {
+                "deleteSuccess": "Đã xóa phim"
+            }
+        },
+        "uploadFilm": {
+            "fileInfor": {
+                "size": "Dung lượng: {size} MB",
+                "replace": "Thay đổi"
+            },
+            "guidelines": {
+                "sizeAndDuration": {
+                    "title": "Hướng dẫn về thời gian và kích thước",
+                    "description": "Vui lòng chọn file có kích thước không quá 10MB"
+            
+                },
+                "fileFormats": {
+                    "title": "Hướng dẫn về điều kiện cơ bản",
+                    "description": "Vui lòng file trong điều kiện MP4"
+                },
+                "videoResolutions": {
+                    "title": "Hướng dẫn về phần mềm",
+                    "description": "Vui lòng chọn 720"
+                },
+                "aspectRatios": {
+                    "title": "Hướng dẫn về tỷ lệ",
+                    "description": "Vui lòng chọn khung cơ bản 16:9"
+                }
+            },
+            "uploadFile": {
+                "selectFile": "Chọn file để tải lên",
+                "draganddrop": "Kéo và thả file vào đây",
+                "selectButton": "Chọn file"
+            },
+            "uploadForm": {
+                "messages": {
+                    "resetForm": "Đặt lại biểu mẫu thành công!",
+                    "uploadSuccess": "Tải lên phim thành công!",
+                    "uploadFailed": "Tải lên phim thất bại. Vui lòng thử lại."
+                },
+                "verticalPoster": "Poster dọc",
+                "horizontalPoster": "Poster ngang",
+                "title": "Tên phim",
+                "titlePlaceholder": "Nhập tên phim",
+                "description": "Mô tả phim",
+                "descriptionPlaceholder": "Nhập mô tả phim",
+                "dateRealease": "Ngày phát hành",
+                "director":"Đạo diễn",
+                "selectDirector": "Chọn đạo diễn",
+                "actors": "Diễn viên",
+                "selectActors": "Chọn diễn viên",
+                "genres": "Thể loại",
+                "selectGenres": "Chọn thể loại",
+                "country": "Quốc gia",
+                "selectCountry": "Chọn quốc gia",
+                "ageRank": "Giới hạn tuổi",
+                "selectAgeRank": "Chọn độ tuổi",
+                "quality": "Chất lượng",
+                "selectQuality": "Chọn chất lượng",
+                "duration": "Thời lượng (phút)",
+                "uploadButton": "Đăng tải",
+                "resetButton": "Đặt lại"
+            },
+            "uploadPoster": {
+                "guide": "Kéo và thả ảnh vào đây hoặc nhấp để chọn ảnh",
+                "changePoster": "Thay đổi"
+            },
+            "validation": {
+                "titleRequired": "Vui lòng nhập tiêu đề phim",
+                "descriptionRequired": "Vui lòng nhập mô tả phim",
+                "descriptionMaxLength": "Mô tả không được vượt quá 5000 ký tự",
+                "releaseDateInvalid": "Ngày phát hành không hợp lệ",
+                "directorsRequired": "Vui lòng chọn ít nhất một đạo diễn",
+                "actorsRequired": "Vui lòng chọn ít nhất một diễn viên",
+                "genresRequired": "Vui lòng chọn ít nhất một thể loại",
+                "countryRequired": "Vui lòng chọn quốc gia",
+                "verticalPosterRequired": "Vui lòng tải lên poster dọc",
+                "horizontalPosterRequired": "Vui lòng tải lên poster ngang",                
+                "ageRequired": "Vui lòng chọn độ tuổi giới hạn",
+                "qualityRequired": "Vui lòng chọn chất lượng phim",
+                "durationInvalid": "Thời lượng phải là số",
+                "durationMin": "Thời lượng tối thiểu là 1 phút"
+            }
         }
     }
 }

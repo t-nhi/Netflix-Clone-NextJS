@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { cn } from '@/lib/utils'
 import BrandInput from '@/components/brand-input'
 import { useRouter } from 'next/navigation'
-import { GenreBody, GenreBodyType } from '@/utils/validation/categories.validation'
+import { GenreBody, GenreBodyType } from '@/utils/validation/category.validation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
