@@ -346,5 +346,195 @@
         "setting": "Setting",
         "confirm": "Confirm",
         "cancel": "Cancel"
+    },
+    "AdminPage": {
+        "genresPage": {
+            "messages":{
+                "emptyGenre": "The genre list is empty! Please add at least one genre."
+            },
+            "title": "Genres",
+            "searchGenres": "Search genres",
+            "addGenre": "Add new genre",
+            "id": "ID",
+            "name": "Name genre",
+            "description": "Description",
+            "createdAt": "Creat At",
+            "updatedAt": "Update At",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "delSuccess": "Genre deleted successfully!",
+            "addGenreForm": {
+                "title": "Add New Genre",
+                "subtitle": "Please fill in the information below to add a new genre.",
+                "nameLabel": "Enter genre name",
+                "descLabel": "Enter genre description (optional)",
+                "addButton": "Add genre",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Genre added successfully!"
+            },
+            "editGenreForm": {
+                "title": "Edit Genre",
+                "subtitle": "Please fill in the information below to edit the genre.",
+                "nameLabel": "Genre name",
+                "descLabel": "Genre description (optional)",
+                "saveButton": "Save change",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Genre edited successfully!",
+                "notFound": "Genre not found"
+            }
+        },
+        "actorsPage": {
+            "messages":{
+                "emptyActor ": "The actor list is empty! Please add at least one actor."
+            },
+            "title": "Actors",
+            "searchActors": "Search actors",
+            "addActor": "Add new actor",
+            "id": "ID",
+            "name": "Name actor",
+            "image": "Avatar",
+            "bio": "Biography",
+            "dateOfBirth": "Date of Birth",
+            "creatAt": "Creat At",
+            "updateAt": "Update At",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "delSuccess": "Actor deleted successfully!",
+            "editActorForm": {
+                "title": "Edit Actor",
+                "subtitle": "Please fill in the information below to edit the actor.",
+                "nameLabel": "Full name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "editImage": "Edit avatar",
+                "bioPlaceholder": "Enter actor biography...",
+                "cancelButton": "Cancel",
+                "saveButton": "Save change",
+                "toastSuccess": "Actor edited successfully!"
+            },
+            "addActorForm": {
+                "title": "Add New Actor",
+                "subtitle": "Please fill in the information below to add a new actor.",
+                "nameLabel": "Enter actor name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "addImage": "Add avatar",
+                "bioPlaceholder": "Enter actor biography...",
+                "addButton": "Add actor",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Actor added successfully!"
+            }
+        },
+        "validation": {
+            "fullNameRequired": "Pleas enter full name",
+            "fullNameTooShort": "Fullname too short (min 2 characters)",
+            "fullNameTooLong": "Fullname too long (max 100 characters)",
+            "biographyTooLong": "Biography too long (max 500 characters)",
+            "invalidDateFormat": "Invalid date format (YYYY-MM-DD)",
+            "invalidImageUrl": "Invalid image url",
+            "genreNameRequired": "Please enter genre name",
+            "genreNameTooShort": "Genre name too short (min 2 characters)",
+            "genreNameTooLong": "Genre name too long (max 50 characters)",
+            "genreDescriptionTooLong": "Genre description too long (max 300 characters)"
+        },
+        "filmsPage": {
+            "emptyFilm": "The film list is empty! Please add at least one film.",
+            "title": "Movies",
+            "id": "ID",
+            "poster": "Poster",
+            "name": "Name",
+            "year": "Release year",
+            "rating": "Rating",
+            "duration": "Duration",
+            "hide": "Hide",
+            "actions": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "searchFilms": "Search movies",
+            "addFilm": "Add new movie",
+            "messages": {
+                "deleteSuccess": "Movie is deleted"
+            }
+        },
+        "uploadFilm": {
+            "fileInfor": {
+                "size": "Size: {size} MB",
+                "replace": "Replace"
+            },
+            "guidelines": {
+                "sizeAndDuration": {
+                    "title": "Size and duration guidelines",
+                    "description": "Please ensure the video file size is less than 100MB and the duration is less than 10 minutes."
+                },
+                "fileFormats": {
+                    "title": "File formats",
+                    "description": "Please ensure the video file is in MP4 format."
+                },
+                "videoResolutions": {
+                    "title": "Video resolutions",
+                    "description": "Please ensure the video resolution is at least 720p."
+                },
+                "aspectRatios": {
+                    "title": "Aspect ratios",
+                    "description": "Please ensure the video aspect ratio is at least 16:9."
+                }
+            },
+            "uploadFile": {
+                "selectFile": "Select file to upload",
+                "draganddrop": "Drag and drop file here",
+                "selectButton": "Select file"
+            },
+            "uploadForm": {
+                "messages": {
+                    "resetForm": "Form reset successfully!",
+                    "uploadSuccess": "Movie uploaded successfully!",
+                    "uploadFailed": "Movie upload failed. Please try again."
+                },
+                "verticalPoster": "Vertical Poster",
+                "horizontalPoster": "Horizontal Poster",
+                "title": "Movie Title",
+                "titlePlaceholder": "Enter movie title",
+                "description": "Movie description",
+                "descriptionPlaceholder": "Enter movie description",
+                "dateRealease": "Release date",
+                "director": "Director",
+                "selectDirector": "Select director",
+                "actors": "Actors",
+                "selectActors": "Select actors",
+                "genres": "Category",
+                "selectGenres": "Select category",
+                "country": "Country",
+                "selectCountry": "Select country",
+                "ageRank": "Age rank",
+                "selectAgeRank": "Select age rank",
+                "quality": "Quality",
+                "selectQuality": "Select quality",
+                "duration": "Duration (minutes)",
+                "uploadButton": "Upload Movie",
+                "resetButton": "Reset"
+            },
+            "uploadPoster": {
+                "guide": "Drag and drop an image here or click to select an image",
+                "changePoster": "Change"
+            },
+            "validation": {
+                "titleRequired": "Please enter a film title",
+                "descriptionRequired": "Please enter a film description",
+                "descriptionMaxLength": "Description must not exceed 5000 characters",
+                "releaseDateInvalid": "Invalid release date",
+                "directorsRequired": "Please select at least one director",
+                "actorsRequired": "Please select at least one actor",
+                "genresRequired": "Please select at least one genre",
+                "countryRequired": "Please select a country",
+                "verticalPosterRequired": "Please upload vertical poster",
+                "horizontalPosterRequired": "Please upload horizontal poster",
+                "ageRequired": "Please select an age rating",
+                "qualityRequired": "Please select film quality",
+                "durationInvalid": "Duration must be a number",
+                "durationMin": "Duration must be at least 1 minute"
+            }
+        }
     }
 }
