@@ -50,51 +50,82 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
         <header
             className={cn('px-6 md:px-8 lg:px-37 bg-transparent  flex items-center justify-between py-4', className)}
         >
-            <Link href='/'>
-                <Logo className='lg:h-[40px] lg:w-[148px] w-[89px] h-[24px]' />
-            </Link>
-            {user ? (
-                <Popover>
-                    <PopoverTrigger>
-                        <div className='bg-transparent flex items-center gap-2 focus:outline-none hover:cursor-pointer'>
-                            <Image
-                                src='/images/avatar_user.png'
-                                width={40}
-                                height={40}
-                                alt={user.first_name + ' ' + user.last_name}
-                                className='lg:h-[40px] h-[24px] lg:w-[40px] w-[24px] '
-                                style={{
-                                    filter: `hue-rotate(${userHue}deg)`
-                                }}
-                            />
-                            <ChevronDown className='text-white lg:size-4 size-3 ' />
-                        </div>
-                    </PopoverTrigger>
-                    <PopoverContent className='w-48 p-2!' align='end'>
-                        <div className='flex flex-col gap-2'>
-                            <Link href='/account' className='block w-full'>
-                                <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
-                                    <UserCog />
-                                    Settings
+            <div className='flex items-center gap-4'>
+                <Link href='/'>
+                    <Logo className='lg:h-10 lg:w-[148px] w-[89px] h-6' />
+                </Link>
+                <Link
+                    href='/movies'
+                    className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
+                        'font-semibold text-brand ': pathName.includes('/movies')
+                    })}
+                >
+                    Movies
+                </Link>
+                {user && (
+                    <>
+                        <Link
+                            href='/favorites'
+                            className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
+                                'font-semibold text-brand ': pathName.includes('/favorites')
+                            })}
+                        >
+                            Favorites
+                        </Link>
+                        <Link
+                            href='/history'
+                            className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
+                                'font-semibold text-brand ': pathName.includes('/history')
+                            })}
+                        >
+                            History
+                        </Link>
+                    </>
+                )}
+            </div>
+
+            <div className='flex items-center gap-4 '>
+                <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
+                <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
+                {user ? (
+                    <Popover>
+                        <PopoverTrigger>
+                            <div className='bg-transparent flex items-center gap-2 focus:outline-none hover:cursor-pointer'>
+                                <Image
+                                    src='/images/avatar_user.png'
+                                    width={40}
+                                    height={40}
+                                    alt={user.first_name + ' ' + user.last_name}
+                                    className='lg:h-10 h-6 lg:w-10 w-6 '
+                                    style={{
+                                        filter: `hue-rotate(${userHue}deg)`
+                                    }}
+                                />
+                                <ChevronDown className='text-white lg:size-4 size-3 ' />
+                            </div>
+                        </PopoverTrigger>
+                        <PopoverContent className='w-48 p-2!' align='end'>
+                            <div className='flex flex-col gap-2'>
+                                <Link href='/account' className='block w-full'>
+                                    <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
+                                        <UserCog />
+                                        Settings
+                                    </Button>
+                                </Link>
+                                <Button
+                                    variant={'ghost'}
+                                    className='justify-start hover:cursor-pointer'
+                                    onClick={onLogout}
+                                    disabled={logoutResult.isLoading}
+                                >
+                                    {logoutResult.isLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
+                                    Logout
                                 </Button>
-                            </Link>
-                            <Button
-                                variant={'ghost'}
-                                className='justify-start hover:cursor-pointer'
-                                onClick={onLogout}
-                                disabled={logoutResult.isLoading}
-                            >
-                                {logoutResult.isLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
-                                Logout
-                            </Button>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-            ) : (
-                <div className='flex items-center gap-4 '>
-                    <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
-                    <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
-                    {!isLoginPage && (
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                ) : (
+                    !isLoginPage && (
                         <Link href='/login'>
                             <Button
                                 className={cn(
@@ -104,9 +135,9 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
                                 {t('signIn')}
                             </Button>
                         </Link>
-                    )}
-                </div>
-            )}
+                    )
+                )}
+            </div>
         </header>
     )
 }

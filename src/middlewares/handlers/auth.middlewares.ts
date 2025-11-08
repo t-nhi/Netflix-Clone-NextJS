@@ -22,7 +22,8 @@ const AuthenticationMiddleware: MiddlewareFn = (
     const isAuthenticated = !!refresh_token
     const isAccessTokenValid = !!access_token
 
-    if (isAuthenticated && !isAccessTokenValid) {
+    if (isAuthenticated && !isAccessTokenValid && ctx.cleanPathname !== AuthPaths.REFRESH_TOKEN) {
+        console.log('Access token is missing or invalid, redirecting to refresh token endpoint.')
         const url = buildURLObjWithLocale({
             url: AuthPaths.REFRESH_TOKEN,
             baseUrl: req.url,
