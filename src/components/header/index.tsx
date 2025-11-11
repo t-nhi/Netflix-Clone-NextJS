@@ -15,13 +15,15 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useLogout } from '@/hooks/data/useAuth'
+import { headerMenuItems } from './header.config'
 
 interface HeaderProps {
     className?: string
     buttonClassName?: string
+    menuItemClassName?: string
 }
 
-export default function Header({ className, buttonClassName }: HeaderProps) {
+export default function Header({ className, buttonClassName, menuItemClassName }: HeaderProps) {
     const t = useTranslations('Header')
     const router = useRouter()
     const pathName = usePathname()
@@ -54,34 +56,26 @@ export default function Header({ className, buttonClassName }: HeaderProps) {
                 <Link href='/'>
                     <Logo className='lg:h-10 lg:w-[148px] w-[89px] h-6' />
                 </Link>
-                <Link
-                    href='/movies'
-                    className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
-                        'font-semibold text-brand ': pathName.includes('/movies')
-                    })}
-                >
-                    Movies
-                </Link>
-                {user && (
-                    <>
+                {headerMenuItems.map((Item) => {
+                    if (Item.isAuthPath && !user) return null
+                    const isActive = pathName.includes(Item.href)
+                    return (
                         <Link
-                            href='/favorites'
-                            className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
-                                'font-semibold text-brand ': pathName.includes('/favorites')
-                            })}
+                            key={Item.href}
+                            href={Item.href}
+                            className={cn(
+                                'hover:[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] transition-all duration-300 hover:text-brand ml-4 hidden md:flex gap-2 items-center ',
+                                {
+                                    '[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] text-brand ':
+                                        isActive
+                                },
+                                menuItemClassName
+                            )}
                         >
-                            Favorites
+                            {isActive ? <Item.activeIcon /> : <Item.icon />} {Item.title}
                         </Link>
-                        <Link
-                            href='/history'
-                            className={cn('hover:font-semibold hover:text-brand ml-4 hidden md:block', {
-                                'font-semibold text-brand ': pathName.includes('/history')
-                            })}
-                        >
-                            History
-                        </Link>
-                    </>
-                )}
+                    )
+                })}
             </div>
 
             <div className='flex items-center gap-4 '>

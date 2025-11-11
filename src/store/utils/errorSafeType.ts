@@ -5,7 +5,6 @@ export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryEr
     return typeof error === 'object' && error !== null && 'status' in error
 }
 
-
 export function isEntityError(error: unknown): error is FetchBaseQueryError & {
     data: { errors: EntityError[] }
 } {

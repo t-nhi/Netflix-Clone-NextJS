@@ -51,6 +51,11 @@ export default function MovieDetailDialog({ movie, open, onOpenChange, onClose }
         }
     }
 
+    const handleOnClose = () => {
+        onOpenChange(false)
+        onClose?.()
+    }
+
     if (!movie) return null
 
     return (
@@ -91,8 +96,8 @@ export default function MovieDetailDialog({ movie, open, onOpenChange, onClose }
                     <Button
                         variant='ghost'
                         size='sm'
-                        className='absolute top-4 right-4 bg-[#141414]/80 hover:bg-[#141414]/60 text-white hover:text-white rounded-full w-10 h-10 p-0'
-                        onClick={() => onOpenChange(false)}
+                        className='absolute  cursor-pointer top-4 right-4 bg-[#141414]/80 hover:bg-[#141414]/60 text-white hover:text-white rounded-full w-10 h-10 p-0'
+                        onClick={handleOnClose}
                     >
                         <X className='w-5 h-5' />
                     </Button>

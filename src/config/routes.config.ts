@@ -14,7 +14,9 @@ export enum AdminPaths {
 export enum UserPaths {
     ACCOUNT = '/account',
     PASSWORD = '/password',
-    PAYMENT = '/payment'
+    PAYMENT = '/payment',
+    FAVORITES = '/favorites',
+    HISTORY = '/history'
 }
 
 export enum CommonPaths {

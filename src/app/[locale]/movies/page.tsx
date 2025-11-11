@@ -17,7 +17,7 @@ export default function AccountHomePage() {
     const t = useTranslations('FilmsPage.sections')
     return (
         <MoviesPageProvider>
-            <HeaderFixed />
+            <HeaderFixed className='text-white' />
             <main className='bg-[#141414] text-white'>
                 <MoviesCarousel movies={MockSliderMovies} />
                 <div className='pt-6'>
