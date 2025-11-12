@@ -3,7 +3,7 @@ import { HttpMethod } from '@/constants/http.enum'
 import { TokenKeys } from '@/constants/token-keys.enum'
 import { HttpException } from '@/exceptions/http.exception'
 import { InternalException } from '@/exceptions/internalServer.exception'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { setTokenCookie } from '@/utils/cookies.util'
 import { decodeJwt } from '@/utils/jwt.util'
 import { LoginBodyType } from '@/utils/validation/auth.validation'
@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
         const response = await AuthRequestApi.login(body)
 
         const { access_token, refresh_token } = response.data
-        const decodedAccessToken = decodeJwt<JwtPayload>(access_token)
-        const decodedRefreshToken = decodeJwt<JwtPayload>(refresh_token)
+        const decodedAccessToken = decodeJwt<JwtPayloadType>(access_token)
+        const decodedRefreshToken = decodeJwt<JwtPayloadType>(refresh_token)
 
         if (!decodedAccessToken || !decodedRefreshToken) {
             throw new Error(' Invalid tokens received from login response.')

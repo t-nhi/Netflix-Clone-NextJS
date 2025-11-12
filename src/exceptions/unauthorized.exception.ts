@@ -1,6 +1,6 @@
 import { HttpStatusCode } from '@/constants/http.enum'
 import { HttpException, HttpExceptionParams } from '@/exceptions/http.exception'
-import { HttpResponseWithError } from '@/types/common/http-response'
+import { HttpResponseWithError } from '@/types/common/http-response.type'
 import _ from 'lodash'
 
 export class UnauthorizedException extends HttpException {

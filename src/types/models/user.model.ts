@@ -4,7 +4,7 @@ import { Gender } from '@/constants/gender.enum'
 
 export const UserSchema = z.object({
     id: z.string(),
-    email: z.string().email(),
+    email: z.email(),
     first_name: z.string().nullable(),
     last_name: z.string().nullable(),
     is_enabled: z.boolean(),
@@ -20,17 +20,3 @@ export const UserSchema = z.object({
 })
 
 export type UserType = z.infer<typeof UserSchema>
-
-export const AuthUserSchema = UserSchema.pick({
-    id: true,
-    email: true,
-    first_name: true,
-    last_name: true,
-    is_enabled: true,
-    role: true,
-    created_at: true,
-    updated_at: true,
-    account_verified_at: true
-})
-
-export type AuthUserType = z.infer<typeof AuthUserSchema>

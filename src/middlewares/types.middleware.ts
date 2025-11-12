@@ -1,11 +1,11 @@
 import { localesType } from '@/i18n/i18n-config'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { NextRequest, NextResponse } from 'next/server'
 
 export type MiddlewareContext = {
     refreshToken: string | null
     accessToken: string | null
-    jwtPayload: JwtPayload | null
+    JwtPayloadType: JwtPayloadType | null
     locale: localesType | null
     cleanPathname: string | null
     [key: string]: any

@@ -1,6 +1,6 @@
 import { HttpStatusCode } from '@/constants/http.enum'
 import { HttpException } from '@/exceptions/http.exception'
-import { EntityError as EntityErrorType, HttpResponseWithEntityErrors } from '@/types/common/http-response'
+import { EntityError as EntityErrorType, HttpResponseWithEntityErrors } from '@/types/common/http-response.type'
 import _ from 'lodash'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

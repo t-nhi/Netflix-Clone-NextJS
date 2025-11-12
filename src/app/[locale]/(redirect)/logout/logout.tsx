@@ -1,7 +1,7 @@
 'use client'
 
 import { SearchParamsLoader, useSearchParamsLoader } from '@/components/search-params-loader'
-import { QueryKeys } from '@/constants/query-keys.constant'
+import { QueryKeys } from '@/constants/query-keys.enum'
 import { useLogout } from '@/hooks/data/useAuth'
 import { useRouter } from '@/i18n/navigation'
 import { useAppSelector } from '@/store/hooks'

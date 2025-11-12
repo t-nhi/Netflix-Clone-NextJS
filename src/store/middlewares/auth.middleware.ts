@@ -9,7 +9,7 @@ import {
     isSignUpMutationAction,
     isTokenReceivedAction
 } from '@/store/utils/safeType'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { decodeJwt } from '@/utils/jwt.util'
 import { Middleware } from '@reduxjs/toolkit'
 
@@ -36,7 +36,7 @@ export const authMiddleware: Middleware = (storeAPI: storeApiType) => (next) => 
     if (isLoginMutationAction(action)) {
         const { user, access_token, refresh_token } = action.payload.data
         storeAPI.dispatch(tokenReceived({ access_token, refresh_token }))
-        const accessTokenDecoded = decodeJwt<JwtPayload>(access_token) as JwtPayload
+        const accessTokenDecoded = decodeJwt<JwtPayloadType>(access_token) as JwtPayloadType
         storeAPI.dispatch(setRole(accessTokenDecoded.role))
         storeAPI.dispatch(setUserProfile(user))
         return next(action)
@@ -44,7 +44,7 @@ export const authMiddleware: Middleware = (storeAPI: storeApiType) => (next) => 
 
     if (isSignUpMutationAction(action)) {
         const { user, access_token, refresh_token } = action.payload.data
-        const accessTokenDecoded = decodeJwt<JwtPayload>(access_token)
+        const accessTokenDecoded = decodeJwt<JwtPayloadType>(access_token)
 
         storeAPI.dispatch(tokenReceived({ access_token, refresh_token }))
         storeAPI.dispatch(setUserProfile(user))

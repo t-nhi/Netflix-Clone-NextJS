@@ -1,4 +1,4 @@
-import { HttpResponseWithDataSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 import { ActorSchema } from '@/types/models/actor.model'
 import z from 'zod'
 

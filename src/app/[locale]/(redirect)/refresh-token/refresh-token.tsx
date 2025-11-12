@@ -6,7 +6,7 @@ import { setAccessToken } from '@/store/features/authSlice'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { handleRefreshToken as refreshToken } from '@/helper/handleRefreshToken'
-import { QueryKeys } from '@/constants/query-keys.constant'
+import { QueryKeys } from '@/constants/query-keys.enum'
 import { useLogoutMutation } from '@/store/services/auth/proxy-auth.services'
 
 export default function RefreshToken() {

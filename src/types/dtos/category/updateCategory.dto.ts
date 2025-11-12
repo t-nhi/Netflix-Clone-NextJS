@@ -1,4 +1,4 @@
-import { HttpResponseWithDataSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 import { CategorySchema } from '@/types/models/category.model'
 import z from 'zod'
 

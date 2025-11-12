@@ -6,7 +6,7 @@ export function createMiddlewareChain(...middlewares: MiddlewareFn[]) {
         const ctx: MiddlewareContext = {
             refreshToken: null,
             accessToken: null,
-            jwtPayload: null,
+            JwtPayloadType: null,
             locale: null,
             cleanPathname: null
         }

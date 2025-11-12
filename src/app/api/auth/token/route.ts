@@ -1,7 +1,7 @@
 import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
 import { HttpException } from '@/exceptions/http.exception'
 import { InternalException } from '@/exceptions/internalServer.exception'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { UpdateCookieTokenBodyType } from '@/types/dtos/auth/updateCookieToken.dto'
 import { decodeJwt } from '@/utils/jwt.util'
 import { cookies } from 'next/headers'
@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
                 status: HttpStatusCode.BAD_REQUEST
             })
         }
-        const decodedAccessToken = decodeJwt<JwtPayload>(access_token)
-        const decodedRefreshToken = decodeJwt<JwtPayload>(refresh_token)
+        const decodedAccessToken = decodeJwt<JwtPayloadType>(access_token)
+        const decodedRefreshToken = decodeJwt<JwtPayloadType>(refresh_token)
 
         if (!decodedAccessToken || !decodedRefreshToken) {
             throw new HttpException({

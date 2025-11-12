@@ -1,6 +1,6 @@
 import { LoginResType } from '@/types/dtos/auth/login.dto'
 import { SignUpResType } from '@/types/dtos/auth/signUp.dto'
-import { AuthUserType } from '@/types/models/user.model'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 
 export function isExecuteMutation(action: unknown): action is {
     type: string
@@ -91,7 +91,7 @@ export function isSetAccessTokenAction(action: unknown): action is { type: strin
 
 export function isSetUserProfileAction(action: unknown): action is {
     type: string
-    payload: AuthUserType | null
+    payload: UserSummaryType | null
 } {
     return (
         typeof action === 'object' &&

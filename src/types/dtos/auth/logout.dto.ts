@@ -1,4 +1,4 @@
-import { HttpResponseSchema } from '@/types/common/http-response'
+import { HttpResponseSchema } from '@/types/common/http-response.type'
 import z from 'zod'
 
 export const LogoutBodySchema = z

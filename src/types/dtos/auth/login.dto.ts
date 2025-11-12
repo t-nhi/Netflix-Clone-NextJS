@@ -1,5 +1,5 @@
 import z from 'zod'
-import { HttpResponseWithDataSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 import { AuthUserSchema } from '@/types/models/user.model'
 
 export const LoginBodySchema = z

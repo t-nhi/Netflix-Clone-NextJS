@@ -1,5 +1,5 @@
 import z from 'zod'
-import { HttpResponseWithDataSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 
 export const RefreshTokenBodySchema = z
     .object({

@@ -1,5 +1,5 @@
 import { TokenKeys } from '@/constants/token-keys.enum'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
@@ -18,7 +18,7 @@ interface SetTokenCookieParams {
     cookieStore: ReadonlyRequestCookies
     name: TokenKeys
     token: string
-    decodedToken: JwtPayload
+    decodedToken: JwtPayloadType
 }
 export function setTokenCookie({ cookieStore, name, token, decodedToken }: SetTokenCookieParams) {
     cookieStore.set(name, token, {

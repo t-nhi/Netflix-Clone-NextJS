@@ -1,6 +1,6 @@
 import { HttpStatusCode } from '@/constants/http.enum'
 import { HttpException, HttpExceptionParams } from '@/exceptions/http.exception'
-import { HttpResponseWithError } from '@/types/common/http-response'
+import { HttpResponseWithError } from '@/types/common/http-response.type'
 
 export class InternalException extends HttpException {
     constructor(payload: Pick<HttpResponseWithError, 'method' | 'path' | 'detail'>) {

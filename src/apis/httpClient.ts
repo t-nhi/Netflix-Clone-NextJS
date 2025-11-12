@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { envConfig } from '@/config/env.config'
 import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
-import { QueryKeys } from '@/constants/query-keys.constant'
+import { QueryKeys } from '@/constants/query-keys.enum'
 import { EntityException } from '@/exceptions/entity.exception'
 import { HttpException } from '@/exceptions/http.exception'
 import { redirect } from '@/i18n/navigation'

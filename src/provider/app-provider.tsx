@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/provider/theme-provider'
 import StoreProvider from '@/provider/store-provider'
 import clientSessionToken from '@/services/storage/clientSessionToken'
 import { decodeJwt } from '@/utils/jwt.util'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { useAppDispatch } from '@/store/hooks'
 import { setRole, setUserProfile, tokenReceived } from '@/store/features/authSlice'
 
@@ -34,7 +34,7 @@ function AppProvider({ children }: { children: React.ReactNode }) {
             return
         }
         try {
-            const decodedAccessToken = decodeJwt<JwtPayload>(accessToken)
+            const decodedAccessToken = decodeJwt<JwtPayloadType>(accessToken)
             dispatch(tokenReceived({ access_token: accessToken, refresh_token: refreshToken }))
             dispatch(setRole(decodedAccessToken!.role))
             dispatch(setUserProfile(userProfile))

@@ -17,10 +17,13 @@ export const HttpResponseWithDataSchema = <T extends z.ZodTypeAny>(dataSchema: T
         data: dataSchema
     }).strict()
 
-export const HttpResponseWithMetaSchema = <T extends z.ZodTypeAny, M extends z.ZodTypeAny>(
-    dataSchema: T,
+export const HttpResponseWithMetaSchema = <T extends z.ZodTypeAny, M extends z.ZodTypeAny>({
+    dataSchema,
+    metaSchema
+}: {
+    dataSchema: T
     metaSchema: M
-) =>
+}) =>
     HttpResponseSchema.extend({
         data: dataSchema,
         meta: metaSchema

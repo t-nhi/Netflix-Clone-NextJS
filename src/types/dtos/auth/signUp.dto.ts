@@ -1,4 +1,4 @@
-import { HttpResponseWithDataSchema } from '@/types/common/http-response'
+import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 import { AuthUserSchema } from '@/types/models/user.model'
 import z from 'zod'
 

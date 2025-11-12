@@ -1,10 +1,12 @@
 import { Role } from '@/constants/role.enum'
+import z from 'zod'
 
-export interface JwtPayload {
-    sub: string
-    user_id: string
-    username: string
-    role: Role
-    iat: number
-    exp: number
-}
+export const JwtPayloadTypeSchema = z.object({
+    sub: z.string(),
+    user_id: z.string(),
+    username: z.string(),
+    role: z.enum(Role),
+    iat: z.number(),
+    exp: z.number()
+})
+export type JwtPayloadTypeType = z.infer<typeof JwtPayloadTypeSchema>

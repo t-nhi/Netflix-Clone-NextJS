@@ -1,4 +1,4 @@
-import { EntityError } from '@/types/common/http-response'
+import { EntityError } from '@/types/common/http-response.type'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {

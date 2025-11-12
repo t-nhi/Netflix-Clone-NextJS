@@ -1,6 +1,6 @@
 import AuthRequestApi from '@/apis/auth.api'
 import { HttpStatusCode, HttpStatusMessage } from '@/constants/http.enum'
-import { HttpResponse } from '@/types/common/http-response'
+import { HttpResponse } from '@/types/common/http-response.type'
 import { deleteTokenCookies, getTokensFromCookies } from '@/utils/cookies.util'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'

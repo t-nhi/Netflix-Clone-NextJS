@@ -1,7 +1,7 @@
 import { AdminPaths, CommonPaths, isPathIncluded, UserPaths } from '@/config/routes.config'
 import { Role } from '@/constants/role.enum'
 import { MiddlewareContext, MiddlewareFn, MiddlewareNext } from '@/middlewares/types.middleware'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { decodeJwt } from '@/utils/jwt.util'
 import { buildURLObjWithLocale } from '@/utils/locale.util'
 import { NextRequest, NextResponse } from 'next/server'
@@ -14,8 +14,8 @@ const RoleAccessMiddleware: MiddlewareFn = (
 ) => {
     if (ctx.refreshToken == null) return next()
 
-    const decodedToken = decodeJwt<JwtPayload>(ctx.refreshToken)
-    ctx.jwtPayload = decodedToken
+    const decodedToken = decodeJwt<JwtPayloadType>(ctx.refreshToken)
+    ctx.JwtPayloadType = decodedToken
 
     const unauthorizedRedirect = NextResponse.redirect(
         buildURLObjWithLocale({

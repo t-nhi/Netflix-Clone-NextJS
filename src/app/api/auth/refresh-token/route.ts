@@ -6,7 +6,7 @@ import { InternalException } from '@/exceptions/internalServer.exception'
 import { UnauthorizedException } from '@/exceptions/unauthorized.exception'
 import { getTokensFromCookies, setTokenCookie } from '@/utils/cookies.util'
 import { decodeJwt } from '@/utils/jwt.util'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         })
 
         const { access_token } = response.data
-        const decodedAccessToken = decodeJwt<JwtPayload>(access_token)
+        const decodedAccessToken = decodeJwt<JwtPayloadType>(access_token)
 
         if (!decodedAccessToken) {
             throw new UnauthorizedException({

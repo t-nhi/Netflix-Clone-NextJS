@@ -3,7 +3,7 @@
 import AppLoading from '@/components/lotties/app-loading'
 import ErrorIcon from '@/components/lotties/error-icon'
 import { SearchParamsLoader, useSearchParamsLoader } from '@/components/search-params-loader'
-import { QueryKeys } from '@/constants/query-keys.constant'
+import { QueryKeys } from '@/constants/query-keys.enum'
 import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
 import { cn } from '@/lib/utils'
 import { useVerifyTokenMutation } from '@/store/services/auth/auth.services'

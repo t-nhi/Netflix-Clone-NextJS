@@ -1,5 +1,5 @@
 import { HttpStatusMessage } from '@/constants/http.enum'
-import { HttpResponseWithError } from '@/types/common/http-response'
+import { HttpResponseWithError } from '@/types/common/http-response.type'
 
 export interface HttpExceptionParams {
     payload: Omit<HttpResponseWithError, 'status'>

@@ -3,7 +3,7 @@ import { TokenKeys } from '@/constants/token-keys.enum'
 import { SignUpBodyType } from '@/types/dtos/auth/signUp.dto'
 import { setTokenCookie } from '@/utils/cookies.util'
 import { decodeJwt } from '@/utils/jwt.util'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { HttpException } from '@/exceptions/http.exception'
@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
 
         const response = await AuthRequestApi.signUp(body)
         const { access_token, refresh_token } = response.data
-        const decodedAccessToken = decodeJwt<JwtPayload>(access_token)
-        const decodedRefreshToken = decodeJwt<JwtPayload>(refresh_token)
+        const decodedAccessToken = decodeJwt<JwtPayloadType>(access_token)
+        const decodedRefreshToken = decodeJwt<JwtPayloadType>(refresh_token)
 
         if (!decodedAccessToken || !decodedRefreshToken) {
             throw new Error(' Invalid tokens received from server.')

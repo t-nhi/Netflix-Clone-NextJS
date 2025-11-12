@@ -1,6 +1,6 @@
 import httpClient from '@/apis/httpClient'
 import clientSessionToken from '@/services/storage/clientSessionToken'
-import { JwtPayload } from '@/types/common/jwt-payload.type'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { RefreshTokenResType } from '@/types/dtos/auth/refreshToken.dto'
 import { decodeJwt } from '@/utils/jwt.util'
 
@@ -14,8 +14,8 @@ export async function handleRefreshToken(params?: {
     const refreshToken = clientSessionToken.getRefreshToken()
     if (!accessToken || !refreshToken) return
 
-    const decodeAccessToken = decodeJwt<JwtPayload>(accessToken)
-    const decodeRefreshToken = decodeJwt<JwtPayload>(refreshToken)
+    const decodeAccessToken = decodeJwt<JwtPayloadType>(accessToken)
+    const decodeRefreshToken = decodeJwt<JwtPayloadType>(refreshToken)
 
     if (!decodeAccessToken || !decodeRefreshToken) return params?.onError?.(new Error('Failed to decode tokens'))
 

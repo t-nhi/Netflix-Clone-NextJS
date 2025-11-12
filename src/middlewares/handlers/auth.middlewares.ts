@@ -1,5 +1,5 @@
 import { AdminPaths, AuthPaths, CommonPaths, UnauthPaths, UserPaths, isPathIncluded } from '@/config/routes.config'
-import { QueryKeys } from '@/constants/query-keys.constant'
+import { QueryKeys } from '@/constants/query-keys.enum'
 import { MiddlewareContext, MiddlewareFn, MiddlewareNext } from '@/middlewares/types.middleware'
 import { getTokensFromCookies } from '@/utils/cookies.util'
 import { buildURLObjWithLocale } from '@/utils/locale.util'
