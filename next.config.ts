@@ -19,6 +19,9 @@ const routesNeedRewrite: Rewrite[] = [
 ]
 
 const nextConfig: NextConfig = {
+    experimental: {
+        optimizeCss: false
+    },
     async rewrites() {
         return i18nConfig.locales.flatMap((locale) =>
             routesNeedRewrite.map((rule) => {
