@@ -9,4 +9,4 @@ export const JwtPayloadTypeSchema = z.object({
     iat: z.number(),
     exp: z.number()
 })
-export type JwtPayloadTypeType = z.infer<typeof JwtPayloadTypeSchema>
+export type JwtPayloadType = z.infer<typeof JwtPayloadTypeSchema>
