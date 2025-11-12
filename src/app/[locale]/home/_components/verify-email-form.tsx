@@ -9,11 +9,11 @@ import BrandInput from '@/components/brand-input'
 import { ChevronRight, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { VerifyEmailBodySchema, VerifyEmailBodyType } from '@/types/dtos/auth/verifyEmail.dto'
-import { useVerifyEmailMutation } from '@/store/services/auth.services'
 import { useRouter } from '@/i18n/navigation'
 import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
+import { useVerifyEmailMutation } from '@/store/services/auth/auth.services'
 
 export default function VerifyEmailForm() {
     const router = useRouter()

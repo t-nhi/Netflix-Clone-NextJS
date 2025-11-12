@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/store/hooks'
-import { useLogoutMutation } from '@/store/services/proxy-auth.services'
+import { useLogoutMutation } from '@/store/services/auth/proxy-auth.services'
 import { LogoutResType } from '@/types/dtos/auth/logout.dto'
 import { useCallback } from 'react'
 

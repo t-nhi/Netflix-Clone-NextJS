@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import baseQueryWithReauth from './client'
 import { ChangePasswordBodyType, ChangePasswordResType } from '@/types/dtos/auth/changePassword.dto'
 import { HttpMethod } from '@/constants/http.enum'
+import baseQueryWithReauth from '../client'
 
-export const UserApi = createApi({
+export const userApi = createApi({
     reducerPath: 'UserApi',
     baseQuery: baseQueryWithReauth,
     tagTypes: ['Users'],
@@ -22,4 +22,4 @@ export const UserApi = createApi({
     })
 })
 
-export const { useChangePasswordMutation } = UserApi
+export const { useChangePasswordMutation } = userApi

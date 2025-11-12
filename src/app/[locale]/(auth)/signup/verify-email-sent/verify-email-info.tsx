@@ -4,9 +4,9 @@ import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/i18n/navigation'
 import { useEffect, useState } from 'react'
-import { useVerifyEmailMutation } from '@/store/services/auth.services'
 import { LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useVerifyEmailMutation } from '@/store/services/auth/auth.services'
 
 interface VerifyEmailInfoProps {
     className?: string

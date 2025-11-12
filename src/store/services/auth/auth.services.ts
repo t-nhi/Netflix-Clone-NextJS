@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { backendBaseQuery } from './client'
 import { VerifyEmailBodyType, VerifyEmailResType } from '@/types/dtos/auth/verifyEmail.dto'
 import { HttpMethod } from '@/constants/http.enum'
 import { VerifyTokenBodyType, VerifyTokenResType } from '@/types/dtos/auth/verifyToken.dto'
 import { ForgotPasswordBodyType, ForgotPasswordResType } from '@/types/dtos/auth/forgotPassword.dto'
 import { ResetPasswordBodyType, ResetPasswordResType } from '@/types/dtos/auth/resetPassword.dto'
+import { backendBaseQuery } from '../client'
 
 export const authApi = createApi({
     baseQuery: backendBaseQuery,

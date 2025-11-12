@@ -10,10 +10,10 @@ import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
 import { SignUpBodySchema, SignUpBodyType } from '@/types/dtos/auth/signUp.dto'
 import { useEffect } from 'react'
 import { useRouter } from '@/i18n/navigation'
-import { useRegisterMutation } from '@/store/services/proxy-auth.services'
 import { LoaderCircle } from 'lucide-react'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
+import { useRegisterMutation } from '@/store/services/auth/proxy-auth.services'
 
 export default function RegisterForm() {
     const t = useTranslations('RegformPage')

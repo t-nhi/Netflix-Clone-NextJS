@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setAccessToken } from '@/store/features/authSlice'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
-import { useLogoutMutation } from '@/store/services/proxy-auth.services'
 import { handleRefreshToken as refreshToken } from '@/helper/handleRefreshToken'
 import { QueryKeys } from '@/constants/query-keys.constant'
+import { useLogoutMutation } from '@/store/services/auth/proxy-auth.services'
 
 export default function RefreshToken() {
     const refreshTokenFormStore = useAppSelector((state) => state.auth.refresh_token)

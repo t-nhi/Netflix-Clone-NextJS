@@ -10,7 +10,6 @@ import BrandInput from '@/components/brand-input'
 import { useTranslations } from 'next-intl'
 import LoginWithGGButton from '@/app/[locale]/(auth)/login/_components/login-with-GG-Button'
 import { LoginBodySchema, LoginBodyType } from '@/types/dtos/auth/login.dto'
-import { useLoginMutation } from '@/store/services/proxy-auth.services'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -19,6 +18,7 @@ import { useState } from 'react'
 import { isEntityError, isFetchBaseQueryError } from '@/store/utils/errorSafeType'
 import { formatFetchBaseQueryErrorMessage } from '@/utils/handleErrors/formatFetchBaseQueryErrorMessage'
 import { useRouter } from 'next/navigation'
+import { useLoginMutation } from '@/store/services/auth/proxy-auth.services'
 
 interface ErrorAlertType {
     title: string

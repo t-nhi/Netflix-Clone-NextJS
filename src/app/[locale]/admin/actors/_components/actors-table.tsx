@@ -31,7 +31,7 @@ export default function ActorsTable() {
                             <TooltipTrigger asChild>
                                 <Button
                                     onClick={() => router.push('/admin/actors/add')}
-                                    className='rounded-full p-1 flex-shrink-0 cursor-pointer w-8 h-8 transition-colors duration-300 border-2 border-black dark:border-white text-black dark:text-white bg-black/3 dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10'
+                                    className='rounded-full p-1 shrink-0 cursor-pointer w-8 h-8 transition-colors duration-300 border-2 border-black dark:border-white text-black dark:text-white bg-black/3 dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10'
                                 >
                                     <Plus className='h-4 w-4 font-bold' />
                                 </Button>

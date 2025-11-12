@@ -6,7 +6,7 @@ import { SearchParamsLoader, useSearchParamsLoader } from '@/components/search-p
 import { QueryKeys } from '@/constants/query-keys.constant'
 import { SessionStorageKeys } from '@/constants/session-storage-keys.enum'
 import { cn } from '@/lib/utils'
-import { useVerifyTokenMutation } from '@/store/services/auth.services'
+import { useVerifyTokenMutation } from '@/store/services/auth/auth.services'
 import { useEffect } from 'react'
 
 interface VerifyTokenContentProps {

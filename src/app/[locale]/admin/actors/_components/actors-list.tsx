@@ -66,7 +66,7 @@ export default function ActorsList({ onEdit, onDelete }: ActorsListProps) {
                                         {maskedId}
                                     </td>
                                     <td className='px-4 py-2'>
-                                        <div className='w-[80px] aspect-[3/4] relative overflow-hidden rounded-md border border-gray-200'>
+                                        <div className='w-20 aspect-3/4 relative overflow-hidden rounded-md border border-gray-200'>
                                             <Image
                                                 src={imagedSrc || '/images/actor/default.png'}
                                                 alt={actor.fullName}

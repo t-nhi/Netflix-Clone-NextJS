@@ -11,7 +11,6 @@ import { useTranslations } from 'next-intl'
 import { ResetPasswordBodySchema, ResetPasswordBodyType } from '@/types/dtos/auth/resetPassword.dto'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { useState, useEffect } from 'react'
-import { useForgotPasswordMutation, useResetPasswordMutation } from '@/store/services/auth.services'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { AlertCircleIcon, LoaderCircle } from 'lucide-react'
 import { HttpMethod } from '@/constants/http.enum'
@@ -19,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { formatFetchBaseQueryErrorMessage } from '@/utils/handleErrors/formatFetchBaseQueryErrorMessage'
 import { isEntityError, isFetchBaseQueryError } from '@/store/utils/errorSafeType'
 import { toast } from 'sonner'
+import { useForgotPasswordMutation, useResetPasswordMutation } from '@/store/services/auth/auth.services'
 
 interface ErrorAlertType {
     title: string

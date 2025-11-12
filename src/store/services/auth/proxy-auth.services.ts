@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { proxyAuthBaseQuery } from './client'
 import { LoginBodyType, LoginResType } from '@/types/dtos/auth/login.dto'
 import { HttpMethod } from '@/constants/http.enum'
 import { LogoutResType } from '@/types/dtos/auth/logout.dto'
 import { SignUpBodyType, SignUpResType } from '@/types/dtos/auth/signUp.dto'
 import { RefreshTokenResType } from '@/types/dtos/auth/refreshToken.dto'
 import { UpdateCookieTokenBodyType } from '@/types/dtos/auth/updateCookieToken.dto'
+import { proxyAuthBaseQuery } from '../client'
 
 export const proxyAuthApi = createApi({
     baseQuery: proxyAuthBaseQuery,
