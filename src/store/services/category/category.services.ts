@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import baseQueryWithReauth from './client'
+import baseQueryWithReauth from '../client'
 import { CreateCategoryBodyType, CreateCategoryResType } from '@/types/dtos/category/createCategory.dto'
 import { HttpMethod } from '@/constants/http.enum'
 import { GetCategoryListResType } from '@/types/dtos/category/getListCategory.dto'
@@ -65,3 +65,10 @@ export const categoryApi = createApi({
         })
     })
 })
+
+export const {
+    useCreateCategoryMutation,
+    useGetCategoriesQuery,
+    useDeleteCategoryMutation,
+    useUpdateCategoryMutation
+} = categoryApi
