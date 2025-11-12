@@ -37,4 +37,3 @@ export function useMoviesPageContext() {
     }
     return context
 }
-

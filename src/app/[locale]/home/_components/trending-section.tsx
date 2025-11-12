@@ -33,8 +33,8 @@ export default function TrendingSection({ trendingItems }: TrendingSectionProps)
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className='  h-[120px] w-[24px]  [&_svg]:size-6! bg-muted! border-none' />
-                <CarouselNext className='  h-[120px] w-[24px] [&_svg]:size-6! bg-muted! border-none' />
+                <CarouselPrevious className='  h-[120px] w-6  [&_svg]:size-6! bg-muted! border-none' />
+                <CarouselNext className='  h-[120px] w-6 [&_svg]:size-6! bg-muted! border-none' />
             </Carousel>
             <MoviePreviewModal movie={selectedMovie} onClose={handleCloseModal} />
         </div>
@@ -44,7 +44,7 @@ export default function TrendingSection({ trendingItems }: TrendingSectionProps)
 function TrendingCard({ item, onClick }: { item: MovieType; onClick: () => void }) {
     return (
         <article
-            className='relative cursor-pointer py-2  px-[10px]  md:px-[22px] w-[132px] h-[166px] md:w-[184px] md:h-[208px] xl:w-[224px] xl:h-[268px] hover:scale-102 transition-transform duration-300'
+            className='relative cursor-pointer py-2  px-2.5  md:px-[22px] w-[132px] h-[166px] md:w-[184px] md:h-52 xl:w-56 xl:h-[268px] hover:scale-102 transition-transform duration-300'
             onClick={onClick}
         >
             <div

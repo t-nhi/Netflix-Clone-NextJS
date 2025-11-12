@@ -28,7 +28,7 @@ export default function InputSearch({ placeholder = 'Search', value = '', onChan
     return (
         <div
             className={cn(
-                'relative group flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[300px] lg:min-w-[400px] max-w-[550px]',
+                'relative group flex-1 min-w-[180px] sm:min-w-60 md:min-w-[300px] lg:min-w-[400px] max-w-[550px]',
                 className
             )}
         >

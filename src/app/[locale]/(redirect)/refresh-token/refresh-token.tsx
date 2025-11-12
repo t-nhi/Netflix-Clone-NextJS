@@ -6,7 +6,7 @@ import { setAccessToken } from '@/store/features/authSlice'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 import { useLogoutMutation } from '@/store/services/proxy-auth.services'
-import { handleRefreshToken } from '@/helper/handleRefreshToken'
+import { handleRefreshToken as refreshToken } from '@/helper/handleRefreshToken'
 import { QueryKeys } from '@/constants/query-keys.constant'
 
 export default function RefreshToken() {
@@ -28,32 +28,37 @@ export default function RefreshToken() {
         }
     }, [logoutMutate, router])
 
-    const refreshToken = useCallback(async () => {
-        await handleRefreshToken({
-            onSuccess: (data) => {
-                const { access_token } = data.data
-                dispatch(setAccessToken(access_token))
-            },
-            onError: async () => {
-                try {
-                    await logoutMutate().unwrap()
-                } catch (error) {
-                    console.error('Error logging out:', error)
-                } finally {
-                    router.push('/')
+    const handleRefreshToken = useCallback(
+        async (redirectTo: string | null) => {
+            await refreshToken({
+                onSuccess: (data) => {
+                    const { access_token } = data.data
+                    dispatch(setAccessToken(access_token))
+                    router.push(redirectTo || '/')
+                },
+                onError: async () => {
+                    try {
+                        await logoutMutate().unwrap()
+                    } catch (error) {
+                        console.error('Error logging out:', error)
+                    } finally {
+                        router.push('/')
+                    }
                 }
-            }
-        })
-    }, [dispatch, logoutMutate, router])
+            })
+        },
+        [dispatch, logoutMutate, router]
+    )
 
     useEffect(() => {
-        if (refreshTokenFormStore && refreshTokenQuery === refreshTokenFormStore && refreshToken) {
-            refreshToken()
+        if (refreshTokenFormStore && refreshTokenQuery === refreshTokenFormStore) {
+            handleRefreshToken(redirectQuery ?? null)
         } else if (refreshTokenFormStore == null && refreshTokenQuery != null) {
             handleLogout()
         } else {
             router.push('/')
         }
-    }, [refreshToken, refreshTokenQuery, redirectQuery, refreshTokenFormStore, router, handleLogout])
+    }, [refreshTokenQuery, redirectQuery, refreshTokenFormStore, router, handleLogout])
+
     return <SearchParamsLoader onParamsReceived={setSearchParams} />
 }
