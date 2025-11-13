@@ -48,7 +48,7 @@ export default function WatchHistoryCard({
                 }
             }}
             className={cn(
-                'group relative flex flex-col rounded-[4px] overflow-hidden border transition-all duration-300 ease-out w-[160px] sm:w-[200px] md:w-[220px] flex-shrink-0 select-none',
+                'group relative flex flex-col rounded-[4px] overflow-hidden border transition-all duration-300 ease-out w-[160px] sm:w-[200px] md:w-[220px] shrink-0 select-none',
                 'bg-white border-gray-200 dark:bg-[#1f1f1f] dark:border-transparent',
                 'cursor-pointer',
                 isEditing && 'opacity-90',
@@ -110,7 +110,7 @@ export default function WatchHistoryCard({
                                         size='icon'
                                         variant='ghost'
                                         className='
-                                            rounded-full p-0 flex-shrink-0 cursor-pointer
+                                            rounded-full p-0 shrink-0 cursor-pointer
                                             w-6 h-6 lg:w-8 lg:h-8
                                             bg-gray-200 text-gray-800 hover:bg-gray-300
                                             dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100

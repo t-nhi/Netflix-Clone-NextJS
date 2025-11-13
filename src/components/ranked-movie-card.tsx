@@ -50,7 +50,7 @@ export default function RankedMovieCard({ movie, className }: RankedMovieCardPro
                 className='
                     h-full
                     z-1
-                    flex-shrink-0 
+                    shrink-0 
                     aspect-[9/13] 
                     bg-cover bg-center 
                     overflow-hidden

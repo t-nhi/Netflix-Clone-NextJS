@@ -3,12 +3,13 @@
 import { EditToggleButton } from '@/components/edit-toggle-button'
 import { SelectAllCheckbox } from '@/components/select-all-checkbox'
 import DialogConfirm from '@/components/confirm-dialog'
-import { ArrowLeft, Search, X } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import InputSearch from '@/components/input-search'
+import { CommonPaths } from '@/config/routes.config'
 
 interface FavoriteHeadProps {
     isEditing: boolean
@@ -62,7 +63,7 @@ export default function FavoriteHead({
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10 md:gap-4 flex-wrap w-full'>
                 <div className='flex items-center md:gap-4 gap-1'>
                     <Link
-                        href={'/films'}
+                        href={CommonPaths.MOVIES}
                         className='flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 rounded-lg
                         bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
                     >
@@ -76,7 +77,7 @@ export default function FavoriteHead({
                     </div>
                 </div>
 
-                <div className='flex items-center sm:justify-end justify-start gap-2 w-full sm:w-auto flex-shrink-0'>
+                <div className='flex items-center sm:justify-end justify-start gap-2 w-full sm:w-auto shrink-0'>
                     <InputSearch value={searchValue} onChange={setSearchValue} placeholder={t('searchFavorites')} />
 
                     <EditToggleButton
@@ -90,7 +91,7 @@ export default function FavoriteHead({
                 </div>
             </div>
 
-            <div className='mt-10 min-h-[40px] flex items-center justify-start'>
+            <div className='mt-10 min-h-10 flex items-center justify-start'>
                 {isEditing && onSelectAll && (
                     <SelectAllCheckbox
                         allSelected={!!allSelected}

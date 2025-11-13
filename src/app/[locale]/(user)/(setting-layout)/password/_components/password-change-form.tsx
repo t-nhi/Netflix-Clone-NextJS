@@ -9,10 +9,11 @@ import { Link } from '@/i18n/navigation'
 import BrandInput from '@/components/brand-input'
 import { cn } from '@/lib/utils'
 import { changePasswordBodySchema, ChangePasswordBodyType } from '@/types/dtos/auth/changePassword.dto'
-import { useChangePasswordMutation } from '@/store/services/user.services'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { toast } from 'sonner'
+import { useChangePasswordMutation } from '@/store/services/user/user.services'
+import { CommonPaths } from '@/config/routes.config'
 
 interface PasswordChangeFormProps {
     className?: string
@@ -62,7 +63,7 @@ export default function PasswordChangeForm({ className }: PasswordChangeFormProp
                                 {getLocaleMessage(errorMessageT, formState.errors.old_password?.message)}
                             </FormMessage>
                             <Link
-                                href='/reset-password'
+                                href={CommonPaths.RESET_PASSWORD}
                                 className='inline-block mt-1 text-sm text-blue-500 dark:text-blue-400 hover:underline'
                             >
                                 {t('forgotPassword')}
