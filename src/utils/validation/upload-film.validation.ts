@@ -1,4 +1,5 @@
-import { Quality, AgeRank } from '@/app/constants/enums'
+import { AgeRank } from '@/constants/movie/age-rank.enum'
+import { VideoQuality } from '@/constants/video/video-quality.enum'
 import { z } from 'zod'
 
 export const CreateFilmReqBody = z
@@ -33,16 +34,9 @@ export const CreateFilmReqBody = z
             message: 'ageRequired'
         }),
 
-        quality: z.union(
-            [
-                z.literal(Quality.SD),
-                z.literal(Quality.HD),
-                z.literal(Quality.FULL_HD),
-                z.literal(Quality.QHD),
-                z.literal(Quality.UHD)
-            ],
-            { message: 'qualityRequired' }
-        ),
+        quality: z.union([z.literal(VideoQuality.SD), z.literal(VideoQuality.HD), z.literal(VideoQuality.FULL_HD)], {
+            message: 'qualityRequired'
+        }),
 
         duration_minutes: z.number({ message: 'durationInvalid' }).min(1, { message: 'durationMin' }),
 

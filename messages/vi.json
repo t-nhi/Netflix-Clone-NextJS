@@ -454,8 +454,9 @@
             "duration": "Thời gian",
             "hide": "Ẩn",
             "actions": "Hành động",
-            "edit": "Chình sửa",
+            "edit": "Chỉnh sửa",
             "delete": "Xóa",
+            "promoteToUsers": "Quảng bá đến người dùng",
             "searchFilm": "Tìm kiếm phim",
             "messages": {
                 "deleteSuccess": "Đã xóa phim"

@@ -18,12 +18,13 @@ import { getMockActors } from '@/app/[locale]/admin/_mock/actors.mock'
 import { getMockDirectors } from '@/app/[locale]/admin/_mock/directors.mock'
 import { getMockCategories } from '@/app/[locale]/admin/_mock/categories.mock'
 
-import { AgeRank, Quality } from '@/app/constants/enums'
 import { getAgeRankNameFromEnum, getQualityNameFromEnum } from '@/helper/getNameFromStatus'
 import UploadVideo from '@/app/[locale]/admin/movies/add/_components/upload-trailer'
 import PosterUploadField from '@/app/[locale]/admin/movies/add/_components/upload-poster'
 import { CountrySelect } from '@/app/[locale]/admin/movies/add/_components/contries-select'
 import { UploadFileViewMode } from './upload-trailer/upload-file'
+import { AgeRank } from '@/constants/movie/age-rank.enum'
+import { VideoQuality } from '@/constants/video/video-quality.enum'
 
 export default function FormUploadTrailer() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
@@ -57,7 +58,7 @@ export default function FormUploadTrailer() {
             vertical_poster: '',
             horizontal_poster: '',
             age: AgeRank.P,
-            quality: Quality.HD,
+            quality: VideoQuality.HD,
             duration_minutes: 120,
             film_url: '',
             isVip: false
@@ -391,7 +392,7 @@ export default function FormUploadTrailer() {
                                                     <SelectValue placeholder={t('selectQuality')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {Object.values(Quality).map((v) => (
+                                                    {Object.values(VideoQuality).map((v) => (
                                                         <SelectItem key={v} value={v}>
                                                             {getQualityNameFromEnum(v)}
                                                         </SelectItem>

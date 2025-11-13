@@ -1,17 +1,14 @@
-import { AgeRank, Quality } from '@/app/constants/enums'
+import { AgeRank } from '@/constants/movie/age-rank.enum'
+import { VideoQuality } from '@/constants/video/video-quality.enum'
 
-export function getQualityNameFromEnum(quality: Quality) {
+export function getQualityNameFromEnum(quality: VideoQuality) {
     switch (quality) {
-        case Quality.SD:
+        case VideoQuality.SD:
             return 'SD'
-        case Quality.HD:
+        case VideoQuality.HD:
             return 'HD'
-        case Quality.FULL_HD:
+        case VideoQuality.FULL_HD:
             return 'FULL HD'
-        case Quality.QHD:
-            return '2K'
-        case Quality.UHD:
-            return '4K'
         default:
             return quality
     }

@@ -452,6 +452,7 @@
             "actions": "Action",
             "edit": "Edit",
             "delete": "Delete",
+            "promoteToUsers": "Promote to Users",
             "searchFilms": "Search movies",
             "addFilm": "Add new movie",
             "messages": {
