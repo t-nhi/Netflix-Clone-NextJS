@@ -1,5 +1,5 @@
-import CategoriesTable from '@/app/[locale]/admin/categories/_components/categories-table'
+import CategoriesDataTable from '@/app/[locale]/admin/categories/_components/categories-data-table'
 
 export default function CategoriesPage() {
-    return <CategoriesTable />
+    return <CategoriesDataTable />
 }

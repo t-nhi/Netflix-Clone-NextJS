@@ -350,13 +350,13 @@
         "cancel": "Hủy"
     },
     "AdminPage": {
-        "genresPage": {
+        "categoriesPage": {
             "messages":{
-                "emptyGenre": "Danh sách thể loại rỗng! Vui lý thêm một thể loại."
+                "emptyCategory": "Danh sách thể loại rỗng! Vui lý thêm một thể loại."
             },
             "title": "Danh sách thể loại",
-            "searchGenres": "Tìm kiếm thể loại",
-            "addGenre": "Thêm thể loại mới",
+            "searchCategories": "Tìm kiếm thể loại",
+            "addCategory": "Thêm thể loại mới",
             "id": "ID",
             "name": "Tên thể loại",
             "description": "Mô tả",
@@ -366,7 +366,7 @@
             "edit": "Chỉnh sửa",
             "delete": "Xóa",
             "delSuccess": "Xóa thể loại thành công!",
-            "addGenreForm": {
+            "addCategorieForm": {
                     "title": "Thêm thể loại mới",
                     "subtitle": "Vui lòng điền thông tin bên dưới để thêm thể loại mới.",
                     "nameLabel": "Nhập tên thể loại",
@@ -375,7 +375,7 @@
                     "cancelButton": "Hủy",
                     "toastSuccess": "Thêm thể loại thành công!"
             },
-            "editGenreForm": {
+            "editCategorieForm": {
                 "title": "Chỉnh sửa thể loại",
                 "subtitle": "Vui lòng điền thông tin bên dưới để chỉnh sửa thể loại.",
                 "nameLabel": "Tên thể loại",
@@ -436,10 +436,10 @@
             "biographyTooLong": "Tiểu sử quá dài (tối đa 500 ký tự)",
             "invalidDateFormat": "Ngày sinh không hợp lệ (định dạng YYYY-MM-DD)",
             "invalidImageUrl": "Đường dẫn ảnh không hợp lệ",
-            "genreNameRequired": "Vui lòng nhập tên thể loại",
-            "genreNameTooShort": "Tên thể loại quá ngắn (tối thiểu 2 ký tự)",
-            "genreNameTooLong": "Tên thể loại quá dài (tối đa 50 ký tự)",
-            "genreDescriptionTooLong": "Mô tả thể loại quá dài (tối đa 300 ký tự)"
+            "categorieNameRequired": "Vui lòng nhập tên thể loại",
+            "categorieNameTooShort": "Tên thể loại quá ngắn (tối thiểu 2 ký tự)",
+            "categorieNameTooLong": "Tên thể loại quá dài (tối đa 50 ký tự)",
+            "categorieDescriptionTooLong": "Mô tả thể loại quá dài (tối đa 300 ký tự)"
         },
         "filmsPage": {
             "emptyFilm": "Danh sách phim rỗng. Hãy thêm phim đầu tiên",
@@ -538,6 +538,58 @@
                 "qualityRequired": "Vui lòng chọn chất lượng phim",
                 "durationInvalid": "Thời lượng phải là số",
                 "durationMin": "Thời lượng tối thiểu là 1 phút"
+            }
+        },
+        
+        "usersPage": {
+            "title": "Danh sách người dùng",
+            "searchUsers": "Tìm kiếm",
+            "id": "ID",
+            "userName": "Username",
+            "email": "Email",
+            "role": "Vai trò",
+            "accountStatus": "Trạng thái tài khoản",
+            "actions": "Hành động",
+            "view": "Xem",
+            "lockAccount": "Khóa tài khoản",
+            "unlockAccount": "Mở khóa tài khoản",
+            "locked": "Bị khóa",
+            "active": "Hoạt động",
+            "messages": {
+                "emptyUser": "Danh sách người dùng rỗng",
+                "lockSuccess": "Khóa tài khoản người dùng thành công!",
+                "unlockSuccess": "Mở khóa tài khoản người dùng thành công!"
+            }
+        },
+        "dashboardPage": {
+            "statscard": {
+                "totalUsers": "Tổng số người dùng",
+                "totalMovies": "Tổng số phim",
+                "activeSubcriptions": "Đăng ký",
+                "totalRevenue": "Tổng doanh thu",
+                "ordersToday": "Đơn hàng hôm nay"
+            },
+            "lineChart": {
+                "metrics": {
+                    "watchingViews": "Lượt xem",
+                    "favoriteCounts": "Yêu thích"
+                },
+                "timeRanges": {
+                    "7": "Last 7 Days",
+                    "30": "Last 30 Days",
+                    "90": "Last 90 Days",
+                    "180": "Last 180 Days",
+                    "365": "Last 365 Days"
+                },
+                "keyMetrics": "Key Metrics"
+            },
+            "knowledgeForYou": {
+                "title": "Kiến thức dành cho bạn",
+                "description": "Cập nhật các xu hướng mới nhất trong ngành phát trực tuyến và các mẹo để tối ưu hóa nền tảng của bạn."
+            },
+            "topFilms": {
+                "title": "Top phim",
+                "viewCount": "Lượt xem"
             }
         }
     }

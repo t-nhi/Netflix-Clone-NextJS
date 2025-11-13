@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 export default function AddCategoryForm() {
-    const t = useTranslations('AdminPage.genresPage.addGenreForm')
+    const t = useTranslations('AdminPage.categoriesPage.addCategorieForm')
     const validMessage = useTranslations('AdminPage.validation')
     const router = useRouter()
     const desMaxChars = 300
@@ -144,7 +144,7 @@ export default function AddCategoryForm() {
 
                     <Button
                         type='submit'
-                        className='bg-red-600 hover:bg-red-700 text-white rounded-[4px] font-semibold h-[40px] w-full transition-colors duration-200 cursor-pointer'
+                        className='bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold h-10 w-full transition-colors duration-200 cursor-pointer'
                     >
                         {t('addButton')}
                     </Button>
@@ -152,7 +152,7 @@ export default function AddCategoryForm() {
                     <Button
                         type='reset'
                         onClick={onCancel}
-                        className='bg-black/5 hover:bg-black/10 text-black dark:text-white dark:bg-white/20 dark:hover:bg-white/15 rounded-[4px] font-semibold h-[40px] w-full flex items-center justify-center cursor-pointer'
+                        className='bg-black/5 hover:bg-black/10 text-black dark:text-white dark:bg-white/20 dark:hover:bg-white/15 rounded-lg font-semibold h-10 w-full flex items-center justify-center cursor-pointer'
                     >
                         {t('cancelButton')}
                     </Button>
