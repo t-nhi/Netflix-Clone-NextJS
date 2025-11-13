@@ -10,6 +10,9 @@ import { proxyAuthBaseQuery } from '../client'
 export const proxyAuthApi = createApi({
     baseQuery: proxyAuthBaseQuery,
     reducerPath: 'ProxyAuthApi',
+    refetchOnMountOrArgChange: false,
+    keepUnusedDataFor: 60,
+    refetchOnFocus: false,
     refetchOnReconnect: true,
     endpoints: (builder) => ({
         login: builder.mutation<LoginResType, LoginBodyType>({

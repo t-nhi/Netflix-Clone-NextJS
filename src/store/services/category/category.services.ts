@@ -14,6 +14,10 @@ export const categoryApi = createApi({
     reducerPath: 'categoryApi',
     baseQuery: baseQueryWithReauth,
     tagTypes: ['Category'],
+    refetchOnMountOrArgChange: false,
+    keepUnusedDataFor: 60,
+    refetchOnFocus: false,
+    refetchOnReconnect: true,
     endpoints: (builder) => ({
         createCategory: builder.mutation<CreateCategoryResType, CreateCategoryBodyType>({
             query: (body) => ({
@@ -21,7 +25,7 @@ export const categoryApi = createApi({
                 method: HttpMethod.POST,
                 body
             }),
-            invalidatesTags: ['Category']
+            invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
         getCategories: builder.query<GetCategoryListResType, void>({
             query: () => ({
@@ -58,10 +62,7 @@ export const categoryApi = createApi({
                 method: HttpMethod.PUT,
                 body
             }),
-            invalidatesTags: (result, error, arg) => [
-                { type: 'Category', id: arg.params.id },
-                { type: 'Category', id: 'LIST' }
-            ]
+            invalidatesTags: (result, error, arg) => [{ type: 'Category', id: arg.params.id }]
         })
     })
 })

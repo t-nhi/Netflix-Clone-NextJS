@@ -8,6 +8,7 @@ import { proxyAuthApi } from './services/auth/proxy-auth.services'
 import { userApi } from './services/user/user.services'
 import { actorApi } from './services/actor/actor.services'
 import { categoryApi } from './services/category/category.services'
+import { movieApi } from './services/movie/movie.services'
 
 export const makeStore = () => {
     return configureStore({
@@ -19,7 +20,8 @@ export const makeStore = () => {
             [authApi.reducerPath]: authApi.reducer,
             [userApi.reducerPath]: userApi.reducer,
             [actorApi.reducerPath]: actorApi.reducer,
-            [categoryApi.reducerPath]: categoryApi.reducer
+            [categoryApi.reducerPath]: categoryApi.reducer,
+            [movieApi.reducerPath]: movieApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
@@ -28,6 +30,7 @@ export const makeStore = () => {
                 userApi.middleware,
                 actorApi.middleware,
                 categoryApi.middleware,
+                movieApi.middleware,
                 authMiddleware,
                 errorHandleMiddleware
             )
@@ -46,4 +49,5 @@ export function clearStore(dispatch: AppDispatch) {
     dispatch(userApi.util.resetApiState())
     dispatch(actorApi.util.resetApiState())
     dispatch(categoryApi.util.resetApiState())
+    dispatch(movieApi.util.resetApiState())
 }

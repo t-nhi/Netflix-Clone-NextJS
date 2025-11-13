@@ -9,6 +9,9 @@ import { backendBaseQuery } from '../client'
 export const authApi = createApi({
     baseQuery: backendBaseQuery,
     reducerPath: 'AuthApi',
+    refetchOnMountOrArgChange: false,
+    keepUnusedDataFor: 60,
+    refetchOnFocus: false,
     refetchOnReconnect: true,
     endpoints: (builder) => ({
         verifyEmail: builder.mutation<VerifyEmailResType, VerifyEmailBodyType>({
