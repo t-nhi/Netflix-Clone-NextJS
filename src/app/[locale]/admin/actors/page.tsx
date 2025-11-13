@@ -1,5 +1,5 @@
-import ActorsTable from '@/app/[locale]/admin/actors/_components/actors-table'
+import ActorsDataTable from '@/app/[locale]/admin/actors/_components/actors-data-table'
 
 export default function ActorsPage() {
-    return <ActorsTable />
+    return <ActorsDataTable />
 }

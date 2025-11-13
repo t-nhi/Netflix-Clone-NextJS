@@ -348,40 +348,40 @@
         "cancel": "Cancel"
     },
     "AdminPage": {
-        "genresPage": {
+        "categoriesPage": {
             "messages":{
-                "emptyGenre": "The genre list is empty! Please add at least one genre."
+                "emptyCategory": "The Categorie list is empty! Please add at least one Categorie."
             },
-            "title": "Genres",
-            "searchGenres": "Search genres",
-            "addGenre": "Add new genre",
+            "title": "Categories",
+            "searchCategories": "Search Categories",
+            "addCategory": "Add new Categorie",
             "id": "ID",
-            "name": "Name genre",
+            "name": "Name Categorie",
             "description": "Description",
             "createdAt": "Creat At",
             "updatedAt": "Update At",
             "action": "Action",
             "edit": "Edit",
             "delete": "Delete",
-            "delSuccess": "Genre deleted successfully!",
-            "addGenreForm": {
-                "title": "Add New Genre",
-                "subtitle": "Please fill in the information below to add a new genre.",
-                "nameLabel": "Enter genre name",
-                "descLabel": "Enter genre description (optional)",
-                "addButton": "Add genre",
+            "delSuccess": "Categorie deleted successfully!",
+            "addCategorieForm": {
+                "title": "Add New Categorie",
+                "subtitle": "Please fill in the information below to add a new Categorie.",
+                "nameLabel": "Enter Categorie name",
+                "descLabel": "Enter Categorie description (optional)",
+                "addButton": "Add Categorie",
                 "cancelButton": "Cancel",
-                "toastSuccess": "Genre added successfully!"
+                "toastSuccess": "Categorie added successfully!"
             },
-            "editGenreForm": {
-                "title": "Edit Genre",
-                "subtitle": "Please fill in the information below to edit the genre.",
-                "nameLabel": "Genre name",
-                "descLabel": "Genre description (optional)",
+            "editCategorieForm": {
+                "title": "Edit Categorie",
+                "subtitle": "Please fill in the information below to edit the Categorie.",
+                "nameLabel": "Categorie name",
+                "descLabel": "Categorie description (optional)",
                 "saveButton": "Save change",
                 "cancelButton": "Cancel",
-                "toastSuccess": "Genre edited successfully!",
-                "notFound": "Genre not found"
+                "toastSuccess": "Categorie edited successfully!",
+                "notFound": "Categorie not found"
             }
         },
         "actorsPage": {
@@ -434,10 +434,10 @@
             "biographyTooLong": "Biography too long (max 500 characters)",
             "invalidDateFormat": "Invalid date format (YYYY-MM-DD)",
             "invalidImageUrl": "Invalid image url",
-            "genreNameRequired": "Please enter genre name",
-            "genreNameTooShort": "Genre name too short (min 2 characters)",
-            "genreNameTooLong": "Genre name too long (max 50 characters)",
-            "genreDescriptionTooLong": "Genre description too long (max 300 characters)"
+            "genreNameRequired": "Please enter Categorie name",
+            "genreNameTooShort": "Categorie name too short (min 2 characters)",
+            "genreNameTooLong": "Categorie name too long (max 50 characters)",
+            "genreDescriptionTooLong": "Categorie description too long (max 300 characters)"
         },
         "filmsPage": {
             "emptyFilm": "The film list is empty! Please add at least one film.",
@@ -534,6 +534,58 @@
                 "qualityRequired": "Please select film quality",
                 "durationInvalid": "Duration must be a number",
                 "durationMin": "Duration must be at least 1 minute"
+            }
+        },
+        "usersPage": {
+            "title": "Users",
+            "searchUsers": "Search users",
+            "id": "ID",
+            "userName": "User Name",
+            "email": "Email",
+            "role": "Role",
+            "accountStatus": "Account Status",
+            "actions": "Action",
+            "view": "View Details",
+            "lockAccount": "Lock Account",
+            "unlockAccount": "Unlock Account",
+            "locked": "Locked",
+            "active": "Active",
+            "messages": {
+                "emptyUser": "The user list is empty!",
+                "lockSuccess": "User account locked successfully!",
+                "unlockSuccess": "User account unlocked successfully!"
+            }
+        },
+        "dashboardPage": {
+            "statscard": {
+                "totalUsers": "Total Users",
+                "totalMovies": "Total Movies",
+                "activeSubcriptions": "Active Subscriptions",
+                "totalRevenue": "Total Revenue",
+                "ordersToday": "Orders Today"
+            },
+            "lineChart": {
+                "metrics": {
+                    "watchingViews": "Watching Views",
+                    "favoriteCounts": "Favorite Counts"
+                },
+                "timeRanges": {
+                    "7": "Last 7 Days",
+                    "30": "Last 30 Days",
+                    "90": "Last 90 Days",
+                    "180": "Last 180 Days",
+                    "365": "Last 365 Days"
+                },
+                "keyMetrics": "Key Metrics"
+
+            },
+            "knowledgeForYou": {
+                "title": "Knowledge For You",
+                "description": "Stay informed with the latest industry trends, tips, and best practices through our curated articles and resources."
+            },
+            "topFilms": {
+                "title": "Top Films",
+                "viewCount": "View Count"
             }
         }
     }
