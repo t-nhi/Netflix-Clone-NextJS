@@ -8,10 +8,16 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import UploadGuideLine from '@/app/[locale]/admin/movies/add/_components/upload-trailer/upload-guide-lines'
 
+export const UploadFileViewMode = {
+    INITIAL: 'initial',
+    FILE_SELECTED: 'file_selected'
+}
+export type UploadFileViewModeType = (typeof UploadFileViewMode)[keyof typeof UploadFileViewMode]
+
 interface UploadFileProps {
     onFileSelect: (file: File | null) => void
     className?: string
-    isInitialRender?: boolean
+    viewMode?: UploadFileViewModeType
     setIsInitialRender: (value: boolean) => void
 }
 
@@ -20,7 +26,7 @@ export interface UploadFileRef {
 }
 
 const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
-    ({ onFileSelect, className, isInitialRender, setIsInitialRender }, ref) => {
+    ({ onFileSelect, className, viewMode = UploadFileViewMode.INITIAL, setIsInitialRender }, ref) => {
         const t = useTranslations('AdminPage.uploadFilm.uploadFile')
         const [isDragActive, setIsDragActive] = useState(false)
         const inputRef = useRef<HTMLInputElement>(null)
@@ -71,8 +77,8 @@ const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
                         'relative  flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed  bg-muted',
                         isDragActive && 'border-primary bg-primary/5',
                         {
-                            'min-h-[400px] flex-col': isInitialRender,
-                            'min-h-[200px] flex-row gap-4': !isInitialRender
+                            'min-h-[400px] flex-col': viewMode === UploadFileViewMode.INITIAL,
+                            'min-h-[200px] flex-row gap-4': viewMode === UploadFileViewMode.FILE_SELECTED
                         }
                     )}
                     onDragEnter={handleDrag}
@@ -102,21 +108,21 @@ const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
                     </div>
                     <div
                         className={cn('flex flex-col', {
-                            'items-center': isInitialRender,
-                            'items-start': !isInitialRender
+                            'items-center': viewMode === UploadFileViewMode.INITIAL,
+                            'items-start': viewMode === UploadFileViewMode.FILE_SELECTED
                         })}
                     >
                         <h1 className='mb-1 text-2xl font-bold'>{t('selectFile')}</h1>
                         <p className='mb-4 text-base text-muted-foreground'>{t('draganddrop')}</p>
                     </div>
 
-                    {isInitialRender && (
+                    {viewMode === UploadFileViewMode.INITIAL && (
                         <Button className='mb-6 bg-brand font-semibold text-white hover:bg-brand/90'>
                             {t('selectButton')}
                         </Button>
                     )}
                 </div>
-                {isInitialRender && <UploadGuideLine className='mt-8' />}
+                {viewMode === UploadFileViewMode.INITIAL && <UploadGuideLine className='mt-8' />}
             </div>
         )
     }

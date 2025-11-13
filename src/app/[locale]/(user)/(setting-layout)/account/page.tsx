@@ -20,7 +20,7 @@ export default async function AccountPage() {
         {
             icon: Bell,
             label: t('notificationSettings'),
-            href: '/notificationsettings'
+            href: '/notification-settings'
         }
     ]
 

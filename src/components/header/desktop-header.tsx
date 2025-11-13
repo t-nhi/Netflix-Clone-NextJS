@@ -4,61 +4,57 @@ import Logo from '@/components/icons/logo'
 import SelectLanguage from '@/components/locale-switcher-select'
 import { ModeToggle } from '@/components/mode-toggle'
 import { Button } from '@/components/ui/button'
-import { useAppSelector } from '@/store/hooks'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { getHueFromId } from '@/utils/color.util'
 import { ChevronDown, LoaderCircle, LogOut, UserCog } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useMemo } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { useLogout } from '@/hooks/data/useAuth'
+import { Role } from '@/constants/role.enum'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 import { headerMenuItems } from './header.config'
 
-interface HeaderProps {
-    className?: string
+interface DesktopHeaderProps {
+    wrapperClassName?: string
     buttonClassName?: string
     menuItemClassName?: string
+    userHue?: number
+    currentUserRole: null | Role
+    currentPathname?: string
+    onLogout?: () => Promise<void>
+    isLogoutLoading?: boolean
+    userData: UserSummaryType | null
 }
 
-export default function Header({ className, buttonClassName, menuItemClassName }: HeaderProps) {
+export default function DesktopHeader({
+    wrapperClassName,
+    buttonClassName,
+    menuItemClassName,
+    userHue,
+    userData,
+    currentUserRole,
+    currentPathname = '',
+    onLogout,
+    isLogoutLoading = false
+}: DesktopHeaderProps) {
     const t = useTranslations('Header')
-    const router = useRouter()
-    const pathName = usePathname()
-
-    const isLoginPage = useMemo(() => {
-        return pathName.includes('/login')
-    }, [pathName])
-
-    const { handleLogout, logoutResult } = useLogout()
-
-    const user = useAppSelector((state) => state.auth.user_profile)
-    const userHue = useMemo(() => (user ? getHueFromId(user.id) : 0), [user?.id])
-
-    const onLogout = async () => {
-        if (!user) return
-        try {
-            await handleLogout()
-        } catch (error) {
-            console.error('Logout failed:', error)
-        } finally {
-            router.refresh()
-        }
-    }
 
     return (
         <header
-            className={cn('px-6 md:px-8 lg:px-37 bg-transparent  flex items-center justify-between py-4', className)}
+            className={cn(
+                'px-6 md:px-8 lg:px-37 bg-transparent  flex items-center justify-between py-4',
+                wrapperClassName
+            )}
         >
             <div className='flex items-center gap-4'>
                 <Link href='/'>
                     <Logo className='lg:h-10 lg:w-[148px] w-[89px] h-6' />
                 </Link>
                 {headerMenuItems.map((Item) => {
-                    if (Item.isAuthPath && !user) return null
-                    const isActive = pathName.includes(Item.href)
+                    if (Item.isAuthPath && currentUserRole == null) return null
+                    if (Array.isArray(Item.forRole) && currentUserRole && !Item.forRole.includes(currentUserRole))
+                        return null
+                    const isActive = currentPathname.includes(Item.href)
                     return (
                         <Link
                             key={Item.href}
@@ -81,45 +77,69 @@ export default function Header({ className, buttonClassName, menuItemClassName }
             <div className='flex items-center gap-4 '>
                 <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
                 <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
-                {user ? (
+                {currentUserRole != null && userData ? (
                     <Popover>
                         <PopoverTrigger>
                             <div className='bg-transparent flex items-center gap-2 focus:outline-none hover:cursor-pointer'>
-                                <Image
-                                    src='/images/avatar_user.png'
-                                    width={40}
-                                    height={40}
-                                    alt={user.first_name + ' ' + user.last_name}
-                                    className='lg:h-10 h-6 lg:w-10 w-6 '
-                                    style={{
-                                        filter: `hue-rotate(${userHue}deg)`
-                                    }}
-                                />
+                                {currentUserRole == Role.ADMIN ? (
+                                    <Image
+                                        src='/images/common/avatar_admin.png'
+                                        width={40}
+                                        height={40}
+                                        alt={userData.first_name + ' ' + userData.last_name}
+                                        className='lg:h-10 h-6 lg:w-10 w-6 '
+                                        style={{
+                                            filter: `hue-rotate(${userHue}deg)`
+                                        }}
+                                    />
+                                ) : (
+                                    <Image
+                                        src='/images/common/avatar_user.png'
+                                        width={40}
+                                        height={40}
+                                        alt={userData.first_name + ' ' + userData.last_name}
+                                        className='lg:h-10 h-6 lg:w-10 w-6 '
+                                        style={{
+                                            filter: `hue-rotate(${userHue}deg)`
+                                        }}
+                                    />
+                                )}
+
                                 <ChevronDown className='text-white lg:size-4 size-3 ' />
                             </div>
                         </PopoverTrigger>
                         <PopoverContent className='w-48 p-2!' align='end'>
                             <div className='flex flex-col gap-2'>
-                                <Link href='/account' className='block w-full'>
-                                    <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
-                                        <UserCog />
-                                        Settings
-                                    </Button>
-                                </Link>
+                                {currentUserRole === Role.USER && (
+                                    <Link href='/account' className='block w-full'>
+                                        <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
+                                            <UserCog />
+                                            Settings
+                                        </Button>
+                                    </Link>
+                                )}
+                                {currentUserRole === Role.ADMIN && (
+                                    <Link href='/admin/dashboard' className='block w-full'>
+                                        <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
+                                            <UserCog />
+                                            Admin Dashboard
+                                        </Button>
+                                    </Link>
+                                )}
                                 <Button
                                     variant={'ghost'}
                                     className='justify-start hover:cursor-pointer'
                                     onClick={onLogout}
-                                    disabled={logoutResult.isLoading}
+                                    disabled={isLogoutLoading}
                                 >
-                                    {logoutResult.isLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
+                                    {isLogoutLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
                                     Logout
                                 </Button>
                             </div>
                         </PopoverContent>
                     </Popover>
                 ) : (
-                    !isLoginPage && (
+                    !currentPathname.includes('/login') && (
                         <Link href='/login'>
                             <Button
                                 className={cn(
