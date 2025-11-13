@@ -1,7 +1,11 @@
 'use client'
 
-import FileInfo from '@/app/[locale]/admin/movies/add/_components/upload-trailer/file-infor'
-import UploadFile, { UploadFileRef } from '@/app/[locale]/admin/movies/add/_components/upload-trailer/upload-file'
+import FileInfo from '@/app/[locale]/admin/movies/add/_components/upload-trailer/file-info'
+import UploadFile, {
+    UploadFileRef,
+    UploadFileViewMode,
+    UploadFileViewModeType
+} from '@/app/[locale]/admin/movies/add/_components/upload-trailer/upload-file'
 import VideoPreview from '@/app/[locale]/admin/movies/add/_components/video-preview'
 import { cn } from '@/lib/utils'
 import { useRef } from 'react'
@@ -10,7 +14,7 @@ interface UploadVideoProps {
     onFileSelect: (file: File | null) => void
     file: File | null
     className?: string
-    isInitialRender?: boolean
+    viewMode?: UploadFileViewModeType
     setIsInitialRender: (value: boolean) => void
     onReset: () => void
 }
@@ -19,7 +23,7 @@ export default function UploadVideo({
     onFileSelect,
     file,
     className,
-    isInitialRender,
+    viewMode = UploadFileViewMode.INITIAL,
     setIsInitialRender,
     onReset
 }: UploadVideoProps) {
@@ -37,7 +41,7 @@ export default function UploadVideo({
                 className={cn(className, {
                     hidden: file != null
                 })}
-                isInitialRender={isInitialRender}
+                viewMode={viewMode}
                 setIsInitialRender={setIsInitialRender}
                 ref={uploadFileRef}
             />

@@ -12,7 +12,7 @@ export default function UploadGuideLine({ className }: UploadGuideLineProps) {
     return (
         <div className={cn('grid grid-cols-4 gap-3', className)}>
             <div className='flex items-start gap-3'>
-                <Video className='mt-1 size-6 ' />
+                <Video className='mt-1 size-7 ' />
                 <div>
                     <h3 className='font-semibold'>{t('guidelines.sizeAndDuration.title')}</h3>
                     <p className='text-sm text-muted-foreground'>{t('guidelines.sizeAndDuration.description')}</p>

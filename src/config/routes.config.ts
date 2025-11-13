@@ -16,7 +16,9 @@ export enum UserPaths {
     PASSWORD = '/password',
     PAYMENT = '/payment',
     FAVORITES = '/favorites',
-    HISTORY = '/history'
+    HISTORY = '/history',
+    MOVIES = '/movies',
+    NOTIFICATIONS_SETTINGS = '/notification-settings'
 }
 
 export enum CommonPaths {

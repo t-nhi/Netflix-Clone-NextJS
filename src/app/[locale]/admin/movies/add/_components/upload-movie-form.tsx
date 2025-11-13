@@ -23,6 +23,7 @@ import { getAgeRankNameFromEnum, getQualityNameFromEnum } from '@/helper/getName
 import UploadVideo from '@/app/[locale]/admin/movies/add/_components/upload-trailer'
 import PosterUploadField from '@/app/[locale]/admin/movies/add/_components/upload-poster'
 import { CountrySelect } from '@/app/[locale]/admin/movies/add/_components/contries-select'
+import { UploadFileViewMode } from './upload-trailer/upload-file'
 
 export default function FormUploadTrailer() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
@@ -95,7 +96,7 @@ export default function FormUploadTrailer() {
                     file={videoFile}
                     onReset={onReset}
                     setIsInitialRender={setIsInitialRender}
-                    isInitialRender={isInitialRender}
+                    viewMode={isInitialRender ? UploadFileViewMode.INITIAL : UploadFileViewMode.FILE_SELECTED}
                     className='mb-8'
                 />
 
@@ -465,7 +466,7 @@ export default function FormUploadTrailer() {
                             <Button
                                 type='submit'
                                 disabled={isSubmitting}
-                                className='w-[180px] h-10 font-medium hover:cursor-pointer rounded-[4px]'
+                                className='w-[180px] h-10 font-medium hover:cursor-pointer rounded-lg'
                             >
                                 {isSubmitting ? <Loader className='animate-spin' /> : t('uploadButton')}
                             </Button>
@@ -475,7 +476,7 @@ export default function FormUploadTrailer() {
                                 variant='secondary'
                                 disabled={isSubmitting}
                                 onClick={onReset}
-                                className='w-[180px] h-10  hover:cursor-pointer  rounded-[4px]'
+                                className='w-[180px] h-10  hover:cursor-pointer  rounded-lg'
                             >
                                 {t('resetButton')}
                             </Button>
