@@ -9,6 +9,7 @@ import {
     UpdateCategoryParamsType,
     UpdateCategoryResType
 } from '@/types/dtos/category/updateCategory.dto'
+import { GetCategoryByIdParamsType, GetCategoryByIdResType } from '@/types/dtos/category/getCategoryById.dto'
 
 export const categoryApi = createApi({
     reducerPath: 'categoryApi',
@@ -19,6 +20,13 @@ export const categoryApi = createApi({
     refetchOnFocus: false,
     refetchOnReconnect: true,
     endpoints: (builder) => ({
+        getCategoryById: builder.query<GetCategoryByIdResType, { params: GetCategoryByIdParamsType }>({
+            query: ({ params }) => ({
+                url: `/categories/${params.id}`,
+                method: HttpMethod.GET
+            }),
+            providesTags: (result, error, arg) => [{ type: 'Category', id: arg.params.id }]
+        }),
         createCategory: builder.mutation<CreateCategoryResType, CreateCategoryBodyType>({
             query: (body) => ({
                 url: '/categories',
@@ -71,5 +79,6 @@ export const {
     useCreateCategoryMutation,
     useGetCategoriesQuery,
     useDeleteCategoryMutation,
-    useUpdateCategoryMutation
+    useUpdateCategoryMutation,
+    useGetCategoryByIdQuery
 } = categoryApi

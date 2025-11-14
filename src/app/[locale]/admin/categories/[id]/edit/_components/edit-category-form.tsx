@@ -1,62 +1,59 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useForm, SubmitHandler, ControllerRenderProps } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
-import { CategoryType } from '@/types/category.type'
-import { getMockCategoryById } from '@/app/[locale]/admin/_mock/categories.mock'
 import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { cn } from '@/lib/utils'
 import BrandInput from '@/components/brand-input'
-import { useRouter } from 'next/navigation'
-import { GenreBody, GenreBodyType } from '@/utils/validation/category.validation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, LoaderCircle } from 'lucide-react'
+import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/store/services/category/category.services'
+import { UpdateCategoryBodySchema, UpdateCategoryBodyType } from '@/types/dtos/category/updateCategory.dto'
+import { getLocaleMessage } from '@/utils/locale.util'
+import { AdminPaths } from '@/config/routes.config'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
 
 export default function CategoryEditPage({ id }: { id: string }) {
-    const [category, setCategory] = useState<CategoryType | null>(null)
+    const { data: getCategoryRes } = useGetCategoryByIdQuery({ params: { id } })
+    const [updateCategoryMutate, { isLoading: isUpdating }] = useUpdateCategoryMutation()
+    const category = getCategoryRes?.data || null
     const t = useTranslations('AdminPage.categoriesPage.editCategorieForm')
     const validMessage = useTranslations('AdminPage.validation')
-    const router = useRouter()
     const desMaxChars = 300
 
-    const form = useForm<GenreBodyType>({
-        resolver: zodResolver(GenreBody),
+    const form = useForm<UpdateCategoryBodyType>({
+        resolver: zodResolver(UpdateCategoryBodySchema),
         defaultValues: {
             name: '',
             description: ''
-        }
+        },
+        mode: 'onChange'
     })
 
     useEffect(() => {
-        if (!id) return
-        const found = getMockCategoryById(id)
-        if (found) {
-            setCategory(found)
-            form.reset({
-                name: found.name,
-                description: found.description
-            })
-        } else {
-            console.warn(t('notFound'))
-        }
-    }, [id, t, form])
-
-    const onSubmit: SubmitHandler<GenreBodyType> = (data) => {
-        console.log('Edited category:', data)
-        toast.success(t('toastSuccess'))
-        router.push('/admin/categories')
-    }
-    const onCancel = () => {
         if (category) {
             form.reset({
                 name: category.name,
                 description: category.description
             })
         }
+    }, [form, category])
+
+    const onSubmit: SubmitHandler<UpdateCategoryBodyType> = async (body) => {
+        try {
+            const response = await updateCategoryMutate({ params: { id }, body }).unwrap()
+            toast.success(response.message)
+        } catch (error) {
+            handleFormError({ error, setFormError: form.setError })
+        }
+    }
+    const onCancel = () => {
+        form.reset()
     }
 
     if (!category) {
@@ -65,13 +62,20 @@ export default function CategoryEditPage({ id }: { id: string }) {
 
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
-            <Link
-                href={'/admin/categories'}
-                className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
-                   rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
-            >
-                <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
-            </Link>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link
+                        href={AdminPaths.CATEGORIES}
+                        className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
+                rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
+                    >
+                        <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Back to categories</p>
+                </TooltipContent>
+            </Tooltip>
             <h1 className='text-2xl font-semibold mb-2 text-gray-900 dark:text-white text-center'>{t('title')}</h1>
             <p className='text-sm text-gray-600 dark:text-gray-400 text-center mt-4 mb-6'>{t('subtitle')}</p>
 
@@ -98,13 +102,7 @@ export default function CategoryEditPage({ id }: { id: string }) {
                                     />
                                 </FormControl>
                                 <FormMessage className='text-xs text-red-500 mt-1'>
-                                    {formState.errors.name?.message &&
-                                        validMessage(
-                                            formState.errors.name.message as
-                                                | 'genreNameRequired'
-                                                | 'genreNameTooShort'
-                                                | 'genreNameTooLong'
-                                        )}
+                                    {getLocaleMessage(validMessage, formState.errors.name?.message)}
                                 </FormMessage>
                             </FormItem>
                         )}
@@ -114,18 +112,6 @@ export default function CategoryEditPage({ id }: { id: string }) {
                         control={form.control}
                         name='description'
                         render={({ field, formState }) => {
-                            const currentLength = field.value?.length || 0
-
-                            const handleChange = (
-                                e: React.ChangeEvent<HTMLTextAreaElement>,
-                                field: ControllerRenderProps<GenreBodyType, 'description'>
-                            ) => {
-                                const value = e.target.value
-                                if (value.length <= desMaxChars) {
-                                    field.onChange(value)
-                                }
-                            }
-
                             return (
                                 <FormItem>
                                     <FormControl>
@@ -136,7 +122,7 @@ export default function CategoryEditPage({ id }: { id: string }) {
                                             <textarea
                                                 {...field}
                                                 value={field.value ?? ''}
-                                                onChange={(e) => handleChange(e, field)}
+                                                onChange={field.onChange}
                                                 rows={3}
                                                 className={cn(
                                                     'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
@@ -146,21 +132,16 @@ export default function CategoryEditPage({ id }: { id: string }) {
                                             <div className='text-right text-xs md:text-sm'>
                                                 <span
                                                     className={
-                                                        currentLength > desMaxChars * 0.8
-                                                            ? 'text-red-500'
-                                                            : 'text-gray-400'
+                                                        formState.errors.description ? 'text-red-500' : 'text-gray-400'
                                                     }
                                                 >
-                                                    {currentLength}/{desMaxChars}
+                                                    {field.value?.length ?? 0}/{desMaxChars}
                                                 </span>
                                             </div>
                                         </div>
                                     </FormControl>
-                                    <FormMessage className='text-xs text-red-500 mt-1'>
-                                        {formState.errors.description?.message &&
-                                            validMessage(
-                                                formState.errors.description.message as 'genreDescriptionTooLong'
-                                            )}
+                                    <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
+                                        {getLocaleMessage(validMessage, formState.errors.description?.message)}
                                     </FormMessage>
                                 </FormItem>
                             )
@@ -169,9 +150,10 @@ export default function CategoryEditPage({ id }: { id: string }) {
                     <div className='flex flex-col gap-4'>
                         <Button
                             type='submit'
+                            disabled={isUpdating}
                             className='bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold h-10 w-full transition-colors duration-200 cursor-pointer'
                         >
-                            {t('saveButton')}
+                            {isUpdating ? <LoaderCircle className='animate-spin size-5' /> : t('saveButton')}
                         </Button>
 
                         <Button
