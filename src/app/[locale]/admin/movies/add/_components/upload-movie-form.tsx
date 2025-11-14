@@ -25,6 +25,7 @@ import { CountrySelect } from '@/app/[locale]/admin/movies/_components/upload-mo
 import { UploadFileViewMode } from '../../_components/upload-movie/upload-video/upload-file'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
 import { VideoQuality } from '@/constants/video/video-quality.enum'
+import { customSelectMultiStyles } from '@/app/[locale]/admin/movies/_components/upload-movie/custom-style-select-multi'
 
 export default function FormUploadTrailer() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
@@ -212,29 +213,17 @@ export default function FormUploadTrailer() {
                                                 isMulti
                                                 instanceId='directors'
                                                 placeholder={t('selectDirector')}
+                                                menuPortalTarget={document.body}
                                                 classNamePrefix='react-select'
-                                                styles={{
-                                                    control: (base) => ({
-                                                        ...base,
-                                                        minHeight: 44,
-                                                        borderColor: '#e2e8f0'
-                                                    }),
-                                                    valueContainer: (base) => ({
-                                                        ...base,
-                                                        overflow: 'hidden'
-                                                    }),
-                                                    multiValueLabel: (base) => ({
-                                                        ...base,
-                                                        whiteSpace: 'nowrap'
-                                                    })
-                                                }}
+                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
                                                 options={directors.map((d) => ({ value: d._id, label: d.name }))}
                                                 value={directors
                                                     .filter((d) => field.value?.includes(d._id))
                                                     .map((d) => ({ value: d._id, label: d.name }))}
-                                                onChange={(vals: MultiValue<{ value: string }>) =>
-                                                    field.onChange(vals.map((v) => v.value))
+                                                onChange={(vals) =>
+                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
+                                                styles={customSelectMultiStyles}
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
@@ -258,29 +247,17 @@ export default function FormUploadTrailer() {
                                                 isMulti
                                                 instanceId='actors'
                                                 placeholder={t('selectActors')}
+                                                menuPortalTarget={document.body}
                                                 classNamePrefix='react-select'
-                                                styles={{
-                                                    control: (base) => ({
-                                                        ...base,
-                                                        minHeight: 44,
-                                                        borderColor: '#e2e8f0'
-                                                    }),
-                                                    valueContainer: (base) => ({
-                                                        ...base,
-                                                        overflow: 'hidden'
-                                                    }),
-                                                    multiValueLabel: (base) => ({
-                                                        ...base,
-                                                        whiteSpace: 'nowrap'
-                                                    })
-                                                }}
+                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
                                                 options={actors.map((a) => ({ value: a._id, label: a.name }))}
                                                 value={actors
                                                     .filter((a) => field.value?.includes(a._id))
                                                     .map((a) => ({ value: a._id, label: a.name }))}
-                                                onChange={(vals: MultiValue<{ value: string }>) =>
-                                                    field.onChange(vals.map((v) => v.value))
+                                                onChange={(vals) =>
+                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
+                                                styles={customSelectMultiStyles}
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
@@ -303,28 +280,16 @@ export default function FormUploadTrailer() {
                                                 instanceId='genres'
                                                 placeholder={t('selectGenres')}
                                                 classNamePrefix='react-select'
-                                                styles={{
-                                                    control: (base) => ({
-                                                        ...base,
-                                                        minHeight: 44,
-                                                        borderColor: '#e2e8f0'
-                                                    }),
-                                                    valueContainer: (base) => ({
-                                                        ...base,
-                                                        overflow: 'hidden'
-                                                    }),
-                                                    multiValueLabel: (base) => ({
-                                                        ...base,
-                                                        whiteSpace: 'nowrap'
-                                                    })
-                                                }}
+                                                menuPortalTarget={document.body}
+                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
                                                 options={genres.map((g) => ({ value: g._id, label: g.name }))}
                                                 value={genres
                                                     .filter((g) => field.value?.includes(g._id))
                                                     .map((g) => ({ value: g._id, label: g.name }))}
-                                                onChange={(vals: MultiValue<{ value: string }>) =>
-                                                    field.onChange(vals.map((v) => v.value))
+                                                onChange={(vals) =>
+                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
+                                                styles={customSelectMultiStyles}
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
