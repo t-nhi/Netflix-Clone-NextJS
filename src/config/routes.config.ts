@@ -8,7 +8,16 @@ export enum AuthPaths {
 }
 
 export enum AdminPaths {
-    DASHBOARD = '/admin'
+    DASHBOARD = '/admin',
+    USERS = '/admin/users',
+    SERVICES = '/admin/services',
+    MOVIES = '/admin/movies',
+    PURCHASES = '/admin/purchases',
+    CATEGORIES = '/admin/categories',
+    ACTORS = '/admin/actors',
+    TOP_CONTENTS = '/admin/top-contents',
+    NOTIFICATIONS = '/admin/notifications',
+    SETTINGS = '/admin/settings'
 }
 
 export enum UserPaths {
