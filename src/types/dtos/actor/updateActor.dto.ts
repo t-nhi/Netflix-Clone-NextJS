@@ -2,9 +2,11 @@ import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
 import { ActorSchema } from '@/types/models/actor.model'
 import z from 'zod'
 
-export const UpdateActorBodySchema = z.object({
-    fullname: z.string(),
-    biography: z.string()
+export const UpdateActorBodySchema = ActorSchema.pick({
+    fullname: true,
+    biography: true,
+    avatar: true,
+    dateOfBirth: true
 })
 export type UpdateActorBodyType = z.infer<typeof UpdateActorBodySchema>
 

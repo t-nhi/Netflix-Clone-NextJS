@@ -4,6 +4,7 @@ import baseQueryWithReauth from '../client'
 import { HttpMethod } from '@/constants/http.enum'
 import { GetActorDetailParamsType, GetActorDetailResType } from '@/types/dtos/actor/getActorDetail.dto'
 import { UpdateActorBodyType, UpdateActorParamsType, UpdateActorResType } from '@/types/dtos/actor/updateActor.dto'
+import { DeleteActorParamType, DeleteActorResType } from '@/types/dtos/actor/deleteActor.dto'
 
 export const actorApi = createApi({
     reducerPath: 'ManageActorApi',
@@ -34,12 +35,12 @@ export const actorApi = createApi({
                     }
                 }
             }),
-            getActorById: build.query<GetActorDetailResType, GetActorDetailParamsType>({
+            getActorById: build.query<GetActorDetailResType, { params: GetActorDetailParamsType }>({
                 query: (params) => ({
-                    url: `/actors/${params.id}`,
+                    url: `/actors/${params.params.id}`,
                     method: HttpMethod.GET
                 }),
-                providesTags: (result, error, arg) => [{ type: 'Actors' as const, id: arg.id }]
+                providesTags: (result, error, arg) => [{ type: 'Actors' as const, id: arg.params.id }]
             }),
             updateActorById: build.mutation<
                 UpdateActorResType,
@@ -51,9 +52,33 @@ export const actorApi = createApi({
                     body
                 }),
                 invalidatesTags: (result, error, arg) => [{ type: 'Actors' as const, id: arg.params.id }]
+            }),
+            deleteActor: build.mutation<DeleteActorResType, { params: DeleteActorParamType }>({
+                query: ({ params }) => ({
+                    url: `/actors/${params.id}`,
+                    method: HttpMethod.DELETE
+                }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'Actors', id: arg.params.id },
+                    { type: 'Actors', id: 'LIST' }
+                ]
+            }),
+            createActor: build.mutation<UpdateActorResType, UpdateActorBodyType>({
+                query: (body) => ({
+                    url: '/actors',
+                    method: HttpMethod.POST,
+                    body
+                }),
+                invalidatesTags: [{ type: 'Actors', id: 'LIST' }]
             })
         }
     }
 })
 
-export const { useGetAllActorsQuery, useGetActorByIdQuery, useUpdateActorByIdMutation } = actorApi
+export const {
+    useGetAllActorsQuery,
+    useGetActorByIdQuery,
+    useUpdateActorByIdMutation,
+    useDeleteActorMutation,
+    useCreateActorMutation
+} = actorApi

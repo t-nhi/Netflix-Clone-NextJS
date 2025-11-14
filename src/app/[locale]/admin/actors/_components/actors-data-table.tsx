@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -15,42 +15,38 @@ import {
     ColumnFiltersState,
     VisibilityState
 } from '@tanstack/react-table'
-import { ActorType } from '@/types/actor-director.type'
 import { getActorColumns } from './actors-columns'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { toast } from 'sonner'
-import { getMockActors } from '@/app/[locale]/admin/_mock/actors.mock'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
+import { useDeleteActorMutation, useGetAllActorsQuery } from '@/store/services/actor/actor.services'
+import { AdminPaths } from '@/config/routes.config'
 
 export default function ActorsDataTable() {
     const t = useTranslations('AdminPage.actorsPage')
+    const { data: getActorsRes } = useGetAllActorsQuery()
+    const actors = useMemo(() => getActorsRes?.data || [], [getActorsRes])
 
-    const [actors, setActors] = useState<ActorType[]>([])
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
     const router = useRouter()
 
-    useEffect(() => {
-        setActors(getMockActors(20))
-    }, [])
+    const [deleteActorMutate] = useDeleteActorMutation()
+
     const onEdit = (id: string) => {
-        //router.push(`/admin/actors/edit/${encodeURIComponent(id)}`)
-        const actor = actors.find((a) => a.id === id)
-        if (!actor) return
-        alert(`Edit actor: ${actor.fullName}`)
+        router.push(`${AdminPaths.ACTORS}/${id}/edit`)
     }
 
     const onDelete = async (id: string) => {
-        const actor = actors.find((a) => a.id === id)
-        if (!actor) return
-        const confirmDelete = confirm(`Delete ${actor.fullName}?`)
-        if (!confirmDelete) return
-
-        setActors((prev) => prev.filter((a) => a.id !== id))
-        toast.success('Deleted successfully')
+        try {
+            const response = await deleteActorMutate({ params: { id } }).unwrap()
+            toast.success(response.message)
+        } catch (error) {
+            console.error('Error deleting actor:', error)
+        }
     }
 
     const columns = getActorColumns({ t, onEdit, onDelete })
@@ -87,7 +83,7 @@ export default function ActorsDataTable() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                onClick={() => router.push('/admin/actors/add')}
+                                onClick={() => router.push(`${AdminPaths.ACTORS}/add`)}
                                 className='rounded-full p-1 shrink-0 cursor-pointer w-8 h-8 transition-colors duration-300 border-2 border-black dark:border-white text-black dark:text-white bg-black/3 dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10'
                             >
                                 <Plus className='h-4 w-4 font-bold' />
