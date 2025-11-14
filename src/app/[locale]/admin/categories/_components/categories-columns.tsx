@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ArrowUpDown, Pencil, Trash } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
-import { CategoryType } from '@/types/category.type'
 import { useTranslations } from 'next-intl'
+import { CategoryType } from '@/types/models/category.model'
 
 type TranslationFunction = ReturnType<typeof useTranslations>
 interface CategoryColumnProps {
@@ -53,22 +53,22 @@ export const getCategoryColumns = ({ t, onEdit, onDelete }: CategoryColumnProps)
             </div>
         )
     },
-    {
-        accessorKey: 'createdAt',
-        header: t('createdAt'),
-        size: 120,
-        cell: ({ row }) => (
-            <div className='font-mono text-xs text-gray-600 dark:text-gray-400 truncate'>{row.original.createdAt}</div>
-        )
-    },
-    {
-        accessorKey: 'updatedAt',
-        header: t('updatedAt'),
-        size: 120,
-        cell: ({ row }) => (
-            <div className='font-mono text-xs text-gray-600 dark:text-gray-400 truncate'>{row.original.updatedAt}</div>
-        )
-    },
+    // {
+    //     accessorKey: 'createdAt',
+    //     header: t('createdAt'),
+    //     size: 120,
+    //     cell: ({ row }) => (
+    //         <div className='font-mono text-xs text-gray-600 dark:text-gray-400 truncate'>{row.original.}</div>
+    //     )
+    // },
+    // {
+    //     accessorKey: 'updatedAt',
+    //     header: t('updatedAt'),
+    //     size: 120,
+    //     cell: ({ row }) => (
+    //         <div className='font-mono text-xs text-gray-600 dark:text-gray-400 truncate'>{row.original.updatedAt}</div>
+    //     )
+    // },
     {
         id: 'actions',
         header: () => <div className='flex justify-center w-full'>{t('action')}</div>,
@@ -92,7 +92,7 @@ export const getCategoryColumns = ({ t, onEdit, onDelete }: CategoryColumnProps)
                         <TooltipTrigger asChild>
                             <Button
                                 onClick={() => onDelete(category.id)}
-                                className='rounded-full w-8 h-8 bg-[#f4f3f3] border border-[#dbdbdb] hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10'
+                                className='rounded-full w-8 h-8 bg-[#f4f3f3] border border-[#dbdbdb] hover:bg-gray-200 hover:text-red-500 dark:bg-white/5 dark:hover:bg-white/10'
                             >
                                 <Trash className='h-4 w-4 text-gray-600 dark:text-white' />
                             </Button>

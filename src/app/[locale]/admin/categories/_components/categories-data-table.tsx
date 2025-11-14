@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import {
     useReactTable,
@@ -12,47 +12,41 @@ import {
     ColumnFiltersState,
     VisibilityState
 } from '@tanstack/react-table'
-import { CategoryType } from '@/types/category.type'
-import { getMockCategories } from '@/app/[locale]/admin/_mock/categories.mock'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
-import { getCategoryColumns } from '@/app/[locale]/admin/categories/_components/categories-colums'
+import { getCategoryColumns } from '@/app/[locale]/admin/categories/_components/categories-columns'
 import { toast } from 'sonner'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Input } from '@/components/ui/input'
 import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
+import { useDeleteCategoryMutation, useGetCategoriesQuery } from '@/store/services/category/category.services'
+import { AdminPaths } from '@/config/routes.config'
 
 export default function CategoriesDataTable() {
     const t = useTranslations('AdminPage.categoriesPage')
-    const [categories, setCategories] = useState<CategoryType[]>([])
+    const { data: getCategoriesRes } = useGetCategoriesQuery()
+    const categories = useMemo(() => getCategoriesRes?.data || [], [getCategoriesRes])
+
+    const [deleteCategoryMutate] = useDeleteCategoryMutation()
+
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
     const router = useRouter()
 
-    useEffect(() => {
-        setCategories(getMockCategories(20))
-    }, [])
-
     const onEdit = (id: string) => {
-        const category = categories.find((c) => c.id === id)
-        if (!category) return
-        alert(`Edit category: ${category.name}`)
-        // Nếu muốn route tới trang edit:
-        // router.push(`/admin/categories/edit/${encodeURIComponent(id)}`)
+        router.push(`${AdminPaths.CATEGORIES}/${id}/edit`)
     }
 
     const onDelete = async (id: string) => {
-        const category = categories.find((c) => c.id === id)
-        if (!category) return
-
-        const confirmDelete = confirm(`Delete category: ${category.name}?`)
-        if (!confirmDelete) return
-
-        setCategories((prev) => prev.filter((c) => c.id !== id))
-        toast.success('Deleted successfully')
+        try {
+            const response = await deleteCategoryMutate({ params: { id } }).unwrap()
+            toast.success(response.message)
+        } catch (error) {
+            console.error('Error deleting category:', error)
+        }
     }
 
     const columns = getCategoryColumns({ t, onEdit, onDelete })

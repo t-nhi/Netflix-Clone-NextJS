@@ -1,51 +1,66 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, SubmitHandler, ControllerRenderProps } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import BrandInput from '@/components/brand-input'
 import { useTranslations } from 'next-intl'
 import React from 'react'
-import { GenreBody, GenreBodyType } from '@/utils/validation/category.validation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, LoaderCircle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useCreateCategoryMutation } from '@/store/services/category/category.services'
+import { CreateCategoryBodySchema, CreateCategoryBodyType } from '@/types/dtos/category/createCategory.dto'
+import { getLocaleMessage } from '@/utils/locale.util'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
 
 export default function AddCategoryForm() {
+    const [createCategoryMutate, { isLoading: isCreating }] = useCreateCategoryMutation()
     const t = useTranslations('AdminPage.categoriesPage.addCategorieForm')
     const validMessage = useTranslations('AdminPage.validation')
-    const router = useRouter()
     const desMaxChars = 300
 
-    const form = useForm<GenreBodyType>({
-        resolver: zodResolver(GenreBody),
+    const form = useForm<CreateCategoryBodyType>({
+        resolver: zodResolver(CreateCategoryBodySchema),
         defaultValues: {
             name: '',
             description: ''
         }
     })
 
-    const onSubmit: SubmitHandler<GenreBodyType> = (data) => {
-        console.log('Form data:', data)
-        toast.success(t('toastSuccess'))
-        router.push('/admin/categories')
-    }
     const onCancel = () => {
         form.reset()
     }
 
+    const onSubmit: SubmitHandler<CreateCategoryBodyType> = async (data) => {
+        try {
+            const response = await createCategoryMutate(data).unwrap()
+            toast.success(response.message)
+            onCancel()
+        } catch (error) {
+            handleFormError({ error, setFormError: form.setError })
+        }
+    }
+
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
-            <Link
-                href={'/admin/categories'}
-                className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link
+                        href={'/admin/categories'}
+                        className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
                    rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
-            >
-                <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
-            </Link>
+                    >
+                        <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Back to categories</p>
+                </TooltipContent>
+            </Tooltip>
             <h1 className='text-2xl sm:text-3xl font-semibold text-black dark:text-white text-center'>{t('title')}</h1>
             <p className='text-sm text-gray-600 dark:text-gray-300 text-center mb-4 mt-4'>{t('subtitle')}</p>
 
@@ -72,13 +87,7 @@ export default function AddCategoryForm() {
                                     />
                                 </FormControl>
                                 <FormMessage className='text-xs text-red-500 mt-1'>
-                                    {form.formState.errors.name?.message &&
-                                        validMessage(
-                                            form.formState.errors.name.message as
-                                                | 'genreNameRequired'
-                                                | 'genreNameTooShort'
-                                                | 'genreNameTooLong'
-                                        )}
+                                    {getLocaleMessage(validMessage, form.formState.errors.name?.message)}
                                 </FormMessage>
                             </FormItem>
                         )}
@@ -87,19 +96,7 @@ export default function AddCategoryForm() {
                     <FormField
                         control={form.control}
                         name='description'
-                        render={({ field }) => {
-                            const currentLength = field.value?.length || 0
-
-                            const handleChange = (
-                                e: React.ChangeEvent<HTMLTextAreaElement>,
-                                field: ControllerRenderProps<GenreBodyType, 'description'>
-                            ) => {
-                                const value = e.target.value
-                                if (value.length <= desMaxChars) {
-                                    field.onChange(value)
-                                }
-                            }
-
+                        render={({ field, formState }) => {
                             return (
                                 <FormItem>
                                     <FormControl>
@@ -110,32 +107,26 @@ export default function AddCategoryForm() {
                                             <textarea
                                                 {...field}
                                                 value={field.value ?? ''}
-                                                onChange={(e) => handleChange(e, field)}
+                                                onChange={field.onChange}
                                                 rows={3}
-                                                maxLength={desMaxChars}
                                                 className={cn(
                                                     'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
-                                                    form.formState.errors.description && 'border-red-500'
+                                                    formState.errors.description && 'border-red-500'
                                                 )}
                                             />
                                             <div className='text-right text-xs md:text-sm'>
                                                 <span
                                                     className={
-                                                        currentLength > desMaxChars * 0.8
-                                                            ? 'text-red-500'
-                                                            : 'text-gray-400'
+                                                        formState.errors.description ? 'text-red-500' : 'text-gray-400'
                                                     }
                                                 >
-                                                    {currentLength}/{desMaxChars}
+                                                    {field.value?.length ?? 0}/{desMaxChars}
                                                 </span>
                                             </div>
                                         </div>
                                     </FormControl>
-                                    <FormMessage className='text-xs text-red-500 mt-1'>
-                                        {form.formState.errors.description?.message &&
-                                            validMessage(
-                                                form.formState.errors.description.message as 'genreDescriptionTooLong'
-                                            )}
+                                    <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
+                                        {getLocaleMessage(validMessage, formState.errors.description?.message)}
                                     </FormMessage>
                                 </FormItem>
                             )
@@ -146,7 +137,7 @@ export default function AddCategoryForm() {
                         type='submit'
                         className='bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold h-10 w-full transition-colors duration-200 cursor-pointer'
                     >
-                        {t('addButton')}
+                        {isCreating ? <LoaderCircle className='animate-spin size-5' /> : t('addButton')}
                     </Button>
 
                     <Button
