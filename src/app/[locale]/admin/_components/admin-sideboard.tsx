@@ -12,15 +12,23 @@ import {
     Bell,
     Settings,
     Upload,
-    Package
+    Package,
+    UserCog,
+    LoaderCircle,
+    LogOut
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Logo from '@/components/icons/logo'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar-admin'
+import { Avatar, AvatarImage } from '@/components/ui/avatar-admin'
 import { ModeToggle } from '@/components/mode-toggle'
 import SelectLanguage from '@/components/locale-switcher-select'
 import { AdminPaths } from '@/config/routes.config'
-import { usePathname } from '@/i18n/navigation'
+import { usePathname, useRouter } from '@/i18n/navigation'
+import { useAppSelector } from '@/store/hooks'
+import { useMemo } from 'react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { useLogout } from '@/hooks/data/useAuth'
 
 interface AdminSideboardProps {
     className?: string
@@ -43,6 +51,29 @@ const bottomMenuItems = [{ label: 'Settings', icon: Settings, href: AdminPaths.S
 
 export default function AdminSideboard({ className, buttonClassName }: AdminSideboardProps) {
     const pathname = usePathname()
+    const router = useRouter()
+    const { handleLogout, logoutResult } = useLogout()
+
+    const userProfile = useAppSelector((state) => state.auth.user_profile)
+    const nameUser = useMemo(
+        () =>
+            userProfile?.first_name && userProfile?.last_name
+                ? userProfile?.first_name + ' ' + userProfile?.last_name
+                : 'Admin',
+        [userProfile]
+    )
+
+    const onLogout = async () => {
+        if (!userProfile) return
+        try {
+            await handleLogout()
+        } catch (error) {
+            console.error('Logout failed:', error)
+        } finally {
+            router.refresh()
+        }
+    }
+
     return (
         <div className='flex h-screen bg-gray-50 overflow-hidden'>
             <aside
@@ -124,14 +155,48 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                         <div className='flex items-center gap-2'>
                             <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
                             <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
-                            <div className='text-sm text-right'>
-                                <p className='font-medium text-white'>Sam Wheeler</p>
-                                <p className='text-gray-400 text-xs'>samwheler@example.com</p>
-                            </div>
-                            <Avatar className='h-8 w-8'>
-                                <AvatarImage src='https://i.pravatar.cc/100?img=12' alt='User' />
-                                <AvatarFallback>SW</AvatarFallback>
-                            </Avatar>
+                            <Popover>
+                                <PopoverTrigger>
+                                    <div className='flex items-center gap-3 cursor-pointer p-1 '>
+                                        <div className='text-sm text-right'>
+                                            <p className='font-medium text-white'>{nameUser}</p>
+                                            <p className='text-gray-400 text-xs'>{userProfile?.email || 'Admin'}</p>
+                                        </div>
+                                        <Avatar className='h-8 w-8'>
+                                            <AvatarImage
+                                                src='/images/common/avatar_admin.png'
+                                                alt={userProfile?.email}
+                                            />
+                                        </Avatar>
+                                    </div>
+                                </PopoverTrigger>
+                                <PopoverContent className='w-48 p-2!' align='end'>
+                                    <div className='flex flex-col gap-2'>
+                                        <Link href={AdminPaths.SETTINGS} className='block w-full'>
+                                            <Button
+                                                variant={'ghost'}
+                                                className='justify-start w-full hover:cursor-pointer'
+                                            >
+                                                <UserCog />
+                                                Setting
+                                            </Button>
+                                        </Link>
+                                        <Button
+                                            variant={'ghost'}
+                                            className='justify-start hover:cursor-pointer'
+                                            onClick={onLogout}
+                                            disabled={logoutResult.isLoading}
+                                        >
+                                            {logoutResult.isLoading ? (
+                                                <LoaderCircle className='animate-spin ' />
+                                            ) : (
+                                                <LogOut />
+                                            )}
+                                            Logout
+                                        </Button>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                         </div>
                     </div>
                 </header>

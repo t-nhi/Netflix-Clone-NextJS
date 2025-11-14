@@ -47,7 +47,7 @@ export default function UploadVideo({
             />
 
             {file && (
-                <div className={cn('grid grid-cols-2 gap-6 items-start justify-start w-full bg-white', className)}>
+                <div className={cn('grid grid-cols-2 gap-6 items-start justify-start w-full ', className)}>
                     <div className='w-full'>
                         <FileInfo file={file} onReplaceFile={handleReplaceFile} />
                     </div>

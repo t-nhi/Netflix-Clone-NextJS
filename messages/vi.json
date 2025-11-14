@@ -351,7 +351,7 @@
     },
     "AdminPage": {
         "categoriesPage": {
-            "messages":{
+            "messages": {
                 "emptyCategory": "Danh sách thể loại rỗng! Vui lý thêm một thể loại."
             },
             "title": "Danh sách thể loại",
@@ -367,13 +367,13 @@
             "delete": "Xóa",
             "delSuccess": "Xóa thể loại thành công!",
             "addCategorieForm": {
-                    "title": "Thêm thể loại mới",
-                    "subtitle": "Vui lòng điền thông tin bên dưới để thêm thể loại mới.",
-                    "nameLabel": "Nhập tên thể loại",
-                    "descLabel": "Nhập mô tả thể loại (không bắt buộc)",
-                    "addButton": "Thêm thể loại",
-                    "cancelButton": "Hủy",
-                    "toastSuccess": "Thêm thể loại thành công!"
+                "title": "Thêm thể loại mới",
+                "subtitle": "Vui lòng điền thông tin bên dưới để thêm thể loại mới.",
+                "nameLabel": "Nhập tên thể loại",
+                "descLabel": "Nhập mô tả thể loại (không bắt buộc)",
+                "addButton": "Thêm thể loại",
+                "cancelButton": "Hủy",
+                "toastSuccess": "Thêm thể loại thành công!"
             },
             "editCategorieForm": {
                 "title": "Chỉnh sửa thể loại",
@@ -387,7 +387,7 @@
             }
         },
         "actorsPage": {
-            "messages":{
+            "messages": {
                 "emptyActor ": "Danh sách diễn viên rỗng. Hãy thêm diễn viên đầu tiên"
             },
             "title": "Danh sách diễn viên",
@@ -471,7 +471,6 @@
                 "sizeAndDuration": {
                     "title": "Hướng dẫn về thời gian và kích thước",
                     "description": "Vui lòng chọn file có kích thước không quá 10MB"
-            
                 },
                 "fileFormats": {
                     "title": "Hướng dẫn về điều kiện cơ bản",
@@ -504,7 +503,7 @@
                 "description": "Mô tả phim",
                 "descriptionPlaceholder": "Nhập mô tả phim",
                 "dateRealease": "Ngày phát hành",
-                "director":"Đạo diễn",
+                "director": "Đạo diễn",
                 "selectDirector": "Chọn đạo diễn",
                 "actors": "Diễn viên",
                 "selectActors": "Chọn diễn viên",
@@ -534,14 +533,14 @@
                 "genresRequired": "Vui lòng chọn ít nhất một thể loại",
                 "countryRequired": "Vui lòng chọn quốc gia",
                 "verticalPosterRequired": "Vui lòng tải lên poster dọc",
-                "horizontalPosterRequired": "Vui lòng tải lên poster ngang",                
+                "horizontalPosterRequired": "Vui lòng tải lên poster ngang",
                 "ageRequired": "Vui lòng chọn độ tuổi giới hạn",
                 "qualityRequired": "Vui lòng chọn chất lượng phim",
                 "durationInvalid": "Thời lượng phải là số",
                 "durationMin": "Thời lượng tối thiểu là 1 phút"
             }
         },
-        
+
         "usersPage": {
             "title": "Danh sách người dùng",
             "searchUsers": "Tìm kiếm",

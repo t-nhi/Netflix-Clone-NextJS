@@ -349,7 +349,7 @@
     },
     "AdminPage": {
         "categoriesPage": {
-            "messages":{
+            "messages": {
                 "emptyCategory": "The Categorie list is empty! Please add at least one Categorie."
             },
             "title": "Categories",
@@ -385,7 +385,7 @@
             }
         },
         "actorsPage": {
-            "messages":{
+            "messages": {
                 "emptyActor ": "The actor list is empty! Please add at least one actor."
             },
             "title": "Actors",
@@ -578,7 +578,6 @@
                     "365": "Last 365 Days"
                 },
                 "keyMetrics": "Key Metrics"
-
             },
             "knowledgeForYou": {
                 "title": "Knowledge For You",
