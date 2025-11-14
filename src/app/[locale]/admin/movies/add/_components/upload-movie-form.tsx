@@ -1,31 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Loader } from 'lucide-react'
-import Select, { MultiValue } from 'react-select'
+import Select from 'react-select'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select as ShadSelect, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-import { CreateFilmReqBody, CreateFilmReqBodyType } from '@/utils/validation/upload-film.validation'
-import { getMockActors } from '@/app/[locale]/admin/_mock/actors.mock'
-import { getMockDirectors } from '@/app/[locale]/admin/_mock/directors.mock'
-import { getMockCategories } from '@/app/[locale]/admin/_mock/categories.mock'
-
-import { getAgeRankNameFromEnum, getQualityNameFromEnum } from '@/helper/getNameFromStatus'
+import { getAgeRankNameFromEnum } from '@/helper/getNameFromStatus'
 import UploadVideo from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video'
 import PosterUploadField from '@/app/[locale]/admin/movies/_components/upload-movie/upload-poster/upload-poster'
 import { CountrySelect } from '@/app/[locale]/admin/movies/_components/upload-movie/contries-select'
 import { UploadFileViewMode } from '../../_components/upload-movie/upload-video/upload-file'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
-import { VideoQuality } from '@/constants/video/video-quality.enum'
 import { customSelectMultiStyles } from '@/app/[locale]/admin/movies/_components/upload-movie/custom-style-select-multi'
+import { CreateMovieBodySchema, CreateMovieBodyType } from '@/types/dtos/movie/createMovie.dto'
+import { useGetAllDirectorsQuery } from '@/store/services/director/director.services'
+import { useGetAllActorsQuery } from '@/store/services/actor/actor.services'
+import { useGetAllCategoryQuery } from '@/store/services/category/category.services'
+import { useCreateMovieMutation } from '@/store/services/movie/movie.services'
 
 export default function FormUploadTrailer() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
@@ -35,47 +34,43 @@ export default function FormUploadTrailer() {
     const [isInitialRender, setIsInitialRender] = useState(true)
     const [videoFile, setVideoFile] = useState<File | null>(null)
 
-    const [directors, setDirectors] = useState<{ _id: string; name: string }[]>([])
-    const [actors, setActors] = useState<{ _id: string; name: string }[]>([])
-    const [genres, setGenres] = useState<{ _id: string; name: string }[]>([])
+    const { data: directorsResData } = useGetAllDirectorsQuery()
+    const { data: actorsResData } = useGetAllActorsQuery()
+    const { data: categoriesResData } = useGetAllCategoryQuery()
+    const [createMovieMutate,{isLoading:isCreateMovieLoading}] = useCreateMovieMutation()
 
-    useEffect(() => {
-        setActors(getMockActors(20).map((a) => ({ _id: a.id, name: a.fullName })))
-        setDirectors(getMockDirectors(5).map((d) => ({ _id: d.id, name: d.fullName })))
-        setGenres(getMockCategories(10).map((g) => ({ _id: g.id, name: g.name })))
-    }, [])
+    const directors = directorsResData?.data || []
+    const actors = actorsResData?.data || []
+    const genres = categoriesResData?.data || []
 
-    const form = useForm<CreateFilmReqBodyType>({
-        resolver: zodResolver(CreateFilmReqBody),
+    const form = useForm<CreateMovieBodyType>({
+        resolver: zodResolver(CreateMovieBodySchema),
         defaultValues: {
             title: '',
             description: '',
-            release_date: '',
-            directors: [],
-            actors: [],
-            genres: [],
+            releaseDate: '',
+            actorIds: [],
+            directorIds: [],
+            categoryIds: [],
             country: '',
-            trailer_url: '',
-            vertical_poster: '',
-            horizontal_poster: '',
+            trailerUrl: '',
+            verticalPoster: '',
+            horizontalPoster: '',
             age: AgeRank.P,
-            quality: VideoQuality.HD,
-            duration_minutes: 120,
-            film_url: '',
             isVip: false
         }
     })
 
     const onReset = () => {
-        if (isSubmitting) return
+        if (isCreateMovieLoading) return
         form.reset()
         setVideoFile(null)
         setIsInitialRender(true)
         toast.success(t('messages.resetForm'))
     }
 
-    const onSubmit = async (data: CreateFilmReqBodyType) => {
-        if (isSubmitting) return
+    const onSubmit = async (data: CreateMovieBodyType) => {
+        if (isCreateMovieLoading) return
         setIsSubmitting(true)
 
         try {
@@ -84,7 +79,6 @@ export default function FormUploadTrailer() {
             onReset()
         } catch (error) {
             console.error(error)
-            toast.error(t('messages.uploadFailed'))
         } finally {
             setIsSubmitting(false)
         }
@@ -144,7 +138,7 @@ export default function FormUploadTrailer() {
 
                             <FormField
                                 control={form.control}
-                                name='release_date'
+                                name='releaseDate'
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className='font-semibold text-sm'>{t('dateRealease')}</FormLabel>
@@ -152,9 +146,9 @@ export default function FormUploadTrailer() {
                                             <Input type='date' {...field} />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.release_date?.message &&
+                                            {form.formState.errors.releaseDate?.message &&
                                                 validMessage(
-                                                    form.formState.errors.release_date.message as 'releaseDateInvalid'
+                                                    form.formState.errors.releaseDate.message as 'releaseDateInvalid'
                                                 )}
                                         </FormMessage>
                                     </FormItem>
@@ -204,7 +198,7 @@ export default function FormUploadTrailer() {
                         <div className='grid grid-cols-3 gap-6 items-start py-5'>
                             <FormField
                                 control={form.control}
-                                name='directors'
+                                name='directorIds'
                                 render={({ field }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('director')}</FormLabel>
@@ -227,9 +221,9 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.directors?.message &&
+                                            {form.formState.errors.directorIds?.message &&
                                                 validMessage(
-                                                    form.formState.errors.directors.message as 'directorsRequired'
+                                                    form.formState.errors.directorIds.message as 'directorsRequired'
                                                 )}
                                         </FormMessage>
                                     </FormItem>
@@ -238,7 +232,7 @@ export default function FormUploadTrailer() {
 
                             <FormField
                                 control={form.control}
-                                name='actors'
+                                name='actorIds'
                                 render={({ field }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('actors')}</FormLabel>
@@ -253,7 +247,7 @@ export default function FormUploadTrailer() {
                                                 options={actors.map((a) => ({ value: a._id, label: a.name }))}
                                                 value={actors
                                                     .filter((a) => field.value?.includes(a._id))
-                                                    .map((a) => ({ value: a._id, label: a.name }))}
+                                                    .map((a) => ({ value: a.id, label: a.name }))}
                                                 onChange={(vals) =>
                                                     field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
@@ -261,8 +255,10 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.actors?.message &&
-                                                validMessage(form.formState.errors.actors.message as 'actorsRequired')}
+                                            {form.formState.errors.actorIds?.message &&
+                                                validMessage(
+                                                    form.formState.errors.actorIds.message as 'actorsRequired'
+                                                )}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -270,7 +266,7 @@ export default function FormUploadTrailer() {
 
                             <FormField
                                 control={form.control}
-                                name='genres'
+                                name='categoryIds'
                                 render={({ field }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('genres')}</FormLabel>
@@ -293,8 +289,10 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.genres?.message &&
-                                                validMessage(form.formState.errors.genres.message as 'genresRequired')}
+                                            {form.formState.errors.categoryIds?.message &&
+                                                validMessage(
+                                                    form.formState.errors.categoryIds.message as 'genresRequired'
+                                                )}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -344,69 +342,6 @@ export default function FormUploadTrailer() {
                                     </FormItem>
                                 )}
                             />
-
-                            <FormField
-                                control={form.control}
-                                name='quality'
-                                render={({ field }) => (
-                                    <FormItem className='flex flex-col gap-2'>
-                                        <FormLabel className='font-semibold text-sm'>{t('quality')}</FormLabel>
-                                        <FormControl>
-                                            <ShadSelect value={field.value} onValueChange={(v) => field.onChange(v)}>
-                                                <SelectTrigger className='h-10 truncate'>
-                                                    <SelectValue placeholder={t('selectQuality')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {Object.values(VideoQuality).map((v) => (
-                                                        <SelectItem key={v} value={v}>
-                                                            {getQualityNameFromEnum(v)}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </ShadSelect>
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.quality?.message &&
-                                                validMessage(
-                                                    form.formState.errors.quality.message as 'qualityRequired'
-                                                )}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name='duration_minutes'
-                                render={({ field }) => (
-                                    <FormItem className='flex flex-col gap-2'>
-                                        <FormLabel className='font-semibold text-sm'>{t('duration')}</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type='number'
-                                                min='1'
-                                                placeholder='120'
-                                                className='h-10'
-                                                value={field.value ?? ''}
-                                                onChange={(e) =>
-                                                    field.onChange(
-                                                        e.target.value === '' ? undefined : Number(e.target.value)
-                                                    )
-                                                }
-                                            />
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.duration_minutes?.message &&
-                                                validMessage(
-                                                    form.formState.errors.duration_minutes.message as
-                                                        | 'durationInvalid'
-                                                        | 'durationMin'
-                                                )}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-
                             <FormField
                                 control={form.control}
                                 name='isVip'

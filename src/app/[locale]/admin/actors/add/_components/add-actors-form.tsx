@@ -9,10 +9,10 @@ import { toast } from 'sonner'
 import { ArrowLeft, Camera, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
-import { ActorBody, ActorBodyType } from '@/utils/validation/category.validation'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { CreateActorBodySchema, CreateActorBodyType } from '@/types/dtos/actor/createActor.dto'
 
 export default function AddActorForm() {
     const [preview, setPreview] = useState('/images/actor/default.png')
@@ -22,9 +22,9 @@ export default function AddActorForm() {
     const validMessage = useTranslations('AdminPage.validation')
     const route = useRouter()
 
-    const form = useForm<ActorBodyType>({
-        resolver: zodResolver(ActorBody),
-        defaultValues: { fullName: '', dateOfBirth: '', biography: '' }
+    const form = useForm<CreateActorBodyType>({
+        resolver: zodResolver(CreateActorBodySchema),
+        defaultValues: { fullname: '', dateOfBirth: '', biography: '' }
     })
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,14 +35,14 @@ export default function AddActorForm() {
         }
     }
 
-    const onSubmit = (data: ActorBodyType) => {
+    const onSubmit = (data: CreateActorBodyType) => {
         console.log('New actor:', data)
         toast.success(t('toastSuccess'))
         route.push('/admin/actors')
     }
 
     const onClose = () => {
-        form.reset({ fullName: '', dateOfBirth: '', biography: '' })
+        form.reset({ fullname: '', dateOfBirth: '', biography: '' })
         setPreview('/images/actor/default.png')
         setBioLength(0)
     }
@@ -84,7 +84,7 @@ export default function AddActorForm() {
                         <div className='flex-1 space-y-5'>
                             <FormField
                                 control={form.control}
-                                name='fullName'
+                                name='fullname'
                                 render={({ field, formState }) => (
                                     <FormItem>
                                         <FormControl>
@@ -96,7 +96,7 @@ export default function AddActorForm() {
                                                     {...field}
                                                     className={cn(
                                                         'w-full bg-transparent text-gray-900 dark:text-gray-200 text-lg border-b border-gray-300 outline-none py-2 px-9 focus:border-black',
-                                                        formState.errors.fullName && 'border-red-500'
+                                                        formState.errors.fullname && 'border-red-500'
                                                     )}
                                                 />
                                                 <span
@@ -108,9 +108,9 @@ export default function AddActorForm() {
                                             </div>
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {formState.errors.fullName?.message &&
+                                            {formState.errors.fullname?.message &&
                                                 validMessage(
-                                                    formState.errors.fullName.message as
+                                                    formState.errors.fullname.message as
                                                         | 'fullNameRequired'
                                                         | 'fullNameTooShort'
                                                         | 'fullNameTooLong'

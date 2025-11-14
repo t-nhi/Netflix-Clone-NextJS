@@ -35,7 +35,7 @@ export const categoryApi = createApi({
             }),
             invalidatesTags: [{ type: 'Category', id: 'LIST' }]
         }),
-        getCategories: builder.query<GetCategoryListResType, void>({
+        getAllCategory: builder.query<GetCategoryListResType, void>({
             query: () => ({
                 url: '/categories',
                 method: HttpMethod.GET
@@ -77,7 +77,7 @@ export const categoryApi = createApi({
 
 export const {
     useCreateCategoryMutation,
-    useGetCategoriesQuery,
+    useGetAllCategoryQuery,
     useDeleteCategoryMutation,
     useUpdateCategoryMutation,
     useGetCategoryByIdQuery

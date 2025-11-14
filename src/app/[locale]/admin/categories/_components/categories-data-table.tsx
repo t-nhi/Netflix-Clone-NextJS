@@ -20,12 +20,12 @@ import { Input } from '@/components/ui/input'
 import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/i18n/navigation'
-import { useDeleteCategoryMutation, useGetCategoriesQuery } from '@/store/services/category/category.services'
+import { useDeleteCategoryMutation, useGetAllCategoryQuery } from '@/store/services/category/category.services'
 import { AdminPaths } from '@/config/routes.config'
 
 export default function CategoriesDataTable() {
     const t = useTranslations('AdminPage.categoriesPage')
-    const { data: getCategoriesRes } = useGetCategoriesQuery()
+    const { data: getCategoriesRes } = useGetAllCategoryQuery()
     const categories = useMemo(() => getCategoriesRes?.data || [], [getCategoriesRes])
 
     const [deleteCategoryMutate] = useDeleteCategoryMutation()
