@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Pencil, Trash, ArrowUpDown } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
-import { ActorType } from '@/types/actor-director.type'
 import { useTranslations } from 'next-intl'
+import { ActorType } from '@/types/models/actor.model'
 
 const imageSrc = (imageURL: string): string => {
     if (imageURL?.startsWith('/public')) return imageURL.replace('/public', '')
@@ -34,10 +34,10 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
         header: t('image'),
         size: 100,
         cell: ({ row }) => {
-            const src = imageSrc(row.original.image || '/images/actor/default.png')
+            const src = imageSrc(row.original.avatar || '/images/common/avatar_default.png')
             return (
                 <div className='w-20 aspect-3/4 relative overflow-hidden rounded-md border border-gray-200'>
-                    <Image src={src} alt={row.original.fullName} fill className='object-cover object-center' />
+                    <Image src={src} alt={row.original.fullname} fill className='object-cover object-center' />
                 </div>
             )
         }
@@ -50,7 +50,7 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
                 {t('name')} <ArrowUpDown className='inline w-4 h-4' />
             </Button>
         ),
-        cell: ({ row }) => <div className='font-medium text-gray-800 dark:text-gray-100'>{row.original.fullName}</div>
+        cell: ({ row }) => <div className='font-medium text-gray-800 dark:text-gray-100'>{row.original.fullname}</div>
     },
     {
         accessorKey: 'biography',
@@ -91,7 +91,7 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
                                 <Pencil className='h-4 w-4 text-gray-600 dark:text-white' />
                             </Button>
                         </TooltipTrigger>
-                        <TooltipContent side='bottom'>Edit</TooltipContent>
+                        <TooltipContent side='bottom'>{t('edit')}</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
@@ -103,7 +103,7 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
                                 <Trash className='h-4 w-4 text-gray-600 dark:text-white' />
                             </Button>
                         </TooltipTrigger>
-                        <TooltipContent side='bottom'>Delete</TooltipContent>
+                        <TooltipContent side='bottom'>{t('delete')}</TooltipContent>
                     </Tooltip>
                 </div>
             )

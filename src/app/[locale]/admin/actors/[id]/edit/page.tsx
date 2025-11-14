@@ -1,4 +1,4 @@
-import EditActorForm from '@/app/[locale]/admin/actors/edit/[id]/_components/edit-actor-form'
+import EditActorForm from '@/app/[locale]/admin/actors/[id]/edit/_components/edit-actor-form'
 import { use } from 'react'
 
 export default function EditActorPage({ params }: { params: Promise<{ id: string }> }) {

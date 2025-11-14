@@ -2,29 +2,32 @@
 
 import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { toast } from 'sonner'
-import { ArrowLeft, Camera, User } from 'lucide-react'
+import { ArrowLeft, Camera, LoaderCircle, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { CreateActorBodySchema, CreateActorBodyType } from '@/types/dtos/actor/createActor.dto'
+import { useCreateActorMutation } from '@/store/services/actor/actor.services'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
+import { getLocaleMessage } from '@/utils/locale.util'
+import { AdminPaths } from '@/config/routes.config'
 
 export default function AddActorForm() {
     const [preview, setPreview] = useState('/images/actor/default.png')
-    const [bioLength, setBioLength] = useState(0)
+
+    const [createActorMutate, { isLoading: isCreating }] = useCreateActorMutation()
     const desMaxChars = 500
     const t = useTranslations('AdminPage.actorsPage.addActorForm')
     const validMessage = useTranslations('AdminPage.validation')
-    const route = useRouter()
 
     const form = useForm<CreateActorBodyType>({
         resolver: zodResolver(CreateActorBodySchema),
-        defaultValues: { fullname: '', dateOfBirth: '', biography: '' }
+        defaultValues: { fullname: '', dateOfBirth: '', biography: '', avatar: '/images/actor/default.png' }
     })
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,22 +38,30 @@ export default function AddActorForm() {
         }
     }
 
-    const onSubmit = (data: CreateActorBodyType) => {
-        console.log('New actor:', data)
-        toast.success(t('toastSuccess'))
-        route.push('/admin/actors')
+    const onSubmit: SubmitHandler<CreateActorBodyType> = async (data) => {
+        try {
+            const payload = {
+                ...data,
+                biography: data.biography || '',
+                avatar: data.avatar || '',
+                dateOfBirth: data.dateOfBirth || ''
+            }
+            const response = await createActorMutate(payload).unwrap()
+            toast.success(response.message)
+            onCancel()
+        } catch (error) {
+            handleFormError({ error, setFormError: form.setError })
+        }
     }
 
-    const onClose = () => {
-        form.reset({ fullname: '', dateOfBirth: '', biography: '' })
-        setPreview('/images/actor/default.png')
-        setBioLength(0)
+    const onCancel = () => {
+        form.reset()
     }
 
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
             <Link
-                href={'/admin/actors'}
+                href={AdminPaths.ACTORS}
                 className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
                    rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
             >
@@ -108,13 +119,7 @@ export default function AddActorForm() {
                                             </div>
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {formState.errors.fullname?.message &&
-                                                validMessage(
-                                                    formState.errors.fullname.message as
-                                                        | 'fullNameRequired'
-                                                        | 'fullNameTooShort'
-                                                        | 'fullNameTooLong'
-                                                )}
+                                            {getLocaleMessage(validMessage, form.formState.errors.fullname?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -133,6 +138,7 @@ export default function AddActorForm() {
                                                 <input
                                                     type='date'
                                                     {...field}
+                                                    value={field.value ?? ''}
                                                     className={cn(
                                                         'w-fit p-2 border rounded-md focus:ring-2 focus:ring-black focus:outline-none',
                                                         formState.errors.dateOfBirth && 'border-red-500'
@@ -140,11 +146,8 @@ export default function AddActorForm() {
                                                 />
                                             </FormControl>
                                         </div>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {formState.errors.dateOfBirth?.message &&
-                                                validMessage(
-                                                    formState.errors.dateOfBirth.message as 'invalidDateFormat'
-                                                )}
+                                        <FormMessage>
+                                            {getLocaleMessage(validMessage, form.formState.errors.dateOfBirth?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -153,48 +156,44 @@ export default function AddActorForm() {
                             <FormField
                                 control={form.control}
                                 name='biography'
-                                render={({ field, formState }) => (
-                                    <FormItem>
-                                        <label className='block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300'>
-                                            {t('bioLabel')}
-                                        </label>
-                                        <FormControl>
-                                            <div className='relative'>
-                                                <textarea
-                                                    {...field}
-                                                    onChange={(e) => {
-                                                        const value = e.target.value
-                                                        if (value.length <= desMaxChars) {
-                                                            field.onChange(value)
-                                                            setBioLength(value.length)
-                                                        }
-                                                    }}
-                                                    placeholder={t('bioPlaceholder')}
-                                                    rows={3}
-                                                    className={cn(
-                                                        'border resize-none overflow-hidden scrollbar-hide rounded-lg w-full p-2 dark:bg-black dark:text-white bg-white text-black placeholder-gray-500 focus:ring-2 focus:ring-black focus:outline-none',
-                                                        formState.errors.biography && 'border-red-500'
-                                                    )}
-                                                />
-                                                <div className='text-right text-xs md:text-sm'>
-                                                    <span
-                                                        className={
-                                                            bioLength > desMaxChars * 0.8
-                                                                ? 'text-red-500'
-                                                                : 'text-gray-400'
-                                                        }
-                                                    >
-                                                        {bioLength}/{desMaxChars}
-                                                    </span>
+                                render={({ field, formState }) => {
+                                    return (
+                                        <FormItem>
+                                            <FormControl>
+                                                <div className='relative'>
+                                                    <p className='mb-1 dark:text-gray-200 text-black/60 text-[14px] font-normal'>
+                                                        {t('bioLabel')}
+                                                    </p>
+                                                    <textarea
+                                                        {...field}
+                                                        value={field.value ?? ''}
+                                                        onChange={field.onChange}
+                                                        placeholder={t('bioPlaceholder')}
+                                                        rows={3}
+                                                        className={cn(
+                                                            'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
+                                                            formState.errors.biography && 'border-red-500'
+                                                        )}
+                                                    />
+                                                    <div className='text-right text-xs md:text-sm'>
+                                                        <span
+                                                            className={
+                                                                formState.errors.biography
+                                                                    ? 'text-red-500'
+                                                                    : 'text-gray-400'
+                                                            }
+                                                        >
+                                                            {field.value?.length ?? 0}/{desMaxChars}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {formState.errors.biography?.message &&
-                                                validMessage(formState.errors.biography.message as 'biographyTooLong')}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
+                                            </FormControl>
+                                            <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
+                                                {getLocaleMessage(validMessage, formState.errors.biography?.message)}
+                                            </FormMessage>
+                                        </FormItem>
+                                    )
+                                }}
                             />
                         </div>
                     </div>
@@ -202,7 +201,7 @@ export default function AddActorForm() {
                     <div className='flex justify-end gap-2 mt-5'>
                         <Button
                             type='button'
-                            onClick={onClose}
+                            onClick={onCancel}
                             className='
                                     h-8 px-8 rounded-lg
                                     bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60
@@ -221,7 +220,7 @@ export default function AddActorForm() {
                                     md:text-[14px] text-[12px] font-mono transition-all duration-300 cursor-pointer
                                     '
                         >
-                            {t('addButton')}
+                            {isCreating ? <LoaderCircle className='animate-spin size-5' /> : t('addButton')}
                         </Button>
                     </div>
                 </form>
