@@ -428,7 +428,7 @@ export default function FormUploadTrailer() {
                             />
                         </div>
 
-                        <div className='flex gap-4 justify-center py-10'>
+                        <div className='flex gap-4 justify-start py-10'>
                             <Button
                                 type='submit'
                                 disabled={isSubmitting}

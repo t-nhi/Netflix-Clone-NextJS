@@ -1,24 +1,45 @@
 import { MovieStatus } from '@/constants/upload-file/movie-upload-status.enum'
 import { VideoQuality } from '@/constants/video/video-quality.enum'
 import z from 'zod'
-
-export const QuantitiesSchema = z.array(z.enum(VideoQuality))
-export type QuantitiesType = z.infer<typeof QuantitiesSchema>
+import { ActorSchema } from './actor.model'
+import { DirectorSchema } from './director.model'
+import { CategorySchema } from './category.model'
 
 export const MovieSchema = z.object({
     id: z.string(),
     title: z.string(),
     description: z.string(),
     status: z.enum(MovieStatus),
-    qualities: QuantitiesSchema,
+    qualities: z.array(z.enum(VideoQuality)),
     verticalPoster: z.string(),
     horizontalPoster: z.string(),
     releaseDate: z.string(),
     trailerUrl: z.string(),
     age: z.number(),
     year: z.number(),
-    country: z.string()
+    country: z.string(),
+    actors: z.array(ActorSchema),
+    directors: z.array(DirectorSchema),
+    categories: z.array(CategorySchema),
+    isVip: z.boolean()
 })
+
+//  {
+//             "id": "641714ab-d27d-4fae-90ec-ede95a8be9fe",
+//             "title": "Interstellar",
+//             "description": "A team of explorers travel through a wormhole to ensure humanity’s survival.",
+//             "horizontalPoster": "poster_h_interstellar.jpg",
+//             "verticalPoster": "poster_v_interstellar.jpg",
+//             "releaseDate": "2014-11-07",
+//             "trailerUrl": "https://youtu.be/zSWdZVtXT7E",
+//             "age": 13,
+//             "year": 2014,
+//             "country": "USA",
+//             "isVip": false,
+//             "categories": [],
+//             "actors": [],
+//             "directors": []
+//         },
 export type MovieType = z.infer<typeof MovieSchema>
 
 export const UpdateMovieSchema = MovieSchema.omit({

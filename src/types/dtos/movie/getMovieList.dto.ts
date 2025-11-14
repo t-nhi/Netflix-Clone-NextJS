@@ -2,13 +2,9 @@ import z from 'zod'
 import { MovieSummarySchema } from './movie.dto'
 import { HttpResponseWithMetaSchema } from '@/types/common/http-response.type'
 import { PaginationMetaSchema } from '@/types/common/pagination-meta.type'
+import { PaginationQuerySchema } from '@/types/common/pagination-query.type'
 
-export const GetMovieListQueryParamsSchema = z.object({
-    page: z.string().optional(),
-    size: z.string().optional(),
-    sortBy: z.string().optional(),
-    sortDirection: z.enum(['asc', 'desc']).default('asc').optional()
-})
+export const GetMovieListQueryParamsSchema = PaginationQuerySchema
 export type GetMovieListQueryParamsType = z.infer<typeof GetMovieListQueryParamsSchema>
 
 export const GetMovieListDataSchema = MovieSummarySchema.array()

@@ -6,7 +6,16 @@ export const MovieSummarySchema = MovieSchema.pick({
     description: true,
     title: true,
     horizontalPoster: true,
-    releaseDate: true
+    verticalPoster: true,
+    releaseDate: true,
+    age: true,
+    year: true,
+    country: true,
+    isVip: true,
+    trailerUrl: true,
+    categories: true,
+    actors: true,
+    directors: true
 })
 
 export type MovieSummaryType = z.infer<typeof MovieSummarySchema>
