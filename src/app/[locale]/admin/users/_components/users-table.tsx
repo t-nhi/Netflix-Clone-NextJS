@@ -18,14 +18,14 @@ import {
     VisibilityState
 } from '@tanstack/react-table'
 import { maskId } from '@/utils/formatting/formatId'
-import { AuthUserType } from '@/types/models/user.model'
 import { useEffect, useState } from 'react'
 import { getMockUsers } from '@/app/[locale]/admin/_mock/users.mock'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 
 export default function UsersTable() {
     const t = useTranslations('AdminPage.usersPage')
 
-    const [users, setUsers] = useState<AuthUserType[]>([])
+    const [users, setUsers] = useState<UserSummaryType[]>([])
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -36,7 +36,7 @@ export default function UsersTable() {
     const onToggleLock = (id: string) =>
         setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, is_enabled: !u.is_enabled } : u)))
 
-    const columns: ColumnDef<AuthUserType>[] = [
+    const columns: ColumnDef<UserSummaryType>[] = [
         {
             accessorKey: 'id',
             header: t('id'),

@@ -4,6 +4,7 @@ import baseQueryWithReauth from '../client'
 import { HttpMethod } from '@/constants/http.enum'
 import { GetActorDetailParamsType, GetActorDetailResType } from '@/types/dtos/actor/getActorDetail.dto'
 import { UpdateActorBodyType, UpdateActorParamsType, UpdateActorResType } from '@/types/dtos/actor/updateActor.dto'
+import { CreateActorBodyType, CreateActorResType } from '@/types/dtos/actor/createActor.dto'
 
 export const actorApi = createApi({
     reducerPath: 'ManageActorApi',
@@ -51,9 +52,18 @@ export const actorApi = createApi({
                     body
                 }),
                 invalidatesTags: (result, error, arg) => [{ type: 'Actors' as const, id: arg.params.id }]
+            }),
+            createActor: build.mutation<CreateActorResType, CreateActorBodyType>({
+                query: (body) => ({
+                    url: '/actors',
+                    method: HttpMethod.POST,
+                    body
+                }),
+                invalidatesTags: [{ type: 'Actors' as const, id: 'LIST' }]
             })
         }
     }
 })
 
-export const { useGetAllActorsQuery, useGetActorByIdQuery, useUpdateActorByIdMutation } = actorApi
+export const { useGetAllActorsQuery, useGetActorByIdQuery, useUpdateActorByIdMutation, useCreateActorMutation } =
+    actorApi

@@ -4,7 +4,9 @@ import z from 'zod'
 
 export const CreateActorBodySchema = ActorSchema.pick({
     fullname: true,
-    biography: true
+    biography: true,
+    avatar: true,
+    dateOfBirth: true
 })
 
 export type CreateActorBodyType = z.infer<typeof CreateActorBodySchema>
