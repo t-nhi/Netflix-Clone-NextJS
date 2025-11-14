@@ -62,7 +62,7 @@ export default function AddActorForm() {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
                     <div className='flex items-start gap-6'>
-                        <div className='relative flex justify-center items-center aspect-[3/4] w-[180px] overflow-hidden rounded-lg border'>
+                        <div className='relative flex justify-center items-center aspect-3/4 w-[180px] overflow-hidden rounded-lg border'>
                             <label htmlFor='actor-image' className='cursor-pointer group w-full h-full'>
                                 <Image
                                     src={preview}
@@ -100,7 +100,7 @@ export default function AddActorForm() {
                                                     )}
                                                 />
                                                 <span
-                                                    className='absolute left-0 bottom-0 h-[2px] bg-black dark:bg-white w-0
+                                                    className='absolute left-0 bottom-0 h-0.5 bg-black dark:bg-white w-0
                                                                 group-focus-within:w-full
                                                                 transition-all duration-300 ease-out
                                                                 origin-left'
@@ -204,7 +204,7 @@ export default function AddActorForm() {
                             type='button'
                             onClick={onClose}
                             className='
-                                    h-8 px-8 rounded-[4px]
+                                    h-8 px-8 rounded-lg
                                     bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60
                                     text-white hover:text-white 
                                     transition-all duration-300 md:text-[14px] text-[12px] font-mono cursor-pointer
@@ -215,7 +215,7 @@ export default function AddActorForm() {
                         <Button
                             type='submit'
                             className='
-                                    h-8 px-4 rounded-[4px]
+                                    h-8 px-4 rounded-lg
                                     bg-brand hover:bg-brand/90
                                     text-white 
                                     md:text-[14px] text-[12px] font-mono transition-all duration-300 cursor-pointer

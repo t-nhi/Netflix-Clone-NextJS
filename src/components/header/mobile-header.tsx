@@ -10,7 +10,7 @@ import { ModeToggle } from '../mode-toggle'
 import SelectLanguage from '../locale-switcher-select'
 import { Role } from '@/constants/role.enum'
 import { headerMenuItems } from './header.config'
-import { AdminPaths, UserPaths } from '@/config/routes.config'
+import { AdminPaths, UnauthPaths, UserPaths } from '@/config/routes.config'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { IoIosSettings } from 'react-icons/io'
 import { IoSettingsOutline } from 'react-icons/io5'
@@ -143,13 +143,20 @@ export default function MobileHeader({
                             </Button>
                         )}
 
-                        {currentUserRole == null && (
+                        {currentUserRole == null && !currentPathname.includes(UnauthPaths.LOGIN) && (
                             <Button
                                 variant='ghost'
                                 asChild
-                                className={cn('justify-start ml-2 px-3 py-2 text-base', menuItemClassName)}
+                                className={cn(
+                                    'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
+                                    {
+                                        'text-brand [text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)]':
+                                            currentPathname.includes(UnauthPaths.LOGIN)
+                                    },
+                                    menuItemClassName
+                                )}
                             >
-                                <Link href='/login'>Login</Link>
+                                <Link href={UnauthPaths.LOGIN}>Login</Link>
                             </Button>
                         )}
                     </div>

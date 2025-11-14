@@ -15,13 +15,12 @@ import {
     Package
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation'
 import Logo from '@/components/icons/logo'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar-admin'
 import { ModeToggle } from '@/components/mode-toggle'
 import SelectLanguage from '@/components/locale-switcher-select'
-import { i18nConfig } from '@/i18n/i18n-config'
 import { AdminPaths } from '@/config/routes.config'
+import { usePathname } from '@/i18n/navigation'
 
 interface AdminSideboardProps {
     className?: string
@@ -44,9 +43,6 @@ const bottomMenuItems = [{ label: 'Settings', icon: Settings, href: AdminPaths.S
 
 export default function AdminSideboard({ className, buttonClassName }: AdminSideboardProps) {
     const pathname = usePathname()
-
-    const normalizedPath = pathname?.replace(new RegExp(`^/(${i18nConfig.locales.join('|')})\\b`), '') ?? pathname
-
     return (
         <div className='flex h-screen bg-gray-50 overflow-hidden'>
             <aside
@@ -81,7 +77,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                                     <div
                                         className={cn(
                                             'flex items-center gap-3 px-5 py-2 text-sm rounded-md cursor-pointer transition-all border',
-                                            normalizedPath.startsWith(href)
+                                            pathname.startsWith(href)
                                                 ? 'bg-[#d9d9d9]/19 text-white border-[#d7d7d7]'
                                                 : 'text-gray-300 border-transparent hover:bg-[#d9d9d9]/19 hover:border-[#d7d7d7] hover:text-white'
                                         )}
@@ -102,7 +98,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                                     <div
                                         className={cn(
                                             'flex items-center gap-3 px-5 py-2 text-sm rounded-md cursor-pointer transition-all border',
-                                            normalizedPath.startsWith(href)
+                                            pathname.startsWith(href)
                                                 ? 'bg-[#d9d9d9]/19 text-white border-[#d7d7d7]'
                                                 : 'text-gray-300 border-transparent hover:bg-[#d9d9d9]/19 hover:border-[#d7d7d7] hover:text-white'
                                         )}
