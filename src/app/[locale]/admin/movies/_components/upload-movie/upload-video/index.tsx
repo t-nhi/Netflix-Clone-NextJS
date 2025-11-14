@@ -1,12 +1,12 @@
 'use client'
 
-import FileInfo from '@/app/[locale]/admin/movies/add/_components/upload-trailer/file-info'
+import FileInfo from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/file-info'
 import UploadFile, {
     UploadFileRef,
     UploadFileViewMode,
     UploadFileViewModeType
-} from '@/app/[locale]/admin/movies/add/_components/upload-trailer/upload-file'
-import VideoPreview from '@/app/[locale]/admin/movies/add/_components/video-preview'
+} from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/upload-file'
+import VideoPreview from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/video-preview'
 import { cn } from '@/lib/utils'
 import { useRef } from 'react'
 
@@ -47,12 +47,12 @@ export default function UploadVideo({
             />
 
             {file && (
-                <div className={cn('grid grid-cols-2 gap-6 items-start justify-start w-full', className)}>
+                <div className={cn('grid grid-cols-2 gap-6 items-start justify-start w-full bg-white', className)}>
                     <div className='w-full'>
                         <FileInfo file={file} onReplaceFile={handleReplaceFile} />
                     </div>
                     <div className='w-full'>
-                        <VideoPreview videoSrc={file} title='Trailer' />
+                        <VideoPreview videoSrc={file} title={file.name} />
                     </div>
                 </div>
             )}

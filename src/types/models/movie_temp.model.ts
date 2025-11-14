@@ -25,3 +25,18 @@ export const MovieSchema = z.object({
     country: z.string()
 })
 export type MovieType = z.infer<typeof MovieSchema>
+
+export const UpdateMovieSchema = MovieSchema.omit({
+    id: true,
+    status: true,
+    qualities: true,
+    year: true
+}).extend({
+    directors: z.array(z.string()).optional(),
+    actors: z.array(z.string()).optional(),
+    genres: z.array(z.string()).optional(),
+    duration_minutes: z.number().min(1).optional(),
+    isVip: z.boolean().optional()
+})
+
+export type UpdateMovieType = z.infer<typeof UpdateMovieSchema>

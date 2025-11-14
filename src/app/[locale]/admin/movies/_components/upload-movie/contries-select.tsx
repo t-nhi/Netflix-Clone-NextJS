@@ -29,18 +29,20 @@ export const CountrySelect = ({
             control={control}
             name={name}
             render={({ field }) => {
+                console.log('CountrySelect value =', field.value)
                 return (
                     <FormItem>
                         <FormLabel>{label}</FormLabel>
                         <FormControl>
                             <Select
-                                value={field.value}
-                                onValueChange={(value) => {
-                                    field.onChange(value)
-                                }}
+                                key={field.value}
+                                value={field.value || ''}
+                                onValueChange={(value) => field.onChange(value)}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder={placeholder} />
+                                    <SelectValue placeholder={placeholder}>
+                                        {field.value ? countries.find((c) => c.code === field.value)?.name : undefined}
+                                    </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent className='max-h-96'>
                                     {countries.map((c) => (

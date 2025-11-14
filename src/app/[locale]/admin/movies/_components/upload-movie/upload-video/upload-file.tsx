@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
-import UploadGuideLine from '@/app/[locale]/admin/movies/add/_components/upload-trailer/upload-guide-lines'
+import UploadGuideLine from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/upload-guide-lines'
 
 export const UploadFileViewMode = {
     INITIAL: 'initial',
@@ -74,7 +74,7 @@ const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
             <div className={cn('border border-border rounded-lg p-6', className)}>
                 <div
                     className={cn(
-                        'relative  flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed  bg-muted',
+                        'relative  flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed bg-muted',
                         isDragActive && 'border-primary bg-primary/5',
                         {
                             'min-h-[400px] flex-col': viewMode === UploadFileViewMode.INITIAL,

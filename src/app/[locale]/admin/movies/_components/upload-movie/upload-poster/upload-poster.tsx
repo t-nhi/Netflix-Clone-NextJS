@@ -15,6 +15,7 @@ interface PosterUploadFieldProps {
     label: string
     aspectRatio?: '3/4' | '16/9' | '1/1'
     className?: string
+    initialImage?: string
 }
 
 export default function PosterUploadField({
@@ -23,7 +24,8 @@ export default function PosterUploadField({
     name,
     label,
     aspectRatio = '3/4',
-    className
+    className,
+    initialImage
 }: PosterUploadFieldProps) {
     const validMessage = useTranslations('AdminPage.uploadFilm.validation')
     const inputRef = useRef<HTMLInputElement>(null)
@@ -36,8 +38,14 @@ export default function PosterUploadField({
         '1/1': 'aspect-square w-40'
     }[aspectRatio]
 
+    useEffect(() => {
+        if (initialImage && !previewUrl) {
+            setPreviewUrl(initialImage)
+        }
+    }, [initialImage, previewUrl])
+
     const updatePreview = useCallback(
-        (file: File | null, onChange: (v: any) => void) => {
+        (file: File | null, onChange: (v: File | null) => void) => {
             if (previewUrl) URL.revokeObjectURL(previewUrl)
             if (file) {
                 const url = URL.createObjectURL(file)
@@ -122,8 +130,7 @@ export default function PosterUploadField({
                         </FormControl>
 
                         <FormMessage className='text-xs text-red-500'>
-                            {formState.errors?.[name]?.message &&
-                                validMessage(errorMessageKey)}
+                            {formState.errors?.[name]?.message && validMessage(errorMessageKey)}
                         </FormMessage>
                     </FormItem>
                 )
