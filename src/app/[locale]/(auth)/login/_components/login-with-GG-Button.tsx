@@ -14,7 +14,7 @@ export default function LoginWithGGButton() {
         <Button
             type='button'
             onClick={handleGoogleSignIn}
-            className='bg-white/20 text-white dark:hover:bg-neutral-700 font-semibold netflix-sans-bold h-[40px] flex items-center justify-center gap-2 cursor-pointer'
+            className='bg-white/20 text-white dark:hover:bg-neutral-700 font-semibold netflix-sans-bold h-10 flex items-center justify-center gap-2 cursor-pointer'
         >
             <Google />
             {loginT('googleSignIn')}

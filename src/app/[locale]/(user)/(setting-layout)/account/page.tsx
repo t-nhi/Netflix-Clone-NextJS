@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Bell, ChevronRight, Lock } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import { UserPaths } from '@/config/routes.config'
 
 type AccountItem = {
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
@@ -15,12 +16,12 @@ export default async function AccountPage() {
         {
             icon: Lock,
             label: t('updatePassword'),
-            href: '/password'
+            href: UserPaths.PASSWORD
         },
         {
             icon: Bell,
             label: t('notificationSettings'),
-            href: '/notification-settings'
+            href: UserPaths.NOTIFICATIONS_SETTINGS
         }
     ]
 

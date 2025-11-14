@@ -2,12 +2,7 @@ import { MovieStatus } from '@/constants/upload-file/movie-upload-status.enum'
 import { VideoQuality } from '@/constants/video/video-quality.enum'
 import z from 'zod'
 
-export const QuantitiesSchema = z.object({
-    master: z.string(),
-    [VideoQuality.FULL_HD]: z.string(),
-    [VideoQuality.HD]: z.string(),
-    [VideoQuality.SD]: z.string()
-})
+export const QuantitiesSchema = z.array(z.enum(VideoQuality))
 export type QuantitiesType = z.infer<typeof QuantitiesSchema>
 
 export const MovieSchema = z.object({

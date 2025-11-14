@@ -1,7 +1,7 @@
-import { AuthUserType } from '@/types/models/user.model'
 import { Role } from '@/constants/role.enum'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 
-export const getMockUsers = (count: number): AuthUserType[] =>
+export const getMockUsers = (count: number): UserSummaryType[] =>
     Array.from({ length: count }).map((_, i) => ({
         id: `user-${i + 1}`,
         email: `user${i + 1}@example.com`,

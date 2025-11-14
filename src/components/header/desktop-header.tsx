@@ -13,6 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Role } from '@/constants/role.enum'
 import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 import { headerMenuItems } from './header.config'
+import { AdminPaths } from '@/config/routes.config'
 
 interface DesktopHeaderProps {
     wrapperClassName?: string
@@ -60,7 +61,7 @@ export default function DesktopHeader({
                             key={Item.href}
                             href={Item.href}
                             className={cn(
-                                'hover:[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] transition-all duration-300 hover:text-brand ml-4 hidden md:flex gap-2 items-center ',
+                                'hover:[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] transition-all duration-300 hover:text-brand ml-4 hidden md:flex gap-2 items-center [&>svg]:size-4 ',
                                 {
                                     '[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] text-brand ':
                                         isActive
@@ -119,7 +120,7 @@ export default function DesktopHeader({
                                     </Link>
                                 )}
                                 {currentUserRole === Role.ADMIN && (
-                                    <Link href='/admin/dashboard' className='block w-full'>
+                                    <Link href={AdminPaths.DASHBOARD} className='block w-full'>
                                         <Button variant={'ghost'} className='justify-start w-full hover:cursor-pointer'>
                                             <UserCog />
                                             Admin Dashboard

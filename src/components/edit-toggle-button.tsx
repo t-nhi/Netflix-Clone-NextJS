@@ -45,7 +45,7 @@ export function EditToggleButton({
                     size={'icon'}
                     onClick={handleClick}
                     className={`
-                        rounded-full p-0 flex-shrink-0 cursor-pointer
+                        rounded-full p-0 shrink-0 cursor-pointer
                         sm:w-12 sm:h-8 lg:w-14 lg:h-10 w-10 h-6
                         transition-colors duration-300
                         

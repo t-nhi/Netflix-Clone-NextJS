@@ -10,6 +10,11 @@ import { ModeToggle } from '../mode-toggle'
 import SelectLanguage from '../locale-switcher-select'
 import { Role } from '@/constants/role.enum'
 import { headerMenuItems } from './header.config'
+import { AdminPaths, UnauthPaths, UserPaths } from '@/config/routes.config'
+import { DialogTitle } from '@radix-ui/react-dialog'
+import { IoIosSettings } from 'react-icons/io'
+import { IoSettingsOutline } from 'react-icons/io5'
+import { Separator } from '@radix-ui/react-select'
 
 interface MobileHeaderProps {
     wrapperClassName?: string
@@ -43,51 +48,123 @@ export default function MobileHeader({
                     </Button>
                 </SheetTrigger>
                 <SheetContent side='right' className='w-[70%] p-4'>
-                    <div className='flex flex-col gap-4'>
+                    <DialogTitle className='text-lg font-semibold'>Menu</DialogTitle>
+                    <div className='flex flex-col gap-2'>
                         {headerMenuItems.map((Item) => {
                             if (Item.isAuthPath && currentUserRole == null) return null
+                            if (
+                                Array.isArray(Item.forRole) &&
+                                currentUserRole &&
+                                !Item.forRole.includes(currentUserRole)
+                            )
+                                return null
+
                             const isActive = currentPathname.includes(Item.href)
+
                             return (
-                                <Link
+                                <Button
                                     key={Item.href}
-                                    href={Item.href}
+                                    variant='ghost'
+                                    asChild
                                     className={cn(
-                                        'hover:[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] transition-all duration-300 hover:text-brand ml-4 hidden md:flex gap-2 items-center ',
+                                        'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
                                         {
-                                            '[text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)] text-brand ':
+                                            'text-brand [text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)]':
                                                 isActive
                                         },
                                         menuItemClassName
                                     )}
                                 >
-                                    {isActive ? <Item.activeIcon /> : <Item.icon />} {Item.title}
-                                </Link>
+                                    <Link href={Item.href}>
+                                        {isActive ? <Item.activeIcon /> : <Item.icon />} {Item.title}
+                                    </Link>
+                                </Button>
                             )
                         })}
-                        {currentUserRole != null && (
-                            <>
-                                <Link href='/account' className={menuItemClassName}>
+
+                        {currentUserRole == Role.USER ? (
+                            <Button
+                                variant='ghost'
+                                asChild
+                                className={cn(
+                                    'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
+                                    {
+                                        'text-brand [text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)]':
+                                            currentPathname.includes(UserPaths.ACCOUNT)
+                                    },
+                                    menuItemClassName
+                                )}
+                            >
+                                <Link href={UserPaths.ACCOUNT}>
+                                    {currentPathname.includes(UserPaths.ACCOUNT) ? (
+                                        <IoIosSettings />
+                                    ) : (
+                                        <IoSettingsOutline />
+                                    )}
                                     Account
                                 </Link>
-                                <button
-                                    type='button'
-                                    onClick={onLogout}
-                                    className={menuItemClassName}
-                                    disabled={isLogoutLoading}
-                                >
-                                    {isLogoutLoading ? <LoaderCircle className='animate-spin ' /> : <LogOut />}
-                                    Logout
-                                </button>
-                            </>
+                            </Button>
+                        ) : (
+                            <Button
+                                variant='ghost'
+                                asChild
+                                className={cn(
+                                    'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
+                                    {
+                                        'text-brand [text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)]':
+                                            currentPathname.includes(AdminPaths.DASHBOARD)
+                                    },
+                                    menuItemClassName
+                                )}
+                            >
+                                <Link href={AdminPaths.DASHBOARD}>
+                                    {currentPathname.includes(AdminPaths.DASHBOARD) ? (
+                                        <IoIosSettings />
+                                    ) : (
+                                        <IoSettingsOutline />
+                                    )}
+                                    Admin Dashboard
+                                </Link>
+                            </Button>
                         )}
 
-                        {currentUserRole == null && (
-                            <Link href='/login' className={menuItemClassName}>
-                                Login
-                            </Link>
+                        {currentUserRole != null && (
+                            <Button
+                                variant='ghost'
+                                onClick={onLogout}
+                                disabled={isLogoutLoading}
+                                className={cn(
+                                    'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
+                                    menuItemClassName
+                                )}
+                            >
+                                {isLogoutLoading ? <LoaderCircle className='animate-spin' /> : <LogOut />}
+                                Logout
+                            </Button>
                         )}
-                        <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
-                        <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
+
+                        {currentUserRole == null && !currentPathname.includes(UnauthPaths.LOGIN) && (
+                            <Button
+                                variant='ghost'
+                                asChild
+                                className={cn(
+                                    'justify-start ml-2 px-3 py-2 text-base gap-3 [&>svg]:size-6',
+                                    {
+                                        'text-brand [text-shadow:1px_0_var(--tw-color-brand),-1px_0_var(--tw-color-brand),0_1px_var(--tw-color-brand),0_-1px_var(--tw-color-brand)]':
+                                            currentPathname.includes(UnauthPaths.LOGIN)
+                                    },
+                                    menuItemClassName
+                                )}
+                            >
+                                <Link href={UnauthPaths.LOGIN}>Login</Link>
+                            </Button>
+                        )}
+                    </div>
+
+                    <Separator className='my-2 border-foreground bg-red-500 ' />
+                    <div className='flex items-center gap-4'>
+                        <ModeToggle className={cn('flex', buttonClassName)} />
+                        <SelectLanguage className={cn('flex', buttonClassName)} />
                     </div>
                 </SheetContent>
             </Sheet>

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { envConfig } from '@/config/env.config'
+import { CommonPaths, UnauthPaths } from '@/config/routes.config'
 import { HttpMethod, HttpStatusCode } from '@/constants/http.enum'
 import { QueryKeys } from '@/constants/query-keys.enum'
 import { EntityException } from '@/exceptions/entity.exception'
@@ -51,9 +52,9 @@ export async function clientRequest<response>({ method, url, options = {} }: Req
         if (error instanceof HttpException && error.status === HttpStatusCode.UNAUTHORIZED) {
             const token = (options.headers as any)?.Authorization?.replace('Bearer ', '') || ''
             const locale = await getLocale()
-            if (!token) redirect({ href: '/login', locale })
+            if (!token) redirect({ href: UnauthPaths.LOGIN, locale })
             redirect({
-                href: `/logout?${QueryKeys.ACCESS_TOKEN}=${token}`,
+                href: `${CommonPaths.LOGOUT}?${QueryKeys.ACCESS_TOKEN}=${token}`,
                 locale
             })
         }

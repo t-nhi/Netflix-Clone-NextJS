@@ -10,45 +10,39 @@ import {
     User,
     TrendingUp,
     Bell,
-    HelpCircle,
     Settings,
     Upload,
     Package
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation'
 import Logo from '@/components/icons/logo'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar-admin'
 import { ModeToggle } from '@/components/mode-toggle'
 import SelectLanguage from '@/components/locale-switcher-select'
+import { AdminPaths } from '@/config/routes.config'
+import { usePathname } from '@/i18n/navigation'
 
 interface AdminSideboardProps {
     className?: string
     buttonClassName?: string
 }
 
+const menuItems = [
+    { label: 'Dashboard', icon: LayoutDashboard, href: AdminPaths.DASHBOARD },
+    { label: 'Users', icon: Users, href: AdminPaths.USERS },
+    { label: 'Services', icon: PackageCheck, href: AdminPaths.SERVICES },
+    { label: 'Movies', icon: Film, href: AdminPaths.MOVIES },
+    { label: 'Purchases', icon: ShoppingCart, href: AdminPaths.PURCHASES },
+    { label: 'Categories', icon: Package, href: AdminPaths.CATEGORIES },
+    { label: 'Actors', icon: User, href: AdminPaths.ACTORS },
+    { label: 'Top Contents', icon: TrendingUp, href: AdminPaths.TOP_CONTENTS },
+    { label: 'Notifications', icon: Bell, href: AdminPaths.NOTIFICATIONS }
+]
+
+const bottomMenuItems = [{ label: 'Settings', icon: Settings, href: AdminPaths.SETTINGS }]
+
 export default function AdminSideboard({ className, buttonClassName }: AdminSideboardProps) {
     const pathname = usePathname()
-
-    const normalizedPath = pathname.replace(/^\/(vi|en|fr)\b/, '')
-
-    const menuItems = [
-        { label: 'Dashboard', icon: LayoutDashboard, href: '/admin/dashboard' },
-        { label: 'Users', icon: Users, href: '/admin/users' },
-        { label: 'Services', icon: PackageCheck, href: '/admin/services' },
-        { label: 'Movies', icon: Film, href: '/admin/movies' },
-        { label: 'Purchases', icon: ShoppingCart, href: '/admin/purchases' },
-        { label: 'Categories', icon: Package, href: '/admin/categories' },
-        { label: 'Actors', icon: User, href: '/admin/actors' },
-        { label: 'Top Contents', icon: TrendingUp, href: '/admin/top-contents' },
-        { label: 'Notifications', icon: Bell, href: '/admin/notifications' }
-    ]
-
-    const bottomMenuItems = [
-        { label: 'Help', icon: HelpCircle, href: '/admin/help' },
-        { label: 'Settings', icon: Settings, href: '/admin/settings' }
-    ]
-
     return (
         <div className='flex h-screen bg-gray-50 overflow-hidden'>
             <aside
@@ -56,7 +50,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
             >
                 <div className='flex items-center justify-center pt-4 pb-6'>
                     <Link href='/admin'>
-                        <Logo className='lg:h-[40px] lg:w-[148px] w-[89px] h-[24px] cursor-pointer' />
+                        <Logo className='lg:h-10 lg:w-[148px] w-[89px] h-6 cursor-pointer' />
                     </Link>
                 </div>
                 <div
@@ -83,7 +77,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                                     <div
                                         className={cn(
                                             'flex items-center gap-3 px-5 py-2 text-sm rounded-md cursor-pointer transition-all border',
-                                            normalizedPath.startsWith(href)
+                                            pathname.startsWith(href)
                                                 ? 'bg-[#d9d9d9]/19 text-white border-[#d7d7d7]'
                                                 : 'text-gray-300 border-transparent hover:bg-[#d9d9d9]/19 hover:border-[#d7d7d7] hover:text-white'
                                         )}
@@ -104,7 +98,7 @@ export default function AdminSideboard({ className, buttonClassName }: AdminSide
                                     <div
                                         className={cn(
                                             'flex items-center gap-3 px-5 py-2 text-sm rounded-md cursor-pointer transition-all border',
-                                            normalizedPath.startsWith(href)
+                                            pathname.startsWith(href)
                                                 ? 'bg-[#d9d9d9]/19 text-white border-[#d7d7d7]'
                                                 : 'text-gray-300 border-transparent hover:bg-[#d9d9d9]/19 hover:border-[#d7d7d7] hover:text-white'
                                         )}

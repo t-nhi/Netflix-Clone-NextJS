@@ -8,7 +8,16 @@ export enum AuthPaths {
 }
 
 export enum AdminPaths {
-    DASHBOARD = '/admin'
+    DASHBOARD = '/admin',
+    USERS = '/admin/users',
+    SERVICES = '/admin/services',
+    MOVIES = '/admin/movies',
+    PURCHASES = '/admin/purchases',
+    CATEGORIES = '/admin/categories',
+    ACTORS = '/admin/actors',
+    TOP_CONTENTS = '/admin/top-contents',
+    NOTIFICATIONS = '/admin/notifications',
+    SETTINGS = '/admin/settings'
 }
 
 export enum UserPaths {
@@ -17,12 +26,14 @@ export enum UserPaths {
     PAYMENT = '/payment',
     FAVORITES = '/favorites',
     HISTORY = '/history',
-    MOVIES = '/movies',
     NOTIFICATIONS_SETTINGS = '/notification-settings'
 }
 
 export enum CommonPaths {
-    HOME = '/'
+    HOME = '/',
+    RESET_PASSWORD = '/reset-password',
+    LOGOUT = '/logout',
+    MOVIES = '/movies'
 }
 
 export function isPathIncluded(paths: string[], pathname: string): boolean {

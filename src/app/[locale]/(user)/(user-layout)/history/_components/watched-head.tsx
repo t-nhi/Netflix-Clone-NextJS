@@ -11,6 +11,7 @@ import { SelectAllCheckbox } from '@/components/select-all-checkbox'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import InputSearch from '@/components/input-search'
+import { CommonPaths } from '@/config/routes.config'
 
 interface WatchHistoryHeadProps {
     isEditing: boolean
@@ -89,7 +90,7 @@ export default function WatchHistoryHead({
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10 md:gap-4 flex-wrap w-full'>
                 <div className='flex items-center md:gap-4 gap-1'>
                     <Link
-                        href={'/films'}
+                        href={CommonPaths.MOVIES}
                         className='flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 rounded-lg
                         bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
                     >
@@ -130,14 +131,14 @@ export default function WatchHistoryHead({
                     </div>
                 </div>
 
-                <div className='flex items-center justify-end gap-2 w-full sm:w-auto flex-shrink-0'>
+                <div className='flex items-center justify-end gap-2 w-full sm:w-auto shrink-0'>
                     <InputSearch placeholder={t('searchHistory')} value={searchValue} onChange={setSearchValue} />
 
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
                                 onClick={handleToggleHistory}
-                                className='rounded-full p-0 flex-shrink-0 cursor-pointer
+                                className='rounded-full p-0 shrink-0 cursor-pointer
                                 sm:w-12 sm:h-8 lg:w-14 lg:h-10 w-10 h-6 transition-colors duration-300
                                 text-black dark:text-white bg-black/3 dark:bg-white/5
                                 hover:bg-black/5 dark:hover:bg-white/10'
@@ -165,7 +166,7 @@ export default function WatchHistoryHead({
                 </div>
             </div>
 
-            <div className='mt-10 min-h-[40px] flex items-center justify-start'>
+            <div className='mt-10 min-h-10 flex items-center justify-start'>
                 {isEditing && onSelectAll && (
                     <SelectAllCheckbox
                         allSelected={!!allSelected}

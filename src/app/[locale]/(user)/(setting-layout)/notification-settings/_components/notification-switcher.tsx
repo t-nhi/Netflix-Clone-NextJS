@@ -57,9 +57,9 @@ export default function NotificationSwitcher({ title, email, initialState, type 
 
                         <div className='flex items-center gap-3'>
                             {isActive ? (
-                                <CircleCheck className='w-5 h-5 text-green-500 flex-shrink-0' />
+                                <CircleCheck className='w-5 h-5 text-green-500 shrink-0' />
                             ) : (
-                                <XCircle className='w-5 h-5 text-red-500 flex-shrink-0' />
+                                <XCircle className='w-5 h-5 text-red-500 shrink-0' />
                             )}
                             <span className={`text-sm font-medium ${isActive ? 'text-green-600' : 'text-red-600'}`}>
                                 {getStatusText()}

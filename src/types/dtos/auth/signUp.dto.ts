@@ -1,6 +1,6 @@
 import { HttpResponseWithDataSchema } from '@/types/common/http-response.type'
-import { AuthUserSchema } from '@/types/models/user.model'
 import z from 'zod'
+import { UserSummarySchema } from '../customer/user.dto'
 
 export const SignUpBodySchema = z
     .object({
@@ -19,7 +19,7 @@ export const SignUpDataSchema = z
     .object({
         access_token: z.string(),
         refresh_token: z.string(),
-        user: AuthUserSchema
+        user: UserSummarySchema
     })
     .strict()
 export const SignUpResSchema = HttpResponseWithDataSchema(SignUpDataSchema)

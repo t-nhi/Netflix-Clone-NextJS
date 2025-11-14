@@ -19,6 +19,10 @@ import { isEntityError, isFetchBaseQueryError } from '@/store/utils/errorSafeTyp
 import { formatFetchBaseQueryErrorMessage } from '@/utils/handleErrors/formatFetchBaseQueryErrorMessage'
 import { useRouter } from 'next/navigation'
 import { useLoginMutation } from '@/store/services/auth/proxy-auth.services'
+import { decodeJwt } from '@/utils/jwt.util'
+import { JwtPayloadType } from '@/types/common/jwt-payload.type'
+import { Role } from '@/constants/role.enum'
+import { AdminPaths, CommonPaths, UnauthPaths } from '@/config/routes.config'
 
 interface ErrorAlertType {
     title: string
@@ -44,8 +48,15 @@ export default function LoginForm() {
 
     const onSubmit: SubmitHandler<LoginBodyType> = async (data) => {
         try {
-            await loginMutate(data).unwrap()
-            router.replace('/')
+            const response = await loginMutate(data).unwrap()
+            const { access_token } = response.data
+            const decodedAccessToken = decodeJwt(access_token) as JwtPayloadType
+
+            if (decodedAccessToken.role == Role.ADMIN) {
+                router.replace(AdminPaths.DASHBOARD)
+            } else {
+                router.replace(CommonPaths.MOVIES)
+            }
         } catch (error) {
             if (isEntityError(error)) {
                 handleFormError({ error, setFormError: form.setError })
@@ -143,7 +154,7 @@ export default function LoginForm() {
 
                 <p className='text-center'>
                     <Link
-                        href='/reset-password'
+                        href={CommonPaths.RESET_PASSWORD}
                         className='text-white netflix-sans-bold hover:underline focus:underline-offset-2 cursor-pointer'
                     >
                         {loginT('forgotPassword')}
@@ -153,7 +164,10 @@ export default function LoginForm() {
                 <div className='mt-4 text-center netflix-sans-regular'>
                     <p className='text-white'>
                         {loginT('newToNetflix')}{' '}
-                        <Link href='/signup' className='text-white font-semibold underline hover:text-brand'>
+                        <Link
+                            href={UnauthPaths.REGISTER}
+                            className='text-white font-semibold underline hover:text-brand'
+                        >
                             {loginT('signUpNow')}
                         </Link>
                     </p>

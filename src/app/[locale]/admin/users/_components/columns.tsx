@@ -4,9 +4,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown, Lock, Unlock } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
-import { AuthUserType } from '@/types/models/user.model'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 
-export const getUserColumns = (t: any, onToggleLock: (id: string) => void): ColumnDef<AuthUserType>[] => [
+export const getUserColumns = (t: any, onToggleLock: (id: string) => void): ColumnDef<UserSummaryType>[] => [
     {
         accessorKey: 'id',
         header: t('id'),

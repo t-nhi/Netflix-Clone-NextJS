@@ -18,12 +18,12 @@ import {
 } from '@tanstack/react-table'
 import { getUserColumns } from './columns'
 import { getMockUsers } from '@/app/[locale]/admin/_mock/users.mock'
-import { AuthUserType } from '@/types/models/user.model'
+import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 
 export default function UsersDataTable() {
     const t = useTranslations('AdminPage.usersPage')
 
-    const [users, setUsers] = useState<AuthUserType[]>([])
+    const [users, setUsers] = useState<UserSummaryType[]>([])
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})

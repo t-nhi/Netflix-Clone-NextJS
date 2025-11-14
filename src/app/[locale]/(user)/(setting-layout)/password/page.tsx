@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation'
 import PasswordChangeForm from './_components/password-change-form'
 import { getTranslations } from 'next-intl/server'
 import { ArrowLeft } from 'lucide-react'
+import { UserPaths } from '@/config/routes.config'
 
 export default async function ChangePasswordPage() {
     const t = await getTranslations('PasswordPage')
@@ -11,7 +12,7 @@ export default async function ChangePasswordPage() {
             <div className='max-w-2xl mx-auto'>
                 <div className='relative mb-6'>
                     <Link
-                        href='/account'
+                        href={UserPaths.ACCOUNT}
                         className='mr-4 p-2 hover:bg-accent rounded-full transition-colors xl:absolute top-1/2 -left-20 transform -translate-y-1/2 -translate-x-1  '
                     >
                         <ArrowLeft className='w-6 h-6' />
