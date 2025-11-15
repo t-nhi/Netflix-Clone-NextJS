@@ -429,6 +429,49 @@
                 "toastSuccess": "Thêm diễn viên thành công!"
             }
         },
+        "directorPage": {
+            "messages": {
+                "emptyDirector": "Danh sách diễn viện rỗng. Hãy thêm diễn viên đầu tiên"
+            },
+            "title": "Danh sách diễn viên",
+            "searchDirectors": "Tìm kiếm diễn viên",
+            "addDirector": "Thêm diễn viên",
+            "id": "ID",
+            "name": "Ten diễn viên",
+            "image": "Ảnh diễn viên",
+            "bio": "Tiểu sử",
+            "dateOfBirth": "Ngày sinh",
+            "createdAt": "Ngày thêm",
+            "updatedAt": "Ngày cập nhật",
+            "action": "Hành động",
+            "edit": "Chỉnh sửa",
+            "delete": "Xóa",
+            "delSuccess": "Xóa diễn viên thành công!",
+            "editDirectorForm": {
+                "title": "Chỉnh sửa diễn viên",
+                "subtitle": "Cập nhật thông tin chi tiết của diễn viên",
+                "nameLabel": "Họ và tên",
+                "dobLabel": "Ngày sinh",
+                "bioLabel": "Tiểu sử",
+                "editImage": "Chỉnh sửa ảnh",
+                "bioPlaceholder": "Nhập tiểu sử diễn viên...",
+                "saveButton": "Lưu thay đổi",
+                "cancelButton": "Hủy",
+                "toastSuccess": "Cập nhật thành công!"
+            },
+            "addDirectorForm": {
+                "title": "Thêm diễn viên",
+                "subtitle": "Vui lòng điền thông tin bên dưới để thêm diễn viên.",
+                "nameLabel": "Nhập họ và tên",
+                "dobLabel": "Ngày sinh",
+                "bioLabel": "Tiểu sử",
+                "addImage": "Thêm ảnh",
+                "bioPlaceholder": "Nhập tiểu sử diễn viên...",
+                "addButton": "Thêm diễn viên",
+                "cancelButton": "Hủy",
+                "toastSuccess": "Thêm diễn viên thành công!"
+            }
+        },
         "validation": {
             "fullNameRequired": "Vui lòng nhập họ và tên",
             "fullNameTooShort": "Họ tên quá ngắn (tối thiểu 2 ký tự)",
