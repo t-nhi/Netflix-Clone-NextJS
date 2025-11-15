@@ -26,6 +26,7 @@ export default function EditActorForm({ id }: { id: string }) {
     const { data: getActorsRes } = useGetActorByIdQuery({ params: { id } })
     const [updateActorMutate, { isLoading: isUpdating }] = useUpdateActorByIdMutation()
     const [uploadImageMutate] = useUploadImageMutation()
+    const [hasNewImage, setHasNewImage] = useState(false)
     const actor = getActorsRes?.data || null
 
     const t = useTranslations('AdminPage.actorsPage.editActorForm')
@@ -55,13 +56,13 @@ export default function EditActorForm({ id }: { id: string }) {
 
         const previewUrl = URL.createObjectURL(file)
         setPreview(previewUrl)
+        setHasNewImage(true)
 
         try {
             const formData = new FormData()
             formData.append('file', file)
             const res = await uploadImageMutate(formData).unwrap()
-            const imageUrl = res.data.url
-            form.setValue('avatar', imageUrl)
+            form.setValue('avatar', res.data.url)
         } catch (err) {
             handleFormError({ error: err, setFormError: form.setError })
         }
@@ -71,23 +72,45 @@ export default function EditActorForm({ id }: { id: string }) {
         try {
             const payload = {
                 ...data,
-                avatar: data.avatar || '',
-                dateOfBirth: data.dateOfBirth || '',
-                biography: data.biography || ''
+                fullname: data.fullname.trim()
+            }
+            if (data.biography?.trim()) {
+                payload.biography = data.biography.trim()
+            } else if (data.biography === '') {
+                payload.biography = null
+            }
+
+            if (data.dateOfBirth) {
+                payload.dateOfBirth = data.dateOfBirth
+            } else {
+                payload.dateOfBirth = null
+            }
+            if (hasNewImage && data.avatar) {
+                payload.avatar = data.avatar
             }
             const response = await updateActorMutate({
                 body: payload,
                 params: { id }
             }).unwrap()
             toast.success(response.message)
+            setHasNewImage(false)
             onCancel()
         } catch (error) {
             handleFormError({ error, setFormError: form.setError })
         }
     }
     const onCancel = () => {
-        form.reset()
-        setPreview(actor?.avatar || '/images/common/avatar_default.png')
+        if (actor) {
+            form.reset({
+                fullname: actor.fullname,
+                biography: actor.biography || '',
+                avatar: actor.avatar || '',
+                dateOfBirth: actor.dateOfBirth || ''
+            })
+            const imageURL = actor.avatar ? getFullURLFromPathName(actor.avatar) : '/images/common/avatar_default.png'
+            setPreview(imageURL)
+        }
+        setHasNewImage(false)
     }
 
     return (
@@ -175,6 +198,10 @@ export default function EditActorForm({ id }: { id: string }) {
                                                         'w-fit p-2 border rounded-md focus:ring-2 focus:ring-black focus:outline-none',
                                                         formState.errors.dateOfBirth && 'border-red-500'
                                                     )}
+                                                    onChange={(e) => {
+                                                        const { value } = e.target
+                                                        field.onChange(value)
+                                                    }}
                                                 />
                                             </FormControl>
                                         </div>

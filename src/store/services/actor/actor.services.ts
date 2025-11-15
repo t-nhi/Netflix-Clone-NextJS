@@ -49,7 +49,7 @@ export const actorApi = createApi({
             >({
                 query: ({ body, params }) => ({
                     url: `/actors/${params.id}`,
-                    method: HttpMethod.PUT,
+                    method: HttpMethod.PATCH,
                     body
                 }),
                 invalidatesTags: (result, error, arg) => [{ type: 'Actors' as const, id: arg.params.id }]

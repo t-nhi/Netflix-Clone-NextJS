@@ -28,6 +28,7 @@ export default function EditDirectorForm({ id }: { id: string }) {
     const { data: getDirectorRes } = useGetDirectorByIdQuery({ id })
     const [updateDirectorMutate, { isLoading: isUpdating }] = useUpdateDirectorByIdMutation()
     const [uploadImageMutate] = useUploadImageMutation()
+    const [hasNewImage, setHasNewImage] = useState(false)
     const director = getDirectorRes?.data || null
 
     const t = useTranslations('AdminPage.directorPage.editDirectorForm')
@@ -60,13 +61,13 @@ export default function EditDirectorForm({ id }: { id: string }) {
 
         const previewUrl = URL.createObjectURL(file)
         setPreview(previewUrl)
+        setHasNewImage(true)
 
         try {
             const formData = new FormData()
             formData.append('file', file)
             const res = await uploadImageMutate(formData).unwrap()
-            const imageUrl = res.data.url
-            form.setValue('avatar', imageUrl)
+            form.setValue('avatar', res.data.url)
         } catch (err) {
             handleFormError({ error: err, setFormError: form.setError })
         }
@@ -76,15 +77,28 @@ export default function EditDirectorForm({ id }: { id: string }) {
         try {
             const payload = {
                 ...data,
-                avatar: data.avatar || '',
-                dateOfBirth: data.dateOfBirth || '',
-                biography: data.biography || ''
+                fullname: data.fullname.trim()
+            }
+            if (data.biography?.trim()) {
+                payload.biography = data.biography.trim()
+            } else if (data.biography === '') {
+                payload.biography = null
+            }
+
+            if (data.dateOfBirth) {
+                payload.dateOfBirth = data.dateOfBirth
+            } else {
+                payload.dateOfBirth = null
+            }
+            if (hasNewImage && data.avatar) {
+                payload.avatar = data.avatar
             }
             const response = await updateDirectorMutate({
                 body: payload,
                 params: { id }
             }).unwrap()
             toast.success(response.message)
+            setHasNewImage(false)
             onCancel()
         } catch (error) {
             handleFormError({ error, setFormError: form.setError })
@@ -92,8 +106,19 @@ export default function EditDirectorForm({ id }: { id: string }) {
     }
 
     const onCancel = () => {
-        form.reset()
-        setPreview(director?.avatar || '/images/common/avatar_default.png')
+        if (director) {
+            form.reset({
+                fullname: director.fullname,
+                biography: director.biography || '',
+                avatar: director.avatar || '',
+                dateOfBirth: director.dateOfBirth || ''
+            })
+            const imageURL = director.avatar
+                ? getFullURLFromPathName(director.avatar)
+                : '/images/common/avatar_default.png'
+            setPreview(imageURL)
+        }
+        setHasNewImage(false)
     }
 
     return (

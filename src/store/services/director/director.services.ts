@@ -52,7 +52,7 @@ export const directorApi = createApi({
             >({
                 query: ({ body, params }) => ({
                     url: `/directors/${params.id}`,
-                    method: HttpMethod.PUT,
+                    method: HttpMethod.PATCH,
                     body
                 }),
                 invalidatesTags: (result, error, arg) => [{ type: 'Directors' as const, id: arg.params.id }]
