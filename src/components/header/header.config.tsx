@@ -1,4 +1,4 @@
-import { CommonPaths } from '@/config/routes.config'
+import { CommonPaths, UserPaths } from '@/config/routes.config'
 import { Role } from '@/constants/role.enum'
 import { ElementType } from 'react'
 import { BiCameraMovie, BiSolidCameraMovie } from 'react-icons/bi'
@@ -17,11 +17,11 @@ interface HeaderMenuItemType {
 const userMenuItems: HeaderMenuItemType[] = [
     {
         title: 'Movies',
-        href: CommonPaths.MOVIES,
+        href: UserPaths.MOVIES,
         icon: BiCameraMovie,
         activeIcon: BiSolidCameraMovie,
         forRole: [Role.USER],
-        isAuthPath: false
+        isAuthPath: true
     },
     {
         title: 'Favorites',

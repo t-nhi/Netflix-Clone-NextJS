@@ -15,7 +15,7 @@ import { Select as ShadSelect, SelectContent, SelectItem, SelectTrigger, SelectV
 
 import { getAgeRankNameFromEnum } from '@/helper/getNameFromStatus'
 import UploadVideo from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video'
-import PosterUploadField from '@/app/[locale]/admin/movies/_components/upload-movie/upload-poster/upload-poster'
+import PosterPicker from '@/app/[locale]/admin/movies/_components/poster-picker'
 import { CountrySelect } from '@/app/[locale]/admin/movies/_components/upload-movie/contries-select'
 import { UploadFileViewMode } from '../../_components/upload-movie/upload-video/upload-file'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
@@ -25,19 +25,20 @@ import { useGetAllDirectorsQuery } from '@/store/services/director/director.serv
 import { useGetAllActorsQuery } from '@/store/services/actor/actor.services'
 import { useGetAllCategoryQuery } from '@/store/services/category/category.services'
 import { useCreateMovieMutation } from '@/store/services/movie/movie.services'
+import { handleFormError } from '@/utils/handleErrors/handleFormError'
+import { getLocaleMessage } from '@/utils/locale.util'
 
-export default function FormUploadTrailer() {
+export default function CreateMovieForm() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
     const validMessage = useTranslations('AdminPage.uploadFilm.validation')
     const MAX_DESC_LENGTH = 5000
-    const [isSubmitting, setIsSubmitting] = useState(false)
     const [isInitialRender, setIsInitialRender] = useState(true)
     const [videoFile, setVideoFile] = useState<File | null>(null)
 
     const { data: directorsResData } = useGetAllDirectorsQuery()
     const { data: actorsResData } = useGetAllActorsQuery()
     const { data: categoriesResData } = useGetAllCategoryQuery()
-    const [createMovieMutate,{isLoading:isCreateMovieLoading}] = useCreateMovieMutation()
+    const [createMovieMutate, { isLoading: isCreateMovieLoading }] = useCreateMovieMutation()
 
     const directors = directorsResData?.data || []
     const actors = actorsResData?.data || []
@@ -71,16 +72,14 @@ export default function FormUploadTrailer() {
 
     const onSubmit = async (data: CreateMovieBodyType) => {
         if (isCreateMovieLoading) return
-        setIsSubmitting(true)
 
         try {
-            console.log('Data to submit:', data)
+            await createMovieMutate(data).unwrap()
             toast.success(t('messages.uploadSuccess'))
             onReset()
         } catch (error) {
-            console.error(error)
-        } finally {
-            setIsSubmitting(false)
+            console.error('Error creating movie:', error)
+            handleFormError({ error, setFormError: form.setError })
         }
     }
 
@@ -99,22 +98,36 @@ export default function FormUploadTrailer() {
                 {!isInitialRender && (
                     <>
                         <div className='flex flex-row gap-40 items-start justify-start'>
-                            <PosterUploadField
+                            <FormField
                                 control={form.control}
-                                formState={form.formState}
-                                name='vertical_poster'
-                                label={t('verticalPoster')}
-                                aspectRatio='3/4'
-                                className='h-[250px]'
+                                name='verticalPoster'
+                                render={({ formState }) => (
+                                    <FormItem>
+                                        <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
+                                        <FormControl>
+                                            <PosterPicker className='h-[250px]' />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.title?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
                             />
 
-                            <PosterUploadField
+                            <FormField
                                 control={form.control}
-                                formState={form.formState}
-                                name='horizontal_poster'
-                                label={t('horizontalPoster')}
-                                aspectRatio='16/9'
-                                className='h-[250px]'
+                                name='horizontalPoster'
+                                render={({ formState }) => (
+                                    <FormItem>
+                                        <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
+                                        <FormControl>
+                                            <PosterPicker className='h-[250px]' />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.title?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
                             />
                         </div>
 
@@ -122,15 +135,14 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='title'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem>
                                         <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
                                         <FormControl>
                                             <Input placeholder={t('titlePlaceholder')} {...field} />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.title?.message &&
-                                                validMessage(form.formState.errors.title.message as 'titleRequired')}
+                                            {getLocaleMessage(validMessage, formState.errors.title?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -139,17 +151,14 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='releaseDate'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem>
                                         <FormLabel className='font-semibold text-sm'>{t('dateRealease')}</FormLabel>
                                         <FormControl>
                                             <Input type='date' {...field} />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.releaseDate?.message &&
-                                                validMessage(
-                                                    form.formState.errors.releaseDate.message as 'releaseDateInvalid'
-                                                )}
+                                            {getLocaleMessage(validMessage, formState.errors.releaseDate?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -158,7 +167,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='description'
-                                render={({ field }) => {
+                                render={({ field, formState }) => {
                                     const currentLength = field.value?.length || 0
                                     return (
                                         <FormItem className='col-span-2'>
@@ -168,7 +177,6 @@ export default function FormUploadTrailer() {
                                                     <textarea
                                                         className='w-full min-h-[120px] border rounded-md p-3 resize-none overflow-hidden'
                                                         placeholder={t('descriptionPlaceholder')}
-                                                        maxLength={MAX_DESC_LENGTH}
                                                         {...field}
                                                         onChange={(e) => {
                                                             field.onChange(e)
@@ -182,12 +190,7 @@ export default function FormUploadTrailer() {
                                                 </div>
                                             </FormControl>
                                             <FormMessage className='text-xs text-red-500 mt-1'>
-                                                {form.formState.errors.description?.message &&
-                                                    validMessage(
-                                                        form.formState.errors.description.message as
-                                                            | 'descriptionRequired'
-                                                            | 'descriptionMaxLength'
-                                                    )}
+                                                {getLocaleMessage(validMessage, formState.errors.description?.message)}
                                             </FormMessage>
                                         </FormItem>
                                     )
@@ -199,7 +202,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='directorIds'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('director')}</FormLabel>
                                         <FormControl>
@@ -209,11 +212,11 @@ export default function FormUploadTrailer() {
                                                 placeholder={t('selectDirector')}
                                                 menuPortalTarget={document.body}
                                                 classNamePrefix='react-select'
-                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
-                                                options={directors.map((d) => ({ value: d._id, label: d.name }))}
+                                                className='react-select-container bg-popover text-popover-foreground rounded border border-input'
+                                                options={directors.map((d) => ({ value: d.id, label: d.fullname }))}
                                                 value={directors
-                                                    .filter((d) => field.value?.includes(d._id))
-                                                    .map((d) => ({ value: d._id, label: d.name }))}
+                                                    .filter((d) => field.value?.includes(d.id))
+                                                    .map((d) => ({ value: d.id, label: d.fullname }))}
                                                 onChange={(vals) =>
                                                     field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
@@ -221,10 +224,7 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.directorIds?.message &&
-                                                validMessage(
-                                                    form.formState.errors.directorIds.message as 'directorsRequired'
-                                                )}
+                                            {getLocaleMessage(validMessage, formState.errors.directorIds?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -233,7 +233,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='actorIds'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('actors')}</FormLabel>
                                         <FormControl>
@@ -244,10 +244,10 @@ export default function FormUploadTrailer() {
                                                 menuPortalTarget={document.body}
                                                 classNamePrefix='react-select'
                                                 className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
-                                                options={actors.map((a) => ({ value: a._id, label: a.name }))}
+                                                options={actors.map((a) => ({ value: a.id, label: a.fullname }))}
                                                 value={actors
-                                                    .filter((a) => field.value?.includes(a._id))
-                                                    .map((a) => ({ value: a.id, label: a.name }))}
+                                                    .filter((a) => field.value?.includes(a.id))
+                                                    .map((a) => ({ value: a.id, label: a.fullname }))}
                                                 onChange={(vals) =>
                                                     field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
@@ -255,10 +255,7 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.actorIds?.message &&
-                                                validMessage(
-                                                    form.formState.errors.actorIds.message as 'actorsRequired'
-                                                )}
+                                            {getLocaleMessage(validMessage, formState.errors.actorIds?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -267,7 +264,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='categoryIds'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem className='flex flex-col self-start min-h-[120px]'>
                                         <FormLabel className='font-semibold text-sm mb-1'>{t('genres')}</FormLabel>
                                         <FormControl>
@@ -278,10 +275,10 @@ export default function FormUploadTrailer() {
                                                 classNamePrefix='react-select'
                                                 menuPortalTarget={document.body}
                                                 className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
-                                                options={genres.map((g) => ({ value: g._id, label: g.name }))}
+                                                options={genres.map((g) => ({ value: g.id, label: g.name }))}
                                                 value={genres
-                                                    .filter((g) => field.value?.includes(g._id))
-                                                    .map((g) => ({ value: g._id, label: g.name }))}
+                                                    .filter((g) => field.value?.includes(g.id))
+                                                    .map((g) => ({ value: g.id, label: g.name }))}
                                                 onChange={(vals) =>
                                                     field.onChange(vals?.map((v: any) => v.value) ?? [])
                                                 }
@@ -289,10 +286,7 @@ export default function FormUploadTrailer() {
                                             />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.categoryIds?.message &&
-                                                validMessage(
-                                                    form.formState.errors.categoryIds.message as 'genresRequired'
-                                                )}
+                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -313,7 +307,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='age'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem className='flex flex-col gap-2'>
                                         <FormLabel className='font-semibold text-sm'>{t('ageRank')}</FormLabel>
                                         <FormControl>
@@ -336,8 +330,7 @@ export default function FormUploadTrailer() {
                                             </ShadSelect>
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {form.formState.errors.age?.message &&
-                                                validMessage(form.formState.errors.age.message as 'ageRequired')}
+                                            {getLocaleMessage(validMessage, formState.errors.age?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -345,7 +338,7 @@ export default function FormUploadTrailer() {
                             <FormField
                                 control={form.control}
                                 name='isVip'
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <FormItem className='flex flex-col justify-center h-full ml-10'>
                                         <div className='flex items-center gap-2 mt-4'>
                                             <FormControl>
@@ -358,6 +351,9 @@ export default function FormUploadTrailer() {
                                             </FormControl>
                                             <FormLabel className='font-semibold text-sm cursor-pointer'>VIP</FormLabel>
                                         </div>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
+                                        </FormMessage>
                                     </FormItem>
                                 )}
                             />
@@ -366,16 +362,16 @@ export default function FormUploadTrailer() {
                         <div className='flex gap-4 justify-start py-10'>
                             <Button
                                 type='submit'
-                                disabled={isSubmitting}
+                                disabled={isCreateMovieLoading}
                                 className='w-[180px] h-10 font-medium hover:cursor-pointer rounded-lg'
                             >
-                                {isSubmitting ? <Loader className='animate-spin' /> : t('uploadButton')}
+                                {isCreateMovieLoading ? <Loader className='animate-spin' /> : t('uploadButton')}
                             </Button>
 
                             <Button
                                 type='button'
                                 variant='secondary'
-                                disabled={isSubmitting}
+                                disabled={isCreateMovieLoading}
                                 onClick={onReset}
                                 className='w-[180px] h-10  hover:cursor-pointer  rounded-lg'
                             >

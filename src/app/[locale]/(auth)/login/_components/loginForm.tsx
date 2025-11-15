@@ -22,7 +22,7 @@ import { useLoginMutation } from '@/store/services/auth/proxy-auth.services'
 import { decodeJwt } from '@/utils/jwt.util'
 import { JwtPayloadType } from '@/types/common/jwt-payload.type'
 import { Role } from '@/constants/role.enum'
-import { AdminPaths, CommonPaths, UnauthPaths } from '@/config/routes.config'
+import { AdminPaths, CommonPaths, UnauthPaths, UserPaths } from '@/config/routes.config'
 
 interface ErrorAlertType {
     title: string
@@ -55,7 +55,7 @@ export default function LoginForm() {
             if (decodedAccessToken.role == Role.ADMIN) {
                 router.replace(AdminPaths.DASHBOARD)
             } else {
-                router.replace(CommonPaths.MOVIES)
+                router.replace(UserPaths.MOVIES)
             }
         } catch (error) {
             if (isEntityError(error)) {

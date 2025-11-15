@@ -7,8 +7,8 @@ import { CategorySchema } from './category.model'
 
 export const MovieSchema = z.object({
     id: z.string(),
-    title: z.string(),
-    description: z.string(),
+    title: z.string().min(1, 'titleRequired'),
+    description: z.string().min(1, 'descriptionRequired').max(5000, 'descriptionMaxLength'),
     status: z.enum(MovieStatus),
     qualities: z.array(z.enum(VideoQuality)),
     verticalPoster: z.string(),

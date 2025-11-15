@@ -26,14 +26,14 @@ export enum UserPaths {
     PAYMENT = '/payment',
     FAVORITES = '/favorites',
     HISTORY = '/history',
-    NOTIFICATIONS_SETTINGS = '/notification-settings'
+    NOTIFICATIONS_SETTINGS = '/notification-settings',
+    MOVIES = '/movies'
 }
 
 export enum CommonPaths {
     HOME = '/',
     RESET_PASSWORD = '/reset-password',
-    LOGOUT = '/logout',
-    MOVIES = '/movies'
+    LOGOUT = '/logout'
 }
 
 export function isPathIncluded(paths: string[], pathname: string): boolean {

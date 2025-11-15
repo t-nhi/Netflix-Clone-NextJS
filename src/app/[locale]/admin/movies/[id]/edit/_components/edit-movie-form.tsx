@@ -20,7 +20,7 @@ import { getMockCategories } from '@/app/[locale]/admin/_mock/categories.mock'
 
 import { getAgeRankNameFromEnum } from '@/helper/getNameFromStatus'
 import UploadVideo from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video'
-import PosterUploadField from '@/app/[locale]/admin/movies/_components/upload-movie/upload-poster/upload-poster'
+import PosterUploadField from '@/app/[locale]/admin/movies/_components/poster-picker'
 import { CountrySelect } from '@/app/[locale]/admin/movies/_components/upload-movie/contries-select'
 import { UploadFileViewMode } from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/upload-file'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
