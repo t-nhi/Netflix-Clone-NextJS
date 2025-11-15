@@ -8,7 +8,7 @@ export enum AuthPaths {
 }
 
 export enum AdminPaths {
-    DASHBOARD = '/admin',
+    DASHBOARD = '/admin/dashboard',
     USERS = '/admin/users',
     SERVICES = '/admin/services',
     MOVIES = '/admin/movies',
