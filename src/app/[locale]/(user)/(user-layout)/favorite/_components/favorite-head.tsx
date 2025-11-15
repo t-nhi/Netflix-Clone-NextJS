@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import InputSearch from '@/components/input-search'
-import { CommonPaths } from '@/config/routes.config'
+import { UserPaths } from '@/config/routes.config'
 
 interface FavoriteHeadProps {
     isEditing: boolean
@@ -63,7 +63,7 @@ export default function FavoriteHead({
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10 md:gap-4 flex-wrap w-full'>
                 <div className='flex items-center md:gap-4 gap-1'>
                     <Link
-                        href={CommonPaths.MOVIES}
+                        href={UserPaths.MOVIES}
                         className='flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 rounded-lg
                         bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
                     >

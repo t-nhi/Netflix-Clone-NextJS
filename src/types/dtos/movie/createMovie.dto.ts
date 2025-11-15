@@ -18,7 +18,6 @@ export const CreateMovieBodySchema = MovieSchema.pick({
     actorIds: z.array(z.string()),
     directorIds: z.array(z.string())
 })
-
 export type CreateMovieBodyType = z.infer<typeof CreateMovieBodySchema>
 
 export const CreateMovieDataSchema = MovieSchema
