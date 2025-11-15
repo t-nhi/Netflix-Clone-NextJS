@@ -11,25 +11,33 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { CreateActorBodySchema, CreateActorBodyType } from '@/types/dtos/actor/createActor.dto'
-import { useCreateActorMutation } from '@/store/services/actor/actor.services'
+
+import { CreateDirectorBodySchema, CreateDirectorBodyType } from '@/types/dtos/director/createDirector.dto'
+import { useCreateDirectorMutation } from '@/store/services/director/director.services'
+
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { AdminPaths } from '@/config/routes.config'
 import { useUploadImageMutation } from '@/store/services/upload/upload.services'
 
-export default function AddActorForm() {
+export default function AddDirectorForm() {
     const [preview, setPreview] = useState('/images/common/avatar_default.png')
 
-    const [createActorMutate, { isLoading: isCreating }] = useCreateActorMutation()
+    const [createDirectorMutate, { isLoading: isCreating }] = useCreateDirectorMutation()
     const [uploadImageMutate] = useUploadImageMutation()
+
     const desMaxChars = 500
-    const t = useTranslations('AdminPage.actorsPage.addActorForm')
+    const t = useTranslations('AdminPage.directorPage.addDirectorForm')
     const validMessage = useTranslations('AdminPage.validation')
 
-    const form = useForm<CreateActorBodyType>({
-        resolver: zodResolver(CreateActorBodySchema),
-        defaultValues: { fullname: '', dateOfBirth: '', biography: '', avatar: '/images/common/avatar_default.png' }
+    const form = useForm<CreateDirectorBodyType>({
+        resolver: zodResolver(CreateDirectorBodySchema),
+        defaultValues: {
+            fullname: '',
+            dateOfBirth: '',
+            biography: '',
+            avatar: '/images/common/avatar_default.png'
+        }
     })
 
     const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +46,11 @@ export default function AddActorForm() {
 
         const previewUrl = URL.createObjectURL(file)
         setPreview(previewUrl)
-        const formData = new FormData()
-        formData.append('file', file)
 
         try {
+            const formData = new FormData()
+            formData.append('file', file)
+
             const res = await uploadImageMutate(formData).unwrap()
             form.setValue('avatar', res.data.url)
         } catch (error) {
@@ -49,7 +58,7 @@ export default function AddActorForm() {
         }
     }
 
-    const onSubmit: SubmitHandler<CreateActorBodyType> = async (data) => {
+    const onSubmit: SubmitHandler<CreateDirectorBodyType> = async (data) => {
         try {
             const payload = {
                 ...data,
@@ -57,7 +66,8 @@ export default function AddActorForm() {
                 avatar: data.avatar || '',
                 dateOfBirth: data.dateOfBirth || ''
             }
-            const response = await createActorMutate(payload).unwrap()
+            const response = await createDirectorMutate(payload).unwrap()
+
             toast.success(response.message)
             onCancel()
         } catch (error) {
@@ -72,12 +82,13 @@ export default function AddActorForm() {
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
             <Link
-                href={AdminPaths.ACTORS}
+                href={AdminPaths.DIRECTORS}
                 className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
-                   rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
+                rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
             >
                 <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
             </Link>
+
             <h1 className='text-2xl font-semibold mb-2 text-gray-900 dark:text-white text-center'>{t('title')}</h1>
             <p className='text-sm text-gray-600 dark:text-gray-400 text-center mb-6'>{t('subtitle')}</p>
 
@@ -85,7 +96,7 @@ export default function AddActorForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
                     <div className='flex items-start gap-6'>
                         <div className='relative flex justify-center items-center aspect-3/4 w-[180px] overflow-hidden rounded-lg border'>
-                            <label htmlFor='actor-image' className='cursor-pointer group w-full h-full'>
+                            <label htmlFor='director-image' className='cursor-pointer group w-full h-full'>
                                 <Image
                                     src={preview}
                                     alt='avatar'
@@ -93,14 +104,17 @@ export default function AddActorForm() {
                                     height={266}
                                     className='object-cover w-full h-full transition group-hover:opacity-80'
                                 />
-                                <div
-                                    className='absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition'
-                                    title={t('addImage')}
-                                >
+                                <div className='absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition'>
                                     <Camera className='w-6 h-6 text-white' />
                                 </div>
                             </label>
-                            <input id='actor-image' type='file' accept='image/*' onChange={handleImageChange} hidden />
+                            <input
+                                id='director-image'
+                                type='file'
+                                accept='image/*'
+                                onChange={handleImageChange}
+                                hidden
+                            />
                         </div>
 
                         <div className='flex-1 space-y-5'>
@@ -121,12 +135,6 @@ export default function AddActorForm() {
                                                         formState.errors.fullname && 'border-red-500'
                                                     )}
                                                 />
-                                                <span
-                                                    className='absolute left-0 bottom-0 h-0.5 bg-black dark:bg-white w-0
-                                                                group-focus-within:w-full
-                                                                transition-all duration-300 ease-out
-                                                                origin-left'
-                                                ></span>
                                             </div>
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
@@ -167,44 +175,42 @@ export default function AddActorForm() {
                             <FormField
                                 control={form.control}
                                 name='biography'
-                                render={({ field, formState }) => {
-                                    return (
-                                        <FormItem>
-                                            <FormControl>
-                                                <div className='relative'>
-                                                    <p className='mb-1 dark:text-gray-200 text-black/60 text-[14px] font-normal'>
-                                                        {t('bioLabel')}
-                                                    </p>
-                                                    <textarea
-                                                        {...field}
-                                                        value={field.value ?? ''}
-                                                        onChange={field.onChange}
-                                                        placeholder={t('bioPlaceholder')}
-                                                        rows={3}
-                                                        className={cn(
-                                                            'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
-                                                            formState.errors.biography && 'border-red-500'
-                                                        )}
-                                                    />
-                                                    <div className='text-right text-xs md:text-sm'>
-                                                        <span
-                                                            className={
-                                                                formState.errors.biography
-                                                                    ? 'text-red-500'
-                                                                    : 'text-gray-400'
-                                                            }
-                                                        >
-                                                            {field.value?.length ?? 0}/{desMaxChars}
-                                                        </span>
-                                                    </div>
+                                render={({ field, formState }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <div className='relative'>
+                                                <p className='mb-1 dark:text-gray-200 text-black/60 text-[14px] font-normal'>
+                                                    {t('bioLabel')}
+                                                </p>
+                                                <textarea
+                                                    {...field}
+                                                    value={field.value ?? ''}
+                                                    onChange={field.onChange}
+                                                    placeholder={t('bioPlaceholder')}
+                                                    rows={3}
+                                                    className={cn(
+                                                        'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
+                                                        formState.errors.biography && 'border-red-500'
+                                                    )}
+                                                />
+                                                <div className='text-right text-xs'>
+                                                    <span
+                                                        className={
+                                                            formState.errors.biography
+                                                                ? 'text-red-500'
+                                                                : 'text-gray-400'
+                                                        }
+                                                    >
+                                                        {field.value?.length ?? 0}/{desMaxChars}
+                                                    </span>
                                                 </div>
-                                            </FormControl>
-                                            <FormMessage className='text-red-500 text-xs sm:text-sm mt-1'>
-                                                {getLocaleMessage(validMessage, formState.errors.biography?.message)}
-                                            </FormMessage>
-                                        </FormItem>
-                                    )
-                                }}
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage className='text-red-500 text-xs mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.biography?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
                             />
                         </div>
                     </div>
@@ -213,23 +219,14 @@ export default function AddActorForm() {
                         <Button
                             type='button'
                             onClick={onCancel}
-                            className='
-                                    h-8 px-8 rounded-lg
-                                    bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60
-                                    text-white hover:text-white 
-                                    transition-all duration-300 md:text-[14px] text-[12px] font-mono cursor-pointer
-    '
+                            className='h-8 px-8 rounded-lg bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60 text-white font-mono'
                         >
                             {t('cancelButton')}
                         </Button>
+
                         <Button
                             type='submit'
-                            className='
-                                    h-8 px-4 rounded-lg
-                                    bg-brand hover:bg-brand/90
-                                    text-white 
-                                    md:text-[14px] text-[12px] font-mono transition-all duration-300 cursor-pointer
-                                    '
+                            className='h-8 px-4 rounded-lg bg-brand hover:bg-brand/90 text-white font-mono'
                         >
                             {isCreating ? <LoaderCircle className='animate-spin size-5' /> : t('addButton')}
                         </Button>

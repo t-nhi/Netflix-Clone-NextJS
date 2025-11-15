@@ -15,6 +15,7 @@ export enum AdminPaths {
     PURCHASES = '/admin/purchases',
     CATEGORIES = '/admin/categories',
     ACTORS = '/admin/actors',
+    DIRECTORS = '/admin/directors',
     TOP_CONTENTS = '/admin/top-contents',
     NOTIFICATIONS = '/admin/notifications',
     SETTINGS = '/admin/settings'

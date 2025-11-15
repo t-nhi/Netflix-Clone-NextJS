@@ -42,6 +42,7 @@ const menuItems = [
     { label: 'Movies', icon: Film, href: AdminPaths.MOVIES },
     { label: 'Purchases', icon: ShoppingCart, href: AdminPaths.PURCHASES },
     { label: 'Categories', icon: Package, href: AdminPaths.CATEGORIES },
+    { label: 'Director', icon: UserCog, href: AdminPaths.DIRECTORS },
     { label: 'Actors', icon: User, href: AdminPaths.ACTORS },
     { label: 'Top Contents', icon: TrendingUp, href: AdminPaths.TOP_CONTENTS },
     { label: 'Notifications', icon: Bell, href: AdminPaths.NOTIFICATIONS }

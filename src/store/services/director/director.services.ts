@@ -64,6 +64,16 @@ export const directorApi = createApi({
                     body
                 }),
                 invalidatesTags: [{ type: 'Directors' as const, id: 'LIST' }]
+            }),
+            deleteDirector: build.mutation<void, { params: { id: string } }>({
+                query: (params) => ({
+                    url: `/directors/${params.params.id}`,
+                    method: HttpMethod.DELETE
+                }),
+                invalidatesTags: (result, error, arg) => [
+                    { type: 'Directors', id: arg.params.id },
+                    { type: 'Directors' as const, id: 'LIST' }
+                ]
             })
         }
     }
@@ -73,5 +83,6 @@ export const {
     useGetAllDirectorsQuery,
     useGetDirectorByIdQuery,
     useUpdateDirectorByIdMutation,
-    useCreateDirectorMutation
+    useCreateDirectorMutation,
+    useDeleteDirectorMutation
 } = directorApi

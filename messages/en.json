@@ -427,6 +427,49 @@
                 "toastSuccess": "Actor added successfully!"
             }
         },
+        "directorPage": {
+            "messages": {
+                "emptyDirector": "The director list is empty! Please add at least one director."
+            },
+            "title": "Directors",
+            "searchDirectors": "Search directors",
+            "addDirector": "Add new director",
+            "id": "ID",
+            "name": "Name director",
+            "image": "Avatar",
+            "bio": "Biography",
+            "dateOfBirth": "Date of Birth",
+            "creatAt": "Creat At",
+            "updateAt": "Update At",
+            "action": "Action",
+            "edit": "Edit",
+            "delete": "Delete",
+            "delSuccess": "Director deleted successfully!",
+            "editDirectorForm": {
+                "title": "Edit Director",
+                "subtitle": "Please fill in the information below to edit the director.",
+                "nameLabel": "Full name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "editImage": "Edit avatar",
+                "bioPlaceholder": "Enter director biography...",
+                "cancelButton": "Cancel",
+                "saveButton": "Save change",
+                "toastSuccess": "Director edited successfully!"
+            },
+            "addDirectorForm": {
+                "title": "Add New Director",
+                "subtitle": "Please fill in the information below to add a new director.",
+                "nameLabel": "Enter director name",
+                "dobLabel": "Date of Birth",
+                "bioLabel": "Biography",
+                "addImage": "Add avatar",
+                "bioPlaceholder": "Enter director biography...",
+                "addButton": "Add director",
+                "cancelButton": "Cancel",
+                "toastSuccess": "Director added successfully!"
+            }
+        },
         "validation": {
             "fullNameRequired": "Pleas enter full name",
             "fullNameTooShort": "Fullname too short (min 2 characters)",

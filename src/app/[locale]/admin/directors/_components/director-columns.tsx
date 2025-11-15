@@ -7,26 +7,16 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Pencil, Trash, ArrowUpDown } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
 import { useTranslations } from 'next-intl'
-import { ActorType } from '@/types/models/actor.model'
+import { DirectorType } from '@/types/models/director.model'
 import getFullURLFromPathName from '@/utils/add-resource'
 
-// const imageSrc = (imageURL: string): string => {
-//     if (imageURL?.startsWith('/public')) return imageURL.replace('/public', '')
-//     return imageURL
-// }
-
-// function normalizeImageSrc(src: string) {
-//     if (!src) return '/images/common/avatar_default.png'
-//     return src.startsWith('/') ? src : '/' + src
-// }
-
 type TranslationFunction = ReturnType<typeof useTranslations>
-interface ActorColumnProps {
+interface DirectorColumnProps {
     t: TranslationFunction
     onEdit: (id: string) => void
     onDelete: (id: string) => void
 }
-export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): ColumnDef<ActorType>[] => [
+export const getDirectorColumns = ({ t, onEdit, onDelete }: DirectorColumnProps): ColumnDef<DirectorType>[] => [
     {
         accessorKey: 'id',
         header: t('id'),
@@ -40,7 +30,7 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
         header: t('image'),
         size: 100,
         cell: ({ row }) => {
-            const src = getFullURLFromPathName(row.original.avatar || '/images/common/avatar_default.png')
+            const src = getFullURLFromPathName(row.original.avatar || '')
             return (
                 <div className='w-20 aspect-3/4 relative overflow-hidden rounded-md border border-gray-200'>
                     <Image src={src} alt={row.original.fullname} fill className='object-cover object-center' />
@@ -65,7 +55,7 @@ export const getActorColumns = ({ t, onEdit, onDelete }: ActorColumnProps): Colu
         cell: ({ row }) => (
             <div
                 className='font-mono text-xs text-gray-700 dark:text-gray-300 max-w-xs truncate'
-                title={row.original.biography ?? undefined}
+                title={row.original.biography}
             >
                 {row.original.biography}
             </div>
