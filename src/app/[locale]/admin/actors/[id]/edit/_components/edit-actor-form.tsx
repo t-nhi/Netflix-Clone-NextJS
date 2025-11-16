@@ -17,7 +17,7 @@ import { AdminPaths } from '@/config/routes.config'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { useUploadImageMutation } from '@/store/services/upload/upload.services'
-import getFullURLFromPathName from '@/utils/add-resource'
+import getServerUrl from '@/utils/url.util'
 
 export default function EditActorForm({ id }: { id: string }) {
     const desMaxChars = 500
@@ -45,7 +45,7 @@ export default function EditActorForm({ id }: { id: string }) {
                 avatar: actor.avatar || '',
                 dateOfBirth: actor.dateOfBirth || ''
             })
-            const imageURL = actor.avatar ? getFullURLFromPathName(actor.avatar) : '/images/common/avatar_default.png'
+            const imageURL = actor.avatar ? getServerUrl(actor.avatar) : '/images/common/avatar_default.png'
             setPreview(imageURL)
         }
     }, [form, actor])
@@ -107,7 +107,7 @@ export default function EditActorForm({ id }: { id: string }) {
                 avatar: actor.avatar || '',
                 dateOfBirth: actor.dateOfBirth || ''
             })
-            const imageURL = actor.avatar ? getFullURLFromPathName(actor.avatar) : '/images/common/avatar_default.png'
+            const imageURL = actor.avatar ? getServerUrl(actor.avatar) : '/images/common/avatar_default.png'
             setPreview(imageURL)
         }
         setHasNewImage(false)

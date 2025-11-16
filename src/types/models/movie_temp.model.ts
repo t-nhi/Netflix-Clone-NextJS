@@ -17,7 +17,7 @@ export const MovieSchema = z.object({
     trailerUrl: z.string(),
     age: z.number(),
     year: z.number(),
-    country: z.string(),
+    country: z.string().min(1, 'countryRequired'),
     actors: z.array(ActorSchema),
     directors: z.array(DirectorSchema),
     categories: z.array(CategorySchema),

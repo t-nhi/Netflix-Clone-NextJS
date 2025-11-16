@@ -528,10 +528,10 @@
                     "description": "Vui lòng chọn khung cơ bản 16:9"
                 }
             },
-            "uploadFile": {
-                "selectFile": "Chọn file để tải lên",
+            "uploadTrailer": {
+                "selectFile": "Chọn trailer để tải lên",
                 "draganddrop": "Kéo và thả file vào đây",
-                "selectButton": "Chọn file"
+                "selectButton": "Chọn trailer"
             },
             "uploadForm": {
                 "messages": {

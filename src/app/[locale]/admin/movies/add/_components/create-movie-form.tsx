@@ -6,20 +6,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Loader } from 'lucide-react'
-import Select from 'react-select'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select as ShadSelect, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from '@/components/ui/select'
 
 import { getAgeRankNameFromEnum } from '@/helper/getNameFromStatus'
-import UploadVideo from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video'
+import UploadVideo from '@/app/[locale]/admin/movies/_components/video-picker'
 import PosterPicker from '@/app/[locale]/admin/movies/_components/poster-picker'
-import { CountrySelect } from '@/app/[locale]/admin/movies/_components/upload-movie/contries-select'
-import { UploadFileViewMode } from '../../_components/upload-movie/upload-video/upload-file'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
-import { customSelectMultiStyles } from '@/app/[locale]/admin/movies/_components/upload-movie/custom-style-select-multi'
 import { CreateMovieBodySchema, CreateMovieBodyType } from '@/types/dtos/movie/createMovie.dto'
 import { useGetAllDirectorsQuery } from '@/store/services/director/director.services'
 import { useGetAllActorsQuery } from '@/store/services/actor/actor.services'
@@ -27,17 +23,27 @@ import { useGetAllCategoryQuery } from '@/store/services/category/category.servi
 import { useCreateMovieMutation } from '@/store/services/movie/movie.services'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
+import { cn } from '@/lib/utils'
+import ComboboxMultiSelect from '@/components/ui/combobox-multi-select'
+import { useCountries } from '@/hooks/shared/useCountries'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Textarea } from '@/components/ui/textarea'
+import { UploadVideoViewMode } from '../../_components/video-picker/upload-video'
+import VideoPicker from '@/app/[locale]/admin/movies/_components/video-picker'
 
+const MAX_DESC_LENGTH = 500
 export default function CreateMovieForm() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
     const validMessage = useTranslations('AdminPage.uploadFilm.validation')
-    const MAX_DESC_LENGTH = 5000
+    const uploadTrailer = useTranslations('AdminPage.uploadFilm.uploadTrailer')
     const [isInitialRender, setIsInitialRender] = useState(true)
     const [videoFile, setVideoFile] = useState<File | null>(null)
 
     const { data: directorsResData } = useGetAllDirectorsQuery()
     const { data: actorsResData } = useGetAllActorsQuery()
     const { data: categoriesResData } = useGetAllCategoryQuery()
+    const countries = useCountries()
+
     const [createMovieMutate, { isLoading: isCreateMovieLoading }] = useCreateMovieMutation()
 
     const directors = directorsResData?.data || []
@@ -66,8 +72,6 @@ export default function CreateMovieForm() {
         if (isCreateMovieLoading) return
         form.reset()
         setVideoFile(null)
-        setIsInitialRender(true)
-        toast.success(t('messages.resetForm'))
     }
 
     const onSubmit = async (data: CreateMovieBodyType) => {
@@ -85,27 +89,33 @@ export default function CreateMovieForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10 p-6'>
-                <UploadVideo
+            <form onSubmit={form.handleSubmit(onSubmit)} onReset={onReset} method='POST' className='space-y-10 p-6'>
+                <VideoPicker
                     onFileSelect={setVideoFile}
                     file={videoFile}
                     onReset={onReset}
                     setIsInitialRender={setIsInitialRender}
-                    viewMode={isInitialRender ? UploadFileViewMode.INITIAL : UploadFileViewMode.FILE_SELECTED}
+                    viewMode={isInitialRender ? UploadVideoViewMode.INITIAL : UploadVideoViewMode.FILE_SELECTED}
                     className='mb-8'
+                    title={uploadTrailer('selectFile')}
+                    description={uploadTrailer('draganddrop')}
+                    selectButton={uploadTrailer('selectButton')}
                 />
 
                 {!isInitialRender && (
                     <>
-                        <div className='flex flex-row gap-40 items-start justify-start'>
+                        <div className='flex flex-row gap-10 items-start justify-start'>
                             <FormField
                                 control={form.control}
                                 name='verticalPoster'
                                 render={({ formState }) => (
-                                    <FormItem>
-                                        <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
+                                    <FormItem className='flex-1'>
+                                        <FormLabel className='font-semibold text-sm'>
+                                            {t('verticalPoster')}
+                                            <span className='text-red-500'>*</span>
+                                        </FormLabel>
                                         <FormControl>
-                                            <PosterPicker className='h-[250px]' />
+                                            <PosterPicker className='h-[250px] aspect-video' />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
                                             {getLocaleMessage(validMessage, formState.errors.title?.message)}
@@ -118,10 +128,12 @@ export default function CreateMovieForm() {
                                 control={form.control}
                                 name='horizontalPoster'
                                 render={({ formState }) => (
-                                    <FormItem>
-                                        <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
+                                    <FormItem className='flex-1'>
+                                        <FormLabel className='font-semibold text-sm'>
+                                            {t('horizontalPoster')} <span className='text-red-500'>*</span>
+                                        </FormLabel>
                                         <FormControl>
-                                            <PosterPicker className='h-[250px]' />
+                                            <PosterPicker className='h-[250px] aspect-9/16' />
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
                                             {getLocaleMessage(validMessage, formState.errors.title?.message)}
@@ -130,14 +142,185 @@ export default function CreateMovieForm() {
                                 )}
                             />
                         </div>
+                        <div className='flex flex-row items-start gap-2'>
+                            <FormField
+                                control={form.control}
+                                name='country'
+                                render={({ field, formState }) => {
+                                    return (
+                                        <FormItem className='flex flex-col gap-2 flex-1'>
+                                            <FormLabel className='font-semibold text-sm'>
+                                                {t('country')}
+                                                <span className='text-red-500'>*</span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    key={field.value}
+                                                    value={field.value || ''}
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <SelectTrigger className='bg-background w-full truncate'>
+                                                        <SelectValue placeholder={t('selectCountry')} />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {countries.map((c) => (
+                                                            <SelectItem key={c.code} value={c.code}>
+                                                                <span className='mr-2'>
+                                                                    {c.code
+                                                                        .toLowerCase()
+                                                                        .split('')
+                                                                        .map((char) =>
+                                                                            String.fromCodePoint(
+                                                                                0x1f1e6 + char.charCodeAt(0) - 97
+                                                                            )
+                                                                        )
+                                                                        .join('')}
+                                                                </span>
+                                                                {c.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage className='text-xs text-red-500 mt-1'>
+                                                {getLocaleMessage(validMessage, formState.errors.country?.message)}
+                                            </FormMessage>
+                                        </FormItem>
+                                    )
+                                }}
+                            />
 
-                        <div className='grid grid-cols-[5fr_1fr] gap-6 py-10'>
+                            <FormField
+                                control={form.control}
+                                name='age'
+                                render={({ field, formState }) => (
+                                    <FormItem className='flex flex-col gap-2 flex-1'>
+                                        <FormLabel className='font-semibold text-sm'>
+                                            {t('ageRank')}
+                                            <span className='text-red-500'>*</span>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                value={field.value.toString()}
+                                                onValueChange={(v) => field.onChange(Number(v))}
+                                            >
+                                                <SelectTrigger className=' bg-background truncate w-full'>
+                                                    <SelectValue placeholder={t('selectAgeRank')} />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {Object.values(AgeRank)
+                                                        .filter((v) => typeof v === 'number')
+                                                        .map((v) => (
+                                                            <SelectItem key={v} value={String(v)}>
+                                                                {getAgeRankNameFromEnum(v as AgeRank)}
+                                                            </SelectItem>
+                                                        ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.age?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name='directorIds'
+                                render={({ field, formState }) => (
+                                    <FormItem className='flex flex-col  gap-2 flex-1 '>
+                                        <FormLabel className='font-semibold text-sm '>{t('director')}</FormLabel>
+                                        <FormControl>
+                                            <ComboboxMultiSelect
+                                                options={directors.map((d) => ({ value: d.id, label: d.fullname }))}
+                                                selectedValues={field.value}
+                                                onSelectedValuesChange={field.onChange}
+                                                placeholder={t('selectDirector')}
+                                                className='w-full'
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.directorIds?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name='actorIds'
+                                render={({ field, formState }) => (
+                                    <FormItem className='flex flex-col  gap-2 flex-1'>
+                                        <FormLabel className='font-semibold text-sm '>{t('actors')}</FormLabel>
+                                        <FormControl>
+                                            <ComboboxMultiSelect
+                                                options={actors.map((a) => ({ value: a.id, label: a.fullname }))}
+                                                selectedValues={field.value}
+                                                onSelectedValuesChange={field.onChange}
+                                                placeholder={t('selectActors')}
+                                                className='w-full'
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.actorIds?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name='categoryIds'
+                                render={({ field, formState }) => (
+                                    <FormItem className='flex flex-col  gap-2 flex-1'>
+                                        <FormLabel className='font-semibold text-sm '>{t('genres')}</FormLabel>
+                                        <FormControl>
+                                            <ComboboxMultiSelect
+                                                options={genres.map((g) => ({ value: g.id, label: g.name }))}
+                                                selectedValues={field.value}
+                                                onSelectedValuesChange={field.onChange}
+                                                placeholder={t('selectGenres')}
+                                                className='w-full'
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name='isVip'
+                                render={({ field, formState }) => (
+                                    <FormItem className='flex flex-col  gap-2 flex-1'>
+                                        <FormLabel className='font-semibold text-sm cursor-pointer'>VIP</FormLabel>
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                                className='data-[state=checked]:bg-brand data-[state=checked]:border-brand'
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <div className='grid grid-cols-[5fr_1fr] gap-6 '>
                             <FormField
                                 control={form.control}
                                 name='title'
                                 render={({ field, formState }) => (
                                     <FormItem>
-                                        <FormLabel className='font-semibold text-sm'>{t('title')}</FormLabel>
+                                        <FormLabel className='font-semibold text-sm'>
+                                            {t('title')}
+                                            <span className='text-red-500'>*</span>
+                                        </FormLabel>
                                         <FormControl>
                                             <Input placeholder={t('titlePlaceholder')} {...field} />
                                         </FormControl>
@@ -153,7 +336,10 @@ export default function CreateMovieForm() {
                                 name='releaseDate'
                                 render={({ field, formState }) => (
                                     <FormItem>
-                                        <FormLabel className='font-semibold text-sm'>{t('dateRealease')}</FormLabel>
+                                        <FormLabel className='font-semibold text-sm'>
+                                            {t('dateRealease')}
+                                            <span className='text-red-500'>*</span>
+                                        </FormLabel>
                                         <FormControl>
                                             <Input type='date' {...field} />
                                         </FormControl>
@@ -168,24 +354,28 @@ export default function CreateMovieForm() {
                                 control={form.control}
                                 name='description'
                                 render={({ field, formState }) => {
-                                    const currentLength = field.value?.length || 0
                                     return (
-                                        <FormItem className='col-span-2'>
-                                            <FormLabel className='font-semibold text-sm'>{t('description')}</FormLabel>
+                                        <FormItem className='col-span-2 flex flex-col gap-2'>
+                                            <FormLabel className='font-semibold text-sm'>
+                                                {t('description')}
+                                                <span className='text-red-500'>*</span>
+                                            </FormLabel>
                                             <FormControl>
                                                 <div className='relative'>
-                                                    <textarea
+                                                    <Textarea
                                                         className='w-full min-h-[120px] border rounded-md p-3 resize-none overflow-hidden'
                                                         placeholder={t('descriptionPlaceholder')}
                                                         {...field}
-                                                        onChange={(e) => {
-                                                            field.onChange(e)
-                                                            e.target.style.height = 'auto'
-                                                            e.target.style.height = `${e.target.scrollHeight}px`
-                                                        }}
                                                     />
-                                                    <span className='absolute -bottom-4 right-3 text-xs text-muted-foreground'>
-                                                        {currentLength} / {MAX_DESC_LENGTH}
+                                                    <span
+                                                        className={cn(
+                                                            'absolute -bottom-6 right-3 text-xs text-muted-foreground',
+                                                            {
+                                                                'text-red-500': formState.errors.description?.message
+                                                            }
+                                                        )}
+                                                    >
+                                                        {field.value?.length || 0} / {MAX_DESC_LENGTH}
                                                     </span>
                                                 </div>
                                             </FormControl>
@@ -198,168 +388,7 @@ export default function CreateMovieForm() {
                             />
                         </div>
 
-                        <div className='grid grid-cols-3 gap-6 items-start py-5'>
-                            <FormField
-                                control={form.control}
-                                name='directorIds'
-                                render={({ field, formState }) => (
-                                    <FormItem className='flex flex-col self-start min-h-[120px]'>
-                                        <FormLabel className='font-semibold text-sm mb-1'>{t('director')}</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                isMulti
-                                                instanceId='directors'
-                                                placeholder={t('selectDirector')}
-                                                menuPortalTarget={document.body}
-                                                classNamePrefix='react-select'
-                                                className='react-select-container bg-popover text-popover-foreground rounded border border-input'
-                                                options={directors.map((d) => ({ value: d.id, label: d.fullname }))}
-                                                value={directors
-                                                    .filter((d) => field.value?.includes(d.id))
-                                                    .map((d) => ({ value: d.id, label: d.fullname }))}
-                                                onChange={(vals) =>
-                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
-                                                }
-                                                styles={customSelectMultiStyles}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, formState.errors.directorIds?.message)}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name='actorIds'
-                                render={({ field, formState }) => (
-                                    <FormItem className='flex flex-col self-start min-h-[120px]'>
-                                        <FormLabel className='font-semibold text-sm mb-1'>{t('actors')}</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                isMulti
-                                                instanceId='actors'
-                                                placeholder={t('selectActors')}
-                                                menuPortalTarget={document.body}
-                                                classNamePrefix='react-select'
-                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
-                                                options={actors.map((a) => ({ value: a.id, label: a.fullname }))}
-                                                value={actors
-                                                    .filter((a) => field.value?.includes(a.id))
-                                                    .map((a) => ({ value: a.id, label: a.fullname }))}
-                                                onChange={(vals) =>
-                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
-                                                }
-                                                styles={customSelectMultiStyles}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, formState.errors.actorIds?.message)}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name='categoryIds'
-                                render={({ field, formState }) => (
-                                    <FormItem className='flex flex-col self-start min-h-[120px]'>
-                                        <FormLabel className='font-semibold text-sm mb-1'>{t('genres')}</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                isMulti
-                                                instanceId='genres'
-                                                placeholder={t('selectGenres')}
-                                                classNamePrefix='react-select'
-                                                menuPortalTarget={document.body}
-                                                className='react-select-container bg-white dark:bg-black text-gray-900 dark:text-gray-100 rounded border border-gray-300 dark:border-white/90'
-                                                options={genres.map((g) => ({ value: g.id, label: g.name }))}
-                                                value={genres
-                                                    .filter((g) => field.value?.includes(g.id))
-                                                    .map((g) => ({ value: g.id, label: g.name }))}
-                                                onChange={(vals) =>
-                                                    field.onChange(vals?.map((v: any) => v.value) ?? [])
-                                                }
-                                                styles={customSelectMultiStyles}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 items-start py-5'>
-                            <div className='flex flex-col gap-2'>
-                                <CountrySelect
-                                    control={form.control}
-                                    formState={form.formState}
-                                    name='country'
-                                    label={t('country')}
-                                    placeholder={t('selectCountry')}
-                                />
-                            </div>
-
-                            <FormField
-                                control={form.control}
-                                name='age'
-                                render={({ field, formState }) => (
-                                    <FormItem className='flex flex-col gap-2'>
-                                        <FormLabel className='font-semibold text-sm'>{t('ageRank')}</FormLabel>
-                                        <FormControl>
-                                            <ShadSelect
-                                                value={String(field.value)}
-                                                onValueChange={(v) => field.onChange(Number(v))}
-                                            >
-                                                <SelectTrigger className='h-10 truncate'>
-                                                    <SelectValue placeholder={t('selectAgeRank')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {Object.values(AgeRank)
-                                                        .filter((v) => typeof v === 'number')
-                                                        .map((v) => (
-                                                            <SelectItem key={v} value={String(v)}>
-                                                                {getAgeRankNameFromEnum(v as AgeRank)}
-                                                            </SelectItem>
-                                                        ))}
-                                                </SelectContent>
-                                            </ShadSelect>
-                                        </FormControl>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, formState.errors.age?.message)}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name='isVip'
-                                render={({ field, formState }) => (
-                                    <FormItem className='flex flex-col justify-center h-full ml-10'>
-                                        <div className='flex items-center gap-2 mt-4'>
-                                            <FormControl>
-                                                <input
-                                                    type='checkbox'
-                                                    checked={field.value}
-                                                    onChange={(e) => field.onChange(e.target.checked)}
-                                                    className='w-4 h-4 accent-brand cursor-pointer'
-                                                />
-                                            </FormControl>
-                                            <FormLabel className='font-semibold text-sm cursor-pointer'>VIP</FormLabel>
-                                        </div>
-                                        <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, formState.errors.categoryIds?.message)}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <div className='flex gap-4 justify-start py-10'>
+                        <div className='flex gap-4 justify-start pt-10 '>
                             <Button
                                 type='submit'
                                 disabled={isCreateMovieLoading}

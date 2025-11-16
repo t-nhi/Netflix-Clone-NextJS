@@ -56,11 +56,11 @@ export default function PosterPicker({ previewClass, className, value, onChange 
     return (
         <div
             className={cn(
-                'relative flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted p-6 cursor-pointer transition-all',
-                'hover:border-primary hover:bg-primary/5',
+                'relative flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted  cursor-pointer transition-all',
+                'border-border hover:bg-primary/5 hover:border-brand',
                 {
-                    'cursor-default': hasPreview,
-                    'border-primary bg-primary/10': isDragActive
+                    'cursor-default ': hasPreview,
+                    'border-primary bg-primary/10 p-6': isDragActive
                 },
                 className
             )}
@@ -98,7 +98,7 @@ function EmptyState() {
                 height={64}
                 className='mb-4 opacity-70'
             />
-            <p className='text-base font-medium text-center'>{t('guide')}</p>
+            <p className='text-xs font-normal text-center text-muted-foreground'>{t('guide')}</p>
         </>
     )
 }
@@ -113,12 +113,12 @@ function PosterPreview({ url, className, onChange }: PosterPreviewProps) {
     const t = useTranslations('AdminPage.uploadFilm.uploadPoster')
 
     return (
-        <div className={cn('relative overflow-hidden rounded-lg group', className)}>
+        <div className={cn('relative overflow-hidden rounded-lg group w-full h-full', className)}>
             <Image
                 src={url}
                 alt='Preview'
                 fill
-                className='w-full h-full object-cover rounded-lg transition-transform duration-300'
+                className='w-full h-full object-cover bg-center rounded-lg transition-transform duration-300'
             />
 
             <div className='absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity'>

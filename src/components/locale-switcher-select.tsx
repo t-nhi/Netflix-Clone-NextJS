@@ -1,7 +1,5 @@
 'use client'
 
-import * as React from 'react'
-
 import {
     Select,
     SelectContent,
@@ -15,7 +13,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import useLanguage from '@/hooks/shared/useLanguage'
 import { LANGUAGES } from '@/i18n/i18n-config'
 import { cn } from '@/lib/utils'
-import { Languages, LanguagesIcon } from 'lucide-react'
+import { LanguagesIcon } from 'lucide-react'
 
 interface SelectLanguageProps {
     className?: string

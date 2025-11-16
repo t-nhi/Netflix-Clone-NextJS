@@ -525,10 +525,10 @@
                     "description": "Please ensure the video aspect ratio is at least 16:9."
                 }
             },
-            "uploadFile": {
-                "selectFile": "Select file to upload",
-                "draganddrop": "Drag and drop file here",
-                "selectButton": "Select file"
+            "uploadTrailer": {
+                "selectFile": "Select trailer to upload",
+                "draganddrop": "Drag and drop trailer here",
+                "selectButton": "Select trailer"
             },
             "uploadForm": {
                 "messages": {

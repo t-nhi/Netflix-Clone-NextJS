@@ -5,29 +5,40 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
 import { cn } from '@/lib/utils'
-import { useTranslations } from 'next-intl'
-import UploadGuideLine from '@/app/[locale]/admin/movies/_components/upload-movie/upload-video/upload-guide-lines'
+import UploadGuideLine from '@/app/[locale]/admin/movies/_components/video-picker/upload-guide-lines'
 
-export const UploadFileViewMode = {
+export const UploadVideoViewMode = {
     INITIAL: 'initial',
     FILE_SELECTED: 'file_selected'
 }
-export type UploadFileViewModeType = (typeof UploadFileViewMode)[keyof typeof UploadFileViewMode]
-
-interface UploadFileProps {
+export type UploadVideoViewModeType = (typeof UploadVideoViewMode)[keyof typeof UploadVideoViewMode]
+export interface UploadVideoProps {
     onFileSelect: (file: File | null) => void
     className?: string
-    viewMode?: UploadFileViewModeType
+    viewMode?: UploadVideoViewModeType
     setIsInitialRender: (value: boolean) => void
+    title?: string
+    description?: string
+    selectButton?: string
 }
 
-export interface UploadFileRef {
+export interface UploadVideoRef {
     resetAndActive: () => void
 }
 
-const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
-    ({ onFileSelect, className, viewMode = UploadFileViewMode.INITIAL, setIsInitialRender }, ref) => {
-        const t = useTranslations('AdminPage.uploadFilm.uploadFile')
+const UploadVideo = forwardRef<UploadVideoRef, UploadVideoProps>(
+    (
+        {
+            onFileSelect,
+            className,
+            viewMode = UploadVideoViewMode.INITIAL,
+            setIsInitialRender,
+            title = 'Select file to upload',
+            description = 'Drag and drop a video file here or click to select one.',
+            selectButton = 'Select Video'
+        },
+        ref
+    ) => {
         const [isDragActive, setIsDragActive] = useState(false)
         const inputRef = useRef<HTMLInputElement>(null)
 
@@ -77,8 +88,8 @@ const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
                         'relative  flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed bg-muted',
                         isDragActive && 'border-primary bg-primary/5',
                         {
-                            'min-h-[400px] flex-col': viewMode === UploadFileViewMode.INITIAL,
-                            'min-h-[200px] flex-row gap-4': viewMode === UploadFileViewMode.FILE_SELECTED
+                            'min-h-[400px] flex-col': viewMode === UploadVideoViewMode.INITIAL,
+                            'min-h-[200px] flex-row gap-4': viewMode === UploadVideoViewMode.FILE_SELECTED
                         }
                     )}
                     onDragEnter={handleDrag}
@@ -108,26 +119,26 @@ const UploadFile = forwardRef<UploadFileRef, UploadFileProps>(
                     </div>
                     <div
                         className={cn('flex flex-col', {
-                            'items-center': viewMode === UploadFileViewMode.INITIAL,
-                            'items-start': viewMode === UploadFileViewMode.FILE_SELECTED
+                            'items-center': viewMode === UploadVideoViewMode.INITIAL,
+                            'items-start': viewMode === UploadVideoViewMode.FILE_SELECTED
                         })}
                     >
-                        <h1 className='mb-1 text-2xl font-bold'>{t('selectFile')}</h1>
-                        <p className='mb-4 text-base text-muted-foreground'>{t('draganddrop')}</p>
+                        <h1 className='mb-1 text-2xl font-bold'>{title}</h1>
+                        <p className='mb-4 text-base text-muted-foreground'>{description}</p>
                     </div>
 
-                    {viewMode === UploadFileViewMode.INITIAL && (
+                    {viewMode === UploadVideoViewMode.INITIAL && (
                         <Button className='mb-6 bg-brand font-semibold text-white hover:bg-brand/90'>
-                            {t('selectButton')}
+                            {selectButton}
                         </Button>
                     )}
                 </div>
-                {viewMode === UploadFileViewMode.INITIAL && <UploadGuideLine className='mt-8' />}
+                {viewMode === UploadVideoViewMode.INITIAL && <UploadGuideLine className='mt-8' />}
             </div>
         )
     }
 )
 
-UploadFile.displayName = 'UploadFile'
+UploadVideo.displayName = 'UploadVideo'
 
-export default UploadFile
+export default UploadVideo

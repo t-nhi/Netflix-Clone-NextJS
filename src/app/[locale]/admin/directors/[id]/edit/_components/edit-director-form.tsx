@@ -19,7 +19,7 @@ import { AdminPaths } from '@/config/routes.config'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { useUploadImageMutation } from '@/store/services/upload/upload.services'
-import getFullURLFromPathName from '@/utils/add-resource'
+import getServerUrl from '@/utils/url.util'
 
 export default function EditDirectorForm({ id }: { id: string }) {
     const desMaxChars = 500
@@ -48,9 +48,7 @@ export default function EditDirectorForm({ id }: { id: string }) {
                 avatar: director.avatar || '',
                 dateOfBirth: director.dateOfBirth || ''
             })
-            const imageURL = director.avatar
-                ? getFullURLFromPathName(director.avatar)
-                : '/images/common/avatar_default.png'
+            const imageURL = director.avatar ? getServerUrl(director.avatar) : '/images/common/avatar_default.png'
             setPreview(imageURL)
         }
     }, [form, director])
@@ -113,9 +111,7 @@ export default function EditDirectorForm({ id }: { id: string }) {
                 avatar: director.avatar || '',
                 dateOfBirth: director.dateOfBirth || ''
             })
-            const imageURL = director.avatar
-                ? getFullURLFromPathName(director.avatar)
-                : '/images/common/avatar_default.png'
+            const imageURL = director.avatar ? getServerUrl(director.avatar) : '/images/common/avatar_default.png'
             setPreview(imageURL)
         }
         setHasNewImage(false)
