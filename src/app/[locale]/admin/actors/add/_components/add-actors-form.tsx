@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,67 +17,96 @@ import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { AdminPaths } from '@/config/routes.config'
 import { useUploadImageMutation } from '@/store/services/upload/upload.services'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 
+const desMaxChars = 500
 export default function AddActorForm() {
-    const [preview, setPreview] = useState('/images/common/avatar_default.png')
-
     const [createActorMutate, { isLoading: isCreating }] = useCreateActorMutation()
-    const [uploadImageMutate] = useUploadImageMutation()
-    const desMaxChars = 500
+    const [uploadImageMutate, { isLoading: isImageUploading }] = useUploadImageMutation()
     const t = useTranslations('AdminPage.actorsPage.addActorForm')
     const validMessage = useTranslations('AdminPage.validation')
+    const [avatarFile, setAvatarFile] = useState<File | null>(null)
+    const [avatarURLPreview, setAvatarURLPreview] = useState<string | null>(null)
 
     const form = useForm<CreateActorBodyType>({
         resolver: zodResolver(CreateActorBodySchema),
-        defaultValues: { fullname: '', dateOfBirth: '', biography: '', avatar: '/images/common/avatar_default.png' }
+        defaultValues: { fullname: '', dateOfBirth: '', biography: '', avatar: '' },
+        mode: 'onChange'
     })
 
-    const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
-
-        const previewUrl = URL.createObjectURL(file)
-        setPreview(previewUrl)
-        const formData = new FormData()
-        formData.append('file', file)
-
-        try {
-            const res = await uploadImageMutate(formData).unwrap()
-            form.setValue('avatar', res.data.url)
-        } catch (error) {
-            handleFormError({ error, setFormError: form.setError })
+        if (avatarURLPreview) {
+            URL.revokeObjectURL(avatarURLPreview)
         }
+        const previewURL = URL.createObjectURL(file)
+        setAvatarFile(file)
+        setAvatarURLPreview(previewURL)
     }
 
     const onSubmit: SubmitHandler<CreateActorBodyType> = async (data) => {
         try {
+            if (avatarFile) {
+                const formData = new FormData()
+                formData.append('file', avatarFile)
+                const uploadRes = await uploadImageMutate(formData).unwrap()
+                data.avatar = uploadRes.data.url
+            } else {
+                data.avatar = data.avatar || ''
+            }
+
             const payload = {
                 ...data,
                 biography: data.biography || '',
-                avatar: data.avatar || '',
                 dateOfBirth: data.dateOfBirth || ''
             }
             const response = await createActorMutate(payload).unwrap()
             toast.success(response.message)
-            onCancel()
+            onReset()
         } catch (error) {
             handleFormError({ error, setFormError: form.setError })
         }
     }
 
-    const onCancel = () => {
+    const onReset = () => {
         form.reset()
+        setAvatarFile(null)
+        if (avatarURLPreview) {
+            URL.revokeObjectURL(avatarURLPreview)
+            setAvatarURLPreview(null)
+        }
     }
+
+    useEffect(() => {
+        return () => {
+            if (avatarURLPreview) {
+                URL.revokeObjectURL(avatarURLPreview)
+            }
+        }
+    }, [avatarURLPreview])
+
+    const previewURL = useMemo(() => {
+        if (avatarFile) return avatarURLPreview
+        return '/images/common/avatar_default.png'
+    }, [avatarFile, avatarURLPreview])
 
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
-            <Link
-                href={AdminPaths.ACTORS}
-                className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
-                   rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
-            >
-                <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
-            </Link>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link
+                        href={AdminPaths.ACTORS}
+                        className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
+                rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
+                    >
+                        <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>Back to Actors</TooltipContent>
+            </Tooltip>
             <h1 className='text-2xl font-semibold mb-2 text-gray-900 dark:text-white text-center'>{t('title')}</h1>
             <p className='text-sm text-gray-600 dark:text-gray-400 text-center mb-6'>{t('subtitle')}</p>
 
@@ -87,7 +116,7 @@ export default function AddActorForm() {
                         <div className='relative flex justify-center items-center aspect-3/4 w-[180px] overflow-hidden rounded-lg border'>
                             <label htmlFor='actor-image' className='cursor-pointer group w-full h-full'>
                                 <Image
-                                    src={preview}
+                                    src={previewURL || '/images/common/avatar_default.png'}
                                     alt='avatar'
                                     width={200}
                                     height={266}
@@ -130,7 +159,7 @@ export default function AddActorForm() {
                                             </div>
                                         </FormControl>
                                         <FormMessage className='text-xs text-red-500 mt-1'>
-                                            {getLocaleMessage(validMessage, form.formState.errors.fullname?.message)}
+                                            {getLocaleMessage(validMessage, formState.errors.fullname?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -146,10 +175,10 @@ export default function AddActorForm() {
                                                 {t('dobLabel')}
                                             </p>
                                             <FormControl>
-                                                <input
+                                                <Input
                                                     type='date'
                                                     {...field}
-                                                    value={field.value ?? ''}
+                                                    value={field.value || ''}
                                                     className={cn(
                                                         'w-fit p-2 border rounded-md focus:ring-2 focus:ring-black focus:outline-none',
                                                         formState.errors.dateOfBirth && 'border-red-500'
@@ -157,8 +186,8 @@ export default function AddActorForm() {
                                                 />
                                             </FormControl>
                                         </div>
-                                        <FormMessage>
-                                            {getLocaleMessage(validMessage, form.formState.errors.dateOfBirth?.message)}
+                                        <FormMessage className='text-xs text-red-500 mt-1'>
+                                            {getLocaleMessage(validMessage, formState.errors.dateOfBirth?.message)}
                                         </FormMessage>
                                     </FormItem>
                                 )}
@@ -175,17 +204,7 @@ export default function AddActorForm() {
                                                     <p className='mb-1 dark:text-gray-200 text-black/60 text-[14px] font-normal'>
                                                         {t('bioLabel')}
                                                     </p>
-                                                    <textarea
-                                                        {...field}
-                                                        value={field.value ?? ''}
-                                                        onChange={field.onChange}
-                                                        placeholder={t('bioPlaceholder')}
-                                                        rows={3}
-                                                        className={cn(
-                                                            'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
-                                                            formState.errors.biography && 'border-red-500'
-                                                        )}
-                                                    />
+                                                    <Textarea {...field} placeholder={t('bioPlaceholder')} rows={3} />
                                                     <div className='text-right text-xs md:text-sm'>
                                                         <span
                                                             className={
@@ -212,7 +231,7 @@ export default function AddActorForm() {
                     <div className='flex justify-end gap-2 mt-5'>
                         <Button
                             type='button'
-                            onClick={onCancel}
+                            onClick={onReset}
                             className='
                                     h-8 px-8 rounded-lg
                                     bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60
@@ -224,6 +243,7 @@ export default function AddActorForm() {
                         </Button>
                         <Button
                             type='submit'
+                            disabled={isCreating || isImageUploading}
                             className='
                                     h-8 px-4 rounded-lg
                                     bg-brand hover:bg-brand/90
@@ -231,7 +251,11 @@ export default function AddActorForm() {
                                     md:text-[14px] text-[12px] font-mono transition-all duration-300 cursor-pointer
                                     '
                         >
-                            {isCreating ? <LoaderCircle className='animate-spin size-5' /> : t('addButton')}
+                            {isCreating || isImageUploading ? (
+                                <LoaderCircle className='animate-spin size-5' />
+                            ) : (
+                                t('addButton')
+                            )}
                         </Button>
                     </div>
                 </form>

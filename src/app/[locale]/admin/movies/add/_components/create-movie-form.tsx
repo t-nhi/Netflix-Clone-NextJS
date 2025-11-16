@@ -13,7 +13,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from '@/components/ui/select'
 
 import { getAgeRankNameFromEnum } from '@/helper/getNameFromStatus'
-import UploadVideo from '@/app/[locale]/admin/movies/_components/video-picker'
 import PosterPicker from '@/app/[locale]/admin/movies/_components/poster-picker'
 import { AgeRank } from '@/constants/movie/age-rank.enum'
 import { CreateMovieBodySchema, CreateMovieBodyType } from '@/types/dtos/movie/createMovie.dto'

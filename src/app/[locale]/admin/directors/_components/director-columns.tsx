@@ -8,7 +8,7 @@ import { Pencil, Trash, ArrowUpDown } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
 import { useTranslations } from 'next-intl'
 import { DirectorType } from '@/types/models/director.model'
-import getServerUrl from '@/utils/url.util'
+import { getServerUrl } from '@/utils/url.util'
 
 type TranslationFunction = ReturnType<typeof useTranslations>
 interface DirectorColumnProps {
@@ -30,7 +30,7 @@ export const getDirectorColumns = ({ t, onEdit, onDelete }: DirectorColumnProps)
         header: t('image'),
         size: 100,
         cell: ({ row }) => {
-            const src = getServerUrl(row.original.avatar || '')
+            const src = row.original.avatar ? getServerUrl(row.original.avatar) : '/images/common/avatar_default.png'
             return (
                 <div className='w-20 aspect-3/4 relative overflow-hidden rounded-md border border-gray-200'>
                     <Image src={src} alt={row.original.fullname} fill className='object-cover object-center' />
@@ -55,7 +55,7 @@ export const getDirectorColumns = ({ t, onEdit, onDelete }: DirectorColumnProps)
         cell: ({ row }) => (
             <div
                 className='font-mono text-xs text-gray-700 dark:text-gray-300 max-w-xs truncate'
-                title={row.original.biography}
+                title={row.original.biography || ''}
             >
                 {row.original.biography}
             </div>

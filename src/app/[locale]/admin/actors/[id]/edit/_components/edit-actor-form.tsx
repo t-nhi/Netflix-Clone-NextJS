@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, ChangeEvent } from 'react'
+import { useEffect, useState, ChangeEvent, useMemo } from 'react'
 import Image from 'next/image'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,16 +17,19 @@ import { AdminPaths } from '@/config/routes.config'
 import { handleFormError } from '@/utils/handleErrors/handleFormError'
 import { getLocaleMessage } from '@/utils/locale.util'
 import { useUploadImageMutation } from '@/store/services/upload/upload.services'
-import getServerUrl from '@/utils/url.util'
+import { getServerUrl } from '@/utils/url.util'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 
 export default function EditActorForm({ id }: { id: string }) {
     const desMaxChars = 500
-    const [preview, setPreview] = useState('/images/common/avatar_default.png')
 
     const { data: getActorsRes } = useGetActorByIdQuery({ params: { id } })
     const [updateActorMutate, { isLoading: isUpdating }] = useUpdateActorByIdMutation()
-    const [uploadImageMutate] = useUploadImageMutation()
-    const [hasNewImage, setHasNewImage] = useState(false)
+    const [uploadImageMutate, { isLoading: isImageUploading }] = useUploadImageMutation()
+    const [avatarFile, setAvatarFile] = useState<File | null>(null)
+    const [avatarURLPreview, setAvatarURLPreview] = useState<string | null>(null)
     const actor = getActorsRes?.data || null
 
     const t = useTranslations('AdminPage.actorsPage.editActorForm')
@@ -45,83 +48,75 @@ export default function EditActorForm({ id }: { id: string }) {
                 avatar: actor.avatar || '',
                 dateOfBirth: actor.dateOfBirth || ''
             })
-            const imageURL = actor.avatar ? getServerUrl(actor.avatar) : '/images/common/avatar_default.png'
-            setPreview(imageURL)
         }
     }, [form, actor])
+
+    useEffect(() => {
+        return () => {
+            if (avatarURLPreview) {
+                URL.revokeObjectURL(avatarURLPreview)
+            }
+        }
+    }, [avatarURLPreview])
 
     const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
+        setAvatarFile(file)
+        const previewURL = URL.createObjectURL(file)
+        setAvatarURLPreview(previewURL)
+    }
 
-        const previewUrl = URL.createObjectURL(file)
-        setPreview(previewUrl)
-        setHasNewImage(true)
-
-        try {
-            const formData = new FormData()
-            formData.append('file', file)
-            const res = await uploadImageMutate(formData).unwrap()
-            form.setValue('avatar', res.data.url)
-        } catch (err) {
-            handleFormError({ error: err, setFormError: form.setError })
+    const onReset = () => {
+        form.reset()
+        if (avatarURLPreview) {
+            URL.revokeObjectURL(avatarURLPreview)
         }
+        setAvatarURLPreview(null)
+        setAvatarFile(null)
     }
 
     const onSubmit: SubmitHandler<UpdateActorBodyType> = async (data) => {
         try {
-            const payload = {
-                ...data,
-                fullname: data.fullname.trim()
-            }
-            if (data.biography?.trim()) {
-                payload.biography = data.biography.trim()
-            } else if (data.biography === '') {
-                payload.biography = null
+            if (avatarFile) {
+                const formData = new FormData()
+                formData.append('file', avatarFile)
+                const uploadRes = await uploadImageMutate(formData).unwrap()
+                data.avatar = uploadRes.data.url
+            } else {
+                data.avatar = actor?.avatar || null
             }
 
-            if (data.dateOfBirth) {
-                payload.dateOfBirth = data.dateOfBirth
-            } else {
-                payload.dateOfBirth = null
-            }
-            if (hasNewImage && data.avatar) {
-                payload.avatar = data.avatar
-            }
             const response = await updateActorMutate({
-                body: payload,
+                body: data,
                 params: { id }
             }).unwrap()
             toast.success(response.message)
-            setHasNewImage(false)
-            onCancel()
+            onReset()
         } catch (error) {
             handleFormError({ error, setFormError: form.setError })
         }
     }
-    const onCancel = () => {
-        if (actor) {
-            form.reset({
-                fullname: actor.fullname,
-                biography: actor.biography || '',
-                avatar: actor.avatar || '',
-                dateOfBirth: actor.dateOfBirth || ''
-            })
-            const imageURL = actor.avatar ? getServerUrl(actor.avatar) : '/images/common/avatar_default.png'
-            setPreview(imageURL)
-        }
-        setHasNewImage(false)
-    }
+
+    const previewURL = useMemo(() => {
+        if (avatarFile) return avatarURLPreview
+        return actor?.avatar ? getServerUrl(actor.avatar) : null
+    }, [avatarURLPreview, avatarFile, actor?.avatar])
 
     return (
         <div className='max-w-3xl mx-auto p-8 mt-10 relative'>
-            <Link
-                href={AdminPaths.ACTORS}
-                className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
-                   rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
-            >
-                <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
-            </Link>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link
+                        href={AdminPaths.ACTORS}
+                        className='absolute top-5 -left-4 flex items-center justify-center md:w-10 md:h-10 sm:w-9 sm:h-9 w-8 h-8 
+                rounded-lg bg-transparent dark:text-white text-black transition-all duration-200 hover:scale-105'
+                    >
+                        <ArrowLeft className='md:w-6 md:h-6 sm:w-5 sm:h-5 w-4 h-4' />
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>Back to Actors</TooltipContent>
+            </Tooltip>
             <h1 className='text-2xl font-semibold mb-2 text-gray-900 dark:text-white text-center'>{t('title')}</h1>
             <p className='text-sm text-gray-600 dark:text-gray-400 text-center mb-6'>{t('subtitle')}</p>
 
@@ -131,7 +126,7 @@ export default function EditActorForm({ id }: { id: string }) {
                         <div className='relative flex justify-center items-center aspect-3/4 w-[180px] overflow-hidden rounded-lg border'>
                             <label htmlFor='actor-image' className='cursor-pointer group w-full h-full'>
                                 <Image
-                                    src={preview}
+                                    src={previewURL || '/images/common/avatar_default.png'}
                                     alt='avatar'
                                     width={200}
                                     height={266}
@@ -190,18 +185,14 @@ export default function EditActorForm({ id }: { id: string }) {
                                                 {t('dobLabel')}
                                             </p>
                                             <FormControl>
-                                                <input
+                                                <Input
                                                     type='date'
                                                     {...field}
-                                                    value={field.value ? field.value : ''}
+                                                    value={field.value || ''}
                                                     className={cn(
                                                         'w-fit p-2 border rounded-md focus:ring-2 focus:ring-black focus:outline-none',
                                                         formState.errors.dateOfBirth && 'border-red-500'
                                                     )}
-                                                    onChange={(e) => {
-                                                        const { value } = e.target
-                                                        field.onChange(value)
-                                                    }}
                                                 />
                                             </FormControl>
                                         </div>
@@ -223,16 +214,7 @@ export default function EditActorForm({ id }: { id: string }) {
                                                     <p className='mb-1 dark:text-gray-200 text-black/60 text-[14px] font-normal'>
                                                         {t('bioLabel')}
                                                     </p>
-                                                    <textarea
-                                                        {...field}
-                                                        value={field.value ?? ''}
-                                                        onChange={field.onChange}
-                                                        rows={3}
-                                                        className={cn(
-                                                            'border overflow-hidden resize-none scrollbar-hide border-gray-300 dark:border-gray-700 rounded-lg w-full p-2 bg-white dark:bg-black text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none',
-                                                            formState.errors.biography && 'border-red-500'
-                                                        )}
-                                                    />
+                                                    <Textarea {...field} rows={3} />
                                                     <div className='text-right text-xs md:text-sm'>
                                                         <span
                                                             className={
@@ -259,7 +241,7 @@ export default function EditActorForm({ id }: { id: string }) {
                     <div className='flex justify-end gap-2 mt-5'>
                         <Button
                             type='button'
-                            onClick={onCancel}
+                            onClick={onReset}
                             className='
                                     h-8 px-8 rounded-lg
                                     bg-[#6d6d6e]/70 hover:bg-[#6d6d6e]/60
@@ -279,7 +261,11 @@ export default function EditActorForm({ id }: { id: string }) {
                                     md:text-[14px] text-[12px] font-mono transition-all duration-300 cursor-pointer
                                     '
                         >
-                            {isUpdating ? <LoaderCircle className='animate-spin size-5' /> : t('saveButton')}
+                            {isUpdating || isImageUploading ? (
+                                <LoaderCircle className='animate-spin size-5' />
+                            ) : (
+                                t('saveButton')
+                            )}
                         </Button>
                     </div>
                 </form>
