@@ -3,39 +3,37 @@
 import FileInfo from '@/app/[locale]/admin/movies/_components/video-picker/file-info'
 import VideoPreview from '@/app/[locale]/admin/movies/_components/video-picker/video-preview'
 import { cn } from '@/lib/utils'
-import { useRef } from 'react'
-import UploadVideo, {
-    UploadVideoProps,
-    UploadVideoRef,
-    UploadVideoViewMode,
-    UploadVideoViewModeType
-} from './upload-video'
+import UploadVideo, { UploadVideoProps, UploadVideoRef, UploadVideoViewMode } from './upload-video'
+import { useEffect, useRef, useState } from 'react'
 
 interface VideoPickerProps extends Pick<UploadVideoProps, 'title' | 'description' | 'selectButton'> {
     onFileSelect: (file: File | null) => void
     file: File | null
     className?: string
-    viewMode?: UploadVideoViewModeType
-    setIsInitialRender: (value: boolean) => void
     onReset: () => void
+    isLoading?: boolean
 }
 
 export default function VideoPicker({
     onFileSelect,
     file,
-    className,
-    viewMode = UploadVideoViewMode.INITIAL,
-    setIsInitialRender,
     onReset,
+    isLoading = false,
+    className,
     title,
     description,
     selectButton
 }: VideoPickerProps) {
+    const [isInitialRender, setIsInitialRender] = useState<boolean>(() => (file ? false : true))
     const uploadVideoRef = useRef<UploadVideoRef>(null)
     const handleReplaceFile = () => {
         onReset()
         uploadVideoRef.current?.resetAndActive()
     }
+
+    useEffect(() => {
+        if (isInitialRender && file) setIsInitialRender(false)
+    }, [file])
 
     return (
         <>
@@ -43,7 +41,7 @@ export default function VideoPicker({
                 <UploadVideo
                     onFileSelect={onFileSelect}
                     className={className}
-                    viewMode={viewMode}
+                    viewMode={isInitialRender ? UploadVideoViewMode.INITIAL : UploadVideoViewMode.FILE_SELECTED}
                     setIsInitialRender={setIsInitialRender}
                     ref={uploadVideoRef}
                     description={description}

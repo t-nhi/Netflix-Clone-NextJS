@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -27,7 +27,6 @@ import ComboboxMultiSelect from '@/components/ui/combobox-multi-select'
 import { useCountries } from '@/hooks/shared/useCountries'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
-import { UploadVideoViewMode } from '../../_components/video-picker/upload-video'
 import VideoPicker from '@/app/[locale]/admin/movies/_components/video-picker'
 
 const MAX_DESC_LENGTH = 500
@@ -35,8 +34,8 @@ export default function CreateMovieForm() {
     const t = useTranslations('AdminPage.uploadFilm.uploadForm')
     const validMessage = useTranslations('AdminPage.uploadFilm.validation')
     const uploadTrailer = useTranslations('AdminPage.uploadFilm.uploadTrailer')
-    const [isInitialRender, setIsInitialRender] = useState(true)
     const [videoFile, setVideoFile] = useState<File | null>(null)
+    const [isInitialRender, setIsInitialRender] = useState(true)
 
     const { data: directorsResData } = useGetAllDirectorsQuery()
     const { data: actorsResData } = useGetAllActorsQuery()
@@ -86,6 +85,10 @@ export default function CreateMovieForm() {
         }
     }
 
+    useEffect(() => {
+        if (isInitialRender && videoFile) setIsInitialRender(false)
+    }, [videoFile])
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} onReset={onReset} method='POST' className='space-y-10 p-6'>
@@ -93,8 +96,6 @@ export default function CreateMovieForm() {
                     onFileSelect={setVideoFile}
                     file={videoFile}
                     onReset={onReset}
-                    setIsInitialRender={setIsInitialRender}
-                    viewMode={isInitialRender ? UploadVideoViewMode.INITIAL : UploadVideoViewMode.FILE_SELECTED}
                     className='mb-8'
                     title={uploadTrailer('selectFile')}
                     description={uploadTrailer('draganddrop')}
