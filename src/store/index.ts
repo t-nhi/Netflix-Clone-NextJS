@@ -11,6 +11,8 @@ import { categoryApi } from './services/category/category.services'
 import { movieApi } from './services/movie/movie.services'
 import { directorApi } from './services/director/director.services'
 import { uploadApi } from './services/upload/upload.services'
+import { accountApi } from '@/store/services/manager-account/manager-account.services'
+import { roleApi } from '@/store/services/role/role.services'
 
 export const makeStore = () => {
     return configureStore({
@@ -25,7 +27,9 @@ export const makeStore = () => {
             [categoryApi.reducerPath]: categoryApi.reducer,
             [movieApi.reducerPath]: movieApi.reducer,
             [directorApi.reducerPath]: directorApi.reducer,
-            [uploadApi.reducerPath]: uploadApi.reducer
+            [uploadApi.reducerPath]: uploadApi.reducer,
+            [accountApi.reducerPath]: accountApi.reducer,
+            [roleApi.reducerPath]: roleApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
@@ -37,6 +41,8 @@ export const makeStore = () => {
                 movieApi.middleware,
                 directorApi.middleware,
                 uploadApi.middleware,
+                accountApi.middleware,
+                roleApi.middleware,
                 authMiddleware,
                 errorHandleMiddleware
             )
@@ -58,4 +64,6 @@ export function clearStore(dispatch: AppDispatch) {
     dispatch(movieApi.util.resetApiState())
     dispatch(directorApi.util.resetApiState())
     dispatch(uploadApi.util.resetApiState())
+    dispatch(accountApi.util.resetApiState())
+    dispatch(roleApi.util.resetApiState())
 }

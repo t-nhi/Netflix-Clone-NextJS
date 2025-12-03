@@ -585,23 +585,46 @@
         },
 
         "usersPage": {
-            "title": "Danh sách người dùng",
-            "searchUsers": "Tìm kiếm",
+            "title": "Người dùng",
+            "searchUsers": "Tìm kiếm theo email",
             "id": "ID",
-            "userName": "Username",
+            "userName": "Tên người dùng",
             "email": "Email",
-            "role": "Vai trò",
+            "role": "Chức vụ",
             "accountStatus": "Trạng thái tài khoản",
             "actions": "Hành động",
-            "view": "Xem",
+            "view": "Xem chi tiết",
             "lockAccount": "Khóa tài khoản",
             "unlockAccount": "Mở khóa tài khoản",
-            "locked": "Bị khóa",
-            "active": "Hoạt động",
+            "locked": "Đã khóa",
+            "active": "Đang hoạt động",
+
+            "roleDropdown": {
+                "placehoder": "Chọn chức vụ",
+                "all": "Tất cả chức vụ"
+            },
+
+            "statusDropdown": {
+                "placehoder": "Chọn trạng thái",
+                "all": "Tất cả trạng thái",
+                "enabled": "Đang hoạt động",
+                "disabled": "Đã khóa"
+            },
+
             "messages": {
-                "emptyUser": "Danh sách người dùng rỗng",
-                "lockSuccess": "Khóa tài khoản người dùng thành công!",
-                "unlockSuccess": "Mở khóa tài khoản người dùng thành công!"
+                "error": "Lỗi tải dữ liệu!",
+                "emptyUser": "Danh sách người dùng trống!",
+                "lockSuccess": "Khóa tài khoản thành công!",
+                "unlockSuccess": "Mở khóa tài khoản thành công!"
+            },
+
+            "dialogConfirm": {
+                "title": "Xác nhận hành động",
+                "confirmDisable": "Bạn có chắc chắn muốn KHÓA tài khoản này không?",
+                "confirmEnable": "Bạn có chắc chắn muốn MỞ KHÓA tài khoản này không?",
+                "cancel": "Hủy",
+                "lock": "Khóa",
+                "unlock": "Mở khóa"
             }
         },
         "dashboardPage": {
