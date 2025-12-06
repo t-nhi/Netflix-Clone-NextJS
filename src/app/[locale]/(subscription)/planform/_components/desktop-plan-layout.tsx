@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useGetAllPlansQuery } from '@/store/services/payment/plans/subscriptionplan.services'
+import mapSubscriptionPlanToUI from '@/app/[locale]/(subscription)/planform/_components/mapSubscriptionPlanToUI'
 import { mockSubscriptionPlans } from '../_mock'
 
 interface DesktopPlanLayoutProps {
@@ -10,10 +12,14 @@ interface DesktopPlanLayoutProps {
 
 export default function DesktopPlanLayout({ selectedPlan, onPlanSelect }: DesktopPlanLayoutProps) {
     const t = useTranslations('PlanformPage')
+    // const { data, isLoading } = useGetAllPlansQuery()
+    // if (isLoading) return <p>Loading...</p>
+    // const plans = data?.data.map((p) => mapSubscriptionPlanToUI({ plan: p, t })) ?? []
+    const plans = mockSubscriptionPlans
 
     return (
         <div className='hidden xl:grid grid-cols-4 gap-6 mb-12'>
-            {mockSubscriptionPlans.map((plan) => (
+            {plans.map((plan) => (
                 <div
                     key={plan.id}
                     className={cn('relative rounded-2xl  cursor-pointer transition-all duration-300 border-2', {

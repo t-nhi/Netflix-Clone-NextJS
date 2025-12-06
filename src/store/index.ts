@@ -13,6 +13,7 @@ import { directorApi } from './services/director/director.services'
 import { uploadApi } from './services/upload/upload.services'
 import { accountApi } from '@/store/services/manager-account/manager-account.services'
 import { roleApi } from '@/store/services/role/role.services'
+import { subscriptionApi } from '@/store/services/payment/plans/subscriptionplan.services'
 
 export const makeStore = () => {
     return configureStore({
@@ -29,7 +30,8 @@ export const makeStore = () => {
             [directorApi.reducerPath]: directorApi.reducer,
             [uploadApi.reducerPath]: uploadApi.reducer,
             [accountApi.reducerPath]: accountApi.reducer,
-            [roleApi.reducerPath]: roleApi.reducer
+            [roleApi.reducerPath]: roleApi.reducer,
+            [subscriptionApi.reducerPath]: subscriptionApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
@@ -43,6 +45,7 @@ export const makeStore = () => {
                 uploadApi.middleware,
                 accountApi.middleware,
                 roleApi.middleware,
+                subscriptionApi.middleware,
                 authMiddleware,
                 errorHandleMiddleware
             )
@@ -66,4 +69,5 @@ export function clearStore(dispatch: AppDispatch) {
     dispatch(uploadApi.util.resetApiState())
     dispatch(accountApi.util.resetApiState())
     dispatch(roleApi.util.resetApiState())
+    dispatch(subscriptionApi.util.resetApiState())
 }
