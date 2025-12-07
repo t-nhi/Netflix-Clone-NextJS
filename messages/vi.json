@@ -658,5 +658,20 @@
                 "viewCount": "Lượt xem"
             }
         }
+    },
+    "SearchPage": {
+        "searchDropdown": {
+            "title": "Tìm kiếm",
+            "placeholder": "Tìm kiếm phim",
+            "filmsonTrend": "Phim đang thịnh hành"
+        },
+        "searchManager": {
+            "noResultsTitle": "Không tim thấy kết quả",
+            "noResultsDesc": "Thử tìm kiếm bằng từ khóa khác hoặc kiểm tra chính tả",
+            "title": "Kết quả tìm kiếm",
+            "subTitle": "Hiển thị các phim phù hợp với kết quả tìm kiếm của bạn",
+            "foundLabel": "Tìm thấy",
+            "moviesUnit": "phim"
+        }
     }
 }

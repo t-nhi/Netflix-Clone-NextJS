@@ -650,5 +650,20 @@
                 "viewCount": "View Count"
             }
         }
+    },
+    "SearchPage": {
+        "searchDropdown": {
+            "title": "Search",
+            "placeholder": "Search for movies",
+            "filmsonTrend": "Films on trend"
+        },
+        "searchManager": {
+            "noResultsTitle": "No results about title",
+            "noResultsDesc": "Try different keywords or check your spelling.",
+            "title": "Search result",
+            "subTitle": "Display all movies atching with key search of you",
+            "foundLabel": "Founded",
+            "moviesUnit": "movies"
+        }
     }
 }

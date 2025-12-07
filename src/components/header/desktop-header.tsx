@@ -14,6 +14,7 @@ import { Role } from '@/constants/role.enum'
 import { UserSummaryType } from '@/types/dtos/customer/user.dto'
 import { headerMenuItems } from './header.config'
 import { AdminPaths } from '@/config/routes.config'
+import MovieSearchBox from '@/components/header/search-trigger'
 
 interface DesktopHeaderProps {
     wrapperClassName?: string
@@ -76,6 +77,7 @@ export default function DesktopHeader({
             </div>
 
             <div className='flex items-center gap-4 '>
+                <MovieSearchBox className={cn('hidden md:flex', buttonClassName)} />
                 <ModeToggle className={cn('hidden md:flex', buttonClassName)} />
                 <SelectLanguage className={cn('hidden md:flex', buttonClassName)} />
                 {currentUserRole != null && userData ? (
