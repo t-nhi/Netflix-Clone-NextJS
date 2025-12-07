@@ -582,7 +582,7 @@
         },
         "usersPage": {
             "title": "Users",
-            "searchUsers": "Search users",
+            "searchUsers": "Search by email",
             "id": "ID",
             "userName": "User Name",
             "email": "Email",
@@ -594,10 +594,29 @@
             "unlockAccount": "Unlock Account",
             "locked": "Locked",
             "active": "Active",
+            "roleDropdown": {
+                "placehoder": "Select role",
+                "all": "All Roles"
+            },
+            "statusDropdown": {
+                "placehoder": "Select status",
+                "all": "All Status",
+                "enabled": "Active",
+                "disabled": "Disabled"
+            },
             "messages": {
+                "errorLoading": "Error loading users",
                 "emptyUser": "The user list is empty!",
                 "lockSuccess": "User account locked successfully!",
                 "unlockSuccess": "User account unlocked successfully!"
+            },
+            "dialogConfirm": {
+                "title": "Confirm Action",
+                "confirmDisable": "Are you sure you want to LOCK this account?",
+                "confirmEnable": "Are you sure you want to UNLOCK this account?",
+                "cancel": "Cancel",
+                "lock": "Lock",
+                "unlock": "Unlock"
             }
         },
         "dashboardPage": {
@@ -630,6 +649,21 @@
                 "title": "Top Films",
                 "viewCount": "View Count"
             }
+        }
+    },
+    "SearchPage": {
+        "searchDropdown": {
+            "title": "Search",
+            "placeholder": "Search for movies",
+            "filmsonTrend": "Films on trend"
+        },
+        "searchManager": {
+            "noResultsTitle": "No results about title",
+            "noResultsDesc": "Try different keywords or check your spelling.",
+            "title": "Search result",
+            "subTitle": "Display all movies atching with key search of you",
+            "foundLabel": "Founded",
+            "moviesUnit": "movies"
         }
     }
 }

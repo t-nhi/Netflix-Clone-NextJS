@@ -4,9 +4,17 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown, Lock, Unlock } from 'lucide-react'
 import { maskId } from '@/utils/formatting/formatId'
-import { UserSummaryType } from '@/types/dtos/customer/user.dto'
+import { useTranslations } from 'next-intl'
+import { ManagerAccountType } from '@/types/dtos/manager-account/manager-account.dto'
 
-export const getUserColumns = (t: any, onToggleLock: (id: string) => void): ColumnDef<UserSummaryType>[] => [
+type TranslationFuntion = ReturnType<typeof useTranslations>
+
+interface UserColumnProps {
+    t: TranslationFuntion
+    onManager: (id: string, is_enabled: boolean) => void
+}
+
+export const getUserColumns = ({ t, onManager }: UserColumnProps): ColumnDef<ManagerAccountType>[] => [
     {
         accessorKey: 'id',
         header: t('id'),
@@ -63,7 +71,7 @@ export const getUserColumns = (t: any, onToggleLock: (id: string) => void): Colu
                     <Button
                         variant='ghost'
                         size='icon'
-                        onClick={() => onToggleLock(user.id)}
+                        onClick={() => onManager(user.id, user.is_enabled)}
                         title={user.is_enabled ? 'Disable account' : 'Enable account'}
                         className='hover:cursor-pointer'
                     >

@@ -1,7 +1,9 @@
 import { useTranslations } from 'next-intl'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { mockSubscriptionPlans } from '../_mock'
+import { useGetAllPlansQuery } from '@/store/services/payment/plans/subscriptionplan.services'
+import mapSubscriptionPlanToUI from '@/app/[locale]/(subscription)/planform/_components/mapSubscriptionPlanToUI'
+import { mockSubscriptionPlans } from '@/app/[locale]/(subscription)/planform/_mock'
 
 interface TabletPlanLayoutProps {
     selectedPlan: string
@@ -10,11 +12,15 @@ interface TabletPlanLayoutProps {
 
 export default function TabletPlanLayout({ selectedPlan, onPlanSelect }: TabletPlanLayoutProps) {
     const t = useTranslations('PlanformPage')
+    // const { data, isLoading } = useGetAllPlansQuery()
+    // if (isLoading) return <p>Loading...</p>
+    // const plans = data?.data.map((p) => mapSubscriptionPlanToUI({ plan: p, t })) ?? []
+    const plans = mockSubscriptionPlans
 
     return (
         <div className='xl:hidden'>
             <div className='grid grid-cols-4 gap-2 sm:gap-3 mb-8'>
-                {mockSubscriptionPlans.map((plan) => (
+                {plans.map((plan) => (
                     <div
                         key={plan.id}
                         className={cn(
@@ -55,7 +61,7 @@ export default function TabletPlanLayout({ selectedPlan, onPlanSelect }: TabletP
             {selectedPlan && (
                 <div className=' mb-8'>
                     {(() => {
-                        const plan = mockSubscriptionPlans.find((p) => p.id === selectedPlan)
+                        const plan = plans.find((p) => p.id === selectedPlan)
                         if (!plan) return null
 
                         return (
