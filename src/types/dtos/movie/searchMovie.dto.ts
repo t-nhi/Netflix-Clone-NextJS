@@ -5,7 +5,8 @@ import { HttpResponseWithMetaSchema } from '@/types/common/http-response.type'
 import { PaginationMetaSchema } from '@/types/common/pagination-meta.type'
 
 export const SearchMovieQuerySchema = PaginationQuerySchema.extend({
-    keyword: z.string().min(1)
+    keyword: z.string().min(1),
+    userRole: z.string().optional().default('USER')
 })
 export type SearchMovieQueryType = z.infer<typeof SearchMovieQuerySchema>
 
