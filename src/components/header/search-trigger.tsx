@@ -1,36 +1,38 @@
+'use client'
+
 import React, { useState, useRef, useEffect } from 'react'
 import { Search, X, Film } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
-
-// Mock Data
-const topFilms = [
-    { id: 1, title: 'Anh Trai Say Hi', year: '2024' },
-    { id: 2, title: 'Ẩn Danh - Taxi Driver', year: '2023' },
-    { id: 3, title: 'Cuộc Chiến Sinh Tồn', year: '2023' },
-    { id: 4, title: 'Phượng Hoàng Lửa', year: '2024' },
-    { id: 5, title: 'Bí Mật Dưới Đáy Biển', year: '2022' },
-    { id: 6, title: 'Mặt Trăng Đẫm Máu', year: '2025' },
-    { id: 7, title: 'Huyền Thoại Rồng Vàng', year: '2024' },
-    { id: 8, title: 'Cuộc Phiêu Lưu Trong Thành Phố', year: '2023' },
-    { id: 9, title: 'Bão Tố Trong Tim', year: '2024' },
-    { id: 10, title: 'Ngọn Lửa Hồi Sinh', year: '2025' }
-]
+import { useSearchParams } from 'next/navigation' // 1. Import hook lấy params
+import { useGetTop10MoviesQuery } from '@/store/services/movie/movie.services'
 
 interface MovieSearchBoxProps {
-    className: string
+    className?: string
 }
 
 export default function MovieSearchBox({ className }: MovieSearchBoxProps) {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const urlQuery = searchParams.get('q')
+
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const t = useTranslations('SearchPage.searchDropdown')
+    const { data: top10Data, isLoading } = useGetTop10MoviesQuery()
 
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (urlQuery) {
+            setQuery(urlQuery)
+        } else {
+            setQuery('')
+        }
+    }, [urlQuery])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -50,7 +52,7 @@ export default function MovieSearchBox({ className }: MovieSearchBoxProps) {
 
     const handleNavigation = (searchTerm: string) => {
         setIsOpen(false)
-        setQuery('')
+
         router.push(`/search?q=${encodeURIComponent(searchTerm)}`)
     }
 
@@ -59,6 +61,17 @@ export default function MovieSearchBox({ className }: MovieSearchBoxProps) {
         if (!query.trim()) return
         handleNavigation(query)
     }
+
+    const handleClear = () => {
+        setQuery('')
+        if (urlQuery) {
+            router.back()
+        }
+        inputRef.current?.focus()
+    }
+
+    const showSuggestions = !urlQuery || query !== urlQuery
+    const topFilms = top10Data?.data || []
 
     return (
         <div ref={containerRef} className='relative inline-block text-left'>
@@ -106,8 +119,8 @@ export default function MovieSearchBox({ className }: MovieSearchBoxProps) {
                             {query && (
                                 <button
                                     type='button'
-                                    className='absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full hover: cursor-pointer'
-                                    onClick={() => setQuery('')}
+                                    className='absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full hover:cursor-pointer'
+                                    onClick={handleClear}
                                 >
                                     <X className='w-4 h-4 text-gray-400 dark:text-gray-300' />
                                 </button>
@@ -115,35 +128,41 @@ export default function MovieSearchBox({ className }: MovieSearchBoxProps) {
                         </div>
                     </form>
 
-                    <div className='flex-1 max-h-[340px] overflow-y-auto custom-scrollbar p-2'>
-                        <p className='text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 px-3 mt-2'>
-                            {t('filmsonTrend')}
-                        </p>
-                        <div className='flex flex-col gap-1'>
-                            {topFilms.map((item, idx) => (
-                                <button
-                                    key={item.id}
-                                    onClick={() => handleNavigation(item.title)}
-                                    className='group w-full flex items-center gap-3 px-3 py-3 text-left
-                                               rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 hover:cursor-pointer'
-                                >
-                                    <div
-                                        className='w-6 h-6 text-xs font-bold border border-gray-400 dark:border-gray-600 rounded-full flex items-center justify-center shrink-0
-                                                    group-hover:bg-black dark:group-hover:bg-white
-                                                    group-hover:text-white dark:group-hover:text-black transition-colors'
-                                    >
-                                        {idx + 1}
-                                    </div>
-                                    <div className='flex-1 min-w-0'>
-                                        <span className='text-sm font-medium block truncate text-gray-700 dark:text-gray-200 group-hover:text-black dark:group-hover:text-white'>
-                                            {item.title}
-                                        </span>
-                                    </div>
-                                    <Film className='w-4 h-4 text-gray-500 dark:text-gray-400 opacity-50 group-hover:opacity-100 transition-opacity' />
-                                </button>
-                            ))}
+                    {showSuggestions && (
+                        <div className='flex-1 max-h-[340px] overflow-y-auto custom-scrollbar p-2'>
+                            <p className='text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 px-3 mt-2'>
+                                {t('filmsonTrend')}
+                            </p>
+                            {isLoading ? (
+                                <p className='text-sm px-3 py-2 text-gray-500'>Loading...</p>
+                            ) : (
+                                <div className='flex flex-col gap-1'>
+                                    {topFilms.map((item, idx) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => handleNavigation(item.title)}
+                                            className='group w-full flex items-center gap-3 px-3 py-3 text-left
+                                                   rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 hover:cursor-pointer'
+                                        >
+                                            <div
+                                                className='w-6 h-6 text-xs font-bold border border-gray-400 dark:border-gray-600 rounded-full flex items-center justify-center shrink-0
+                                                       group-hover:bg-black dark:group-hover:bg-white
+                                                       group-hover:text-white dark:group-hover:text-black transition-colors'
+                                            >
+                                                {idx + 1}
+                                            </div>
+                                            <div className='flex-1 min-w-0'>
+                                                <span className='text-sm font-medium block truncate text-gray-700 dark:text-gray-200 group-hover:text-black dark:group-hover:text-white'>
+                                                    {item.title}
+                                                </span>
+                                            </div>
+                                            <Film className='w-4 h-4 text-gray-500 dark:text-gray-400 opacity-50 group-hover:opacity-100 transition-opacity' />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    </div>
+                    )}
                 </div>
             )}
         </div>

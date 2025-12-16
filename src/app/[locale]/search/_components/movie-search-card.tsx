@@ -3,24 +3,24 @@
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
-import { MovieType } from '@/types/models/movie.model'
 import { Play } from 'lucide-react'
+import { MovieSummaryType } from '@/types/dtos/movie/movie.dto'
 
 interface MovieCardProps {
-    movie: MovieType
+    movie: MovieSummaryType
     className?: string
 }
 
 export default function SearchCard({ movie, className }: MovieCardProps) {
-    const [mounted, setMounted] = useState(false)
-    const [progress, setProgress] = useState(0)
+    // const [mounted, setMounted] = useState(false)
+    // const [progress, setProgress] = useState(0)
 
-    useEffect(() => {
-        setMounted(true)
-        if (movie.duration_minutes > 0) {
-            setProgress(Math.min((movie.watch_duration_minutes / movie.duration_minutes) * 100, 100))
-        }
-    }, [movie.watch_duration_minutes, movie.duration_minutes])
+    // useEffect(() => {
+    //     setMounted(true)
+    //     if (movie.duration_minutes > 0) {
+    //         setProgress(Math.min((movie.watch_duration_minutes / movie.duration_minutes) * 100, 100))
+    //     }
+    // }, [movie.watch_duration_minutes, movie.duration_minutes])
 
     return (
         <article
@@ -45,11 +45,11 @@ export default function SearchCard({ movie, className }: MovieCardProps) {
                 </div>
             </div>
 
-            {mounted && progress > 0 && (
+            {/* {mounted && progress > 0 && (
                 <div className='absolute bottom-0 left-0 right-0 z-10 h-1 bg-gray-600/40'>
                     <div className='h-full bg-red-600' style={{ width: `${progress.toFixed(0)}%` }} />
                 </div>
-            )}
+            )} */}
         </article>
     )
 }

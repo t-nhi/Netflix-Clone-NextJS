@@ -83,13 +83,22 @@ export const movieApi = createApi({
         }),
         searchMovies: builder.infiniteQuery<SearchMovieResType, { query: SearchMovieQueryType }, number>({
             query: ({ pageParam, queryArg: { query } }) => {
-                const queryString = new URLSearchParams({
-                    ...query,
-                    page: pageParam ? pageParam.toString() : '1'
-                }).toString()
+                // const queryString = new URLSearchParams({
+                //     ...query,
+                //     page: pageParam ? pageParam.toString() : '1'
+                // }).toString()
+                const params = new URLSearchParams()
+                params.append('page', pageParam ? pageParam.toString() : '1')
+                if (query.size) params.append('size', query.size.toString())
+                if (query.keyword) params.append('keyword', query.keyword)
+                if (query.sortBy) params.append('sortBy', query.sortBy || 'year')
+                if (query.sortDirection) params.append('sortDirection', query.sortDirection || 'desc')
+                if (query.userRole) params.append('userRole', query.userRole || 'USER')
+
+                const queryString = params.toString()
 
                 return {
-                    url: `/movies/search?${queryString}`,
+                    url: `/movies?${queryString}`,
                     method: HttpMethod.GET
                 }
             },
@@ -121,6 +130,22 @@ export const movieApi = createApi({
                     return current_page - 1
                 }
             }
+        }),
+        getTop10Movies: builder.query<GetMovieListResType, void>({
+            query: () => ({
+                url: '/movies/top-ten',
+                method: HttpMethod.GET
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.data.map((movie) => ({
+                              type: 'Movie' as const,
+                              id: movie.id
+                          })),
+                          { type: 'Movie', id: 'TOP10' }
+                      ]
+                    : [{ type: 'Movie', id: 'TOP10' }]
         }),
         createMovie: builder.mutation<CreateMovieResType, CreateMovieBodyType>({
             query: (body) => ({
@@ -158,6 +183,7 @@ export const {
     useGetMovieByIdQuery,
     useGetMoviesInfiniteQuery,
     useSearchMoviesInfiniteQuery,
+    useGetTop10MoviesQuery,
     useCreateMovieMutation,
     useUpdateMovieMutation,
     useDeleteMovieMutation

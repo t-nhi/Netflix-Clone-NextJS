@@ -663,7 +663,15 @@
             "title": "Search result",
             "subTitle": "Display all movies atching with key search of you",
             "foundLabel": "Founded",
-            "moviesUnit": "movies"
+            "moviesUnit": "movies",
+            "error": {
+                "title": "An error occurred",
+                "desc": "Please try again later.",
+                "errorConnect": "Error connecting to the server. Please try again later.",
+                "retryChangeKeyword": "Try changing the search keyword."
+            },
+            "gridView": "Grid View",
+            "listView": "List View"
         }
     }
 }
