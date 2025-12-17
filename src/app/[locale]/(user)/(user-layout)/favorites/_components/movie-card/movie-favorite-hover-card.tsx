@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Play, Volume2, VolumeX } from 'lucide-react'
+import { Check, Loader2, Play, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TiInfoLarge } from 'react-icons/ti'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -14,6 +14,7 @@ import { useMouseEnter } from '@/hooks/ui/useMouseEnter'
 import { isNewMovieRelease } from '@/helper/movie'
 import { useTranslations } from 'next-intl'
 import { MovieType } from '@/types/models/movie.model'
+import { useRemoveFavoriteMutation } from '@/store/services/favorite/favorite.services'
 
 interface MovieCardContextProps {
     movie: MovieType
@@ -80,6 +81,20 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
     const appDispatch = useAppDispatch()
     const handleToggleMute = () => {
         appDispatch(toggleMute())
+    }
+    const [removeFavorite, { isLoading: isRemoving }] = useRemoveFavoriteMutation()
+
+    // 2. Hàm xử lý Xóa khỏi danh sách
+    const handleRemoveFromList = async (e: React.MouseEvent) => {
+        e.stopPropagation()
+
+        if (isRemoving) return
+
+        try {
+            await removeFavorite({ params: { movieId: movie.id } }).unwrap()
+        } catch (error) {
+            console.error('Failed to remove favorite:', error)
+        }
     }
 
     useEffect(() => {
@@ -150,9 +165,15 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
                     <Button
                         size='sm'
                         variant='outline'
+                        onClick={handleRemoveFromList}
+                        disabled={isRemoving}
                         className='rounded-md border-brand! bg-neutral-800/30 px-3 py-2 text-xs font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white transition-colors cursor-pointer'
                     >
-                        <Check className='mr-1 h-3.5 w-3.5 text-brand' />
+                        {isRemoving ? (
+                            <Loader2 className='mr-1 h-3.5 w-3.5 animate-spin text-brand' />
+                        ) : (
+                            <Check className='mr-1 h-3.5 w-3.5 text-brand group-hover:text-red-500 transition-colors' />
+                        )}
                         Danh sách
                     </Button>
                     <Button

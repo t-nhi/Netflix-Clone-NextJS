@@ -7,6 +7,7 @@ import FavoriteCard from './movie-card/movie-favorite-card'
 import { getMockFilms } from '@/_mock'
 import { MovieFavoriteCardHoverInfoProvider } from './movie-card/movie-favorite-hover-card'
 import { MovieType } from '@/types/models/movie.model'
+import { useGetCustomerFavoritesQuery } from '@/store/services/favorite/favorite.services'
 
 interface FavoriteListProps {
     movies?: MovieType[]
@@ -16,7 +17,9 @@ interface FavoriteListProps {
 }
 
 export default function FavoriteList({ isEditing, selectedMovies, onSelect }: FavoriteListProps) {
-    const mockMovies = useMemo(() => getMockFilms(50), [])
+    // const mockMovies = useMemo(() => getMockFilms(50), [])
+    const { data: favoriteData, isLoading } = useGetCustomerFavoritesQuery()
+    const movieList = (favoriteData?.data || []) as MovieType[]
     const t = useTranslations('FavoritePage')
 
     const renderEmptyState = () => (
@@ -32,7 +35,9 @@ export default function FavoriteList({ isEditing, selectedMovies, onSelect }: Fa
         </div>
     )
 
-    if (mockMovies.length === 0) return renderEmptyState()
+    // if (mockMovies.length === 0) return renderEmptyState()
+    if (isLoading) return null
+    if (!isLoading && movieList.length === 0) return renderEmptyState()
 
     return (
         <div className='mx-auto w-full min-h-screen'>
@@ -43,7 +48,7 @@ export default function FavoriteList({ isEditing, selectedMovies, onSelect }: Fa
                         lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]
                         xl:grid-cols-[repeat(6,1fr)]'
             >
-                {mockMovies.map((movie) => (
+                {movieList.map((movie) => (
                     <MovieFavoriteCardHoverInfoProvider key={movie.id} movie={movie} disableHover={isEditing}>
                         <FavoriteCard
                             movie={movie}

@@ -1,6 +1,6 @@
 'use client'
 
-import { Play, Plus, Volume2, VolumeX } from 'lucide-react'
+import { Loader2, Play, Plus, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TiInfoLarge } from 'react-icons/ti'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -14,6 +14,7 @@ import { useMouseEnter } from '@/hooks/ui/useMouseEnter'
 import { isNewMovieRelease } from '@/helper/movie'
 import { useTranslations } from 'next-intl'
 import { MovieType } from '@/types/models/movie.model'
+import { useAddFavoriteMutation } from '@/store/services/favorite/favorite.services'
 
 interface MovieCardContextProps {
     movie: MovieType
@@ -78,6 +79,20 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
     const appDispatch = useAppDispatch()
     const handleToggleMute = () => {
         appDispatch(toggleMute())
+    }
+    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
+
+    // 2. Hàm xử lý thêm vào danh sách
+    const handleAddToList = async (e: React.MouseEvent) => {
+        e.stopPropagation()
+
+        if (isLoading) return
+
+        try {
+            await addFavorite({ movieId: movie.id }).unwrap()
+        } catch (error) {
+            console.error('Failed to add favorite:', error)
+        }
     }
 
     useEffect(() => {
@@ -148,9 +163,15 @@ function TooltipFilmInfoContent({ movie }: TooltipContentProps) {
                     <Button
                         size='sm'
                         variant='outline'
+                        onClick={handleAddToList}
+                        disabled={isLoading}
                         className='rounded-md border-neutral-700 bg-neutral-800/30 px-3 py-2 text-xs font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white transition-colors cursor-pointer'
                     >
-                        <Plus className='mr-1 h-3.5 w-3.5' />
+                        {isLoading ? (
+                            <Loader2 className='mr-1 h-3.5 w-3.5 animate-spin' />
+                        ) : (
+                            <Plus className='mr-1 h-3.5 w-3.5' />
+                        )}
                         Danh sách
                     </Button>
                     <Button
